@@ -20,11 +20,12 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->string('alamat');
             $table->string('no_hp');
-            $table->string('status');
+            $table->string('status_pekerjaan');
             $table->string('instansi');
             $table->foreignId('program_id')->constrained('program')->onDelete('cascade');
             $table->string('info');
             $table->text('motivasi')->nullable();
+            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }

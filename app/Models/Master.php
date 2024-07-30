@@ -19,11 +19,12 @@ class Master extends Model
         'tanggal_lahir',
         'alamat',
         'no_hp',
-        'status',
+        'status_pekerjaan',
         'instansi',
         'program_id',
         'info',
         'motivasi',
+        'status',
     ];
 
     public function user()

@@ -2,6 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\Tugas;
+use App\Models\Materi;
+use App\Models\Program;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TugasFactory extends Factory
 {
+    protected $model = Tugas::class; // Menentukan bahwa factory ini terkait dengan model Tugas.
     /**
      * Define the model's default state.
      *
@@ -17,7 +22,12 @@ class TugasFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => User::factory(),
+            'program_id' => Program::factory(),
+            'materi_id' => Materi::factory(),
+            'judul' => $this->faker->sentence,
+            'deskripsi' => $this->faker->paragraph,
+            'file' => $this->faker->word . '.pdf', // ini nanti menambahkan format pdf, contoh dokumen.pdf
         ];
     }
 }

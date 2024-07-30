@@ -2,6 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\Tugas;
+use App\Models\Program;
+use App\Models\Pengumpulan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PengumpulanFactory extends Factory
 {
+    protected $model = Pengumpulan::class; // Menentukan bahwa factory ini terkait dengan model Pengumpulan.
     /**
      * Define the model's default state.
      *
@@ -17,7 +22,12 @@ class PengumpulanFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => User::factory(),
+            'program_id' => Program::factory(),
+            'tugas_id' => Tugas::factory(),
+            'judul' => $this->faker->sentence,
+            'deskripsi' => $this->faker->paragraph,
+            'file' => $this->faker->word . '.pdf', // ini nanti menambahkan format pdf, contoh dokumen.pdf
         ];
     }
 }
