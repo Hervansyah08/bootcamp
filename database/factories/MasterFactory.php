@@ -31,7 +31,7 @@ class MasterFactory extends Factory
             'status_pekerjaan' => $this->faker->randomElement(['Pelajar', 'Fresh Graduate','Keryawan']),
             'instansi' => $this->faker->company,
             'program_id' => Program::factory(),
-            'info' => $this->faker->paragraph,
+            'info' => $this->faker->randomElement(['Instagram', 'FB','Keluarga']),
             'motivasi' => $this->faker->paragraph,
             'status' => $this->faker->randomElement(['Active', 'Pending']),
         ];
