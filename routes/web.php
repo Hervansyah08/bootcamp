@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth','user')->group(function () {
     Route::get('/user', function () {
         return view('user.index');
-    })->name('user.index');
+    })->middleware(['verified'])->name('user.index');
 });
 Route::middleware('auth','admin')->group(function () {
     Route::get('/admin', function () {
