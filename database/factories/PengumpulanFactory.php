@@ -22,9 +22,9 @@ class PengumpulanFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'program_id' => Program::factory(),
-            'tugas_id' => Tugas::factory(),
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
+            'program_id' => Program::inRandomOrder()->first()->id ?? Program::factory(),
+            'tugas_id' => Tugas::inRandomOrder()->first()->id ?? Tugas::factory(),
             'judul' => $this->faker->sentence,
             'deskripsi' => $this->faker->paragraph,
             'file' => $this->faker->word . '.pdf', // ini nanti menambahkan format pdf, contoh dokumen.pdf

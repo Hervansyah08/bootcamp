@@ -15,6 +15,7 @@ class Program extends Model
         'user_id',
         'nama',
         'deskripsi',
+        'status',
     ];
 
     public function user()

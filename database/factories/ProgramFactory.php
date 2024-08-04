@@ -20,13 +20,14 @@ class ProgramFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'nama' => $this->faker->randomKey([
                 'Digital Marketing' => 'Digital Marketing',
                 'Web' => 'Web',
                 'Mobile' => 'Mobile',
             ]),
             'deskripsi' => $this->faker->paragraph,
+            'status' => $this->faker->randomElement(['Active']),
         ];
     }
 }

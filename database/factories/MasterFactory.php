@@ -21,7 +21,7 @@ class MasterFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'email' => $this->faker->unique()->safeEmail,
             'nama' => $this->faker->name,
             'gender' => $this->faker->randomElement(['Pria', 'Wanita']),
@@ -30,7 +30,7 @@ class MasterFactory extends Factory
             'no_hp' => $this->faker->phoneNumber,
             'status_pekerjaan' => $this->faker->randomElement(['Pelajar', 'Fresh Graduate','Keryawan']),
             'instansi' => $this->faker->company,
-            'program_id' => Program::factory(),
+            'program_id' => Program::inRandomOrder()->first()->id ?? Program::factory(),
             'info' => $this->faker->randomElement(['Instagram', 'FB','Keluarga']),
             'motivasi' => $this->faker->paragraph,
             'status' => $this->faker->randomElement(['Active', 'Pending']),

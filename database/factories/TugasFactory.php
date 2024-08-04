@@ -22,9 +22,9 @@ class TugasFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'program_id' => Program::factory(),
-            'materi_id' => Materi::factory(),
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
+            'program_id' => Program::inRandomOrder()->first()->id ?? Program::factory(),
+            'materi_id' => Materi::inRandomOrder()->first()->id ?? Materi::factory(),
             'judul' => $this->faker->sentence,
             'deskripsi' => $this->faker->paragraph,
             'file' => $this->faker->word . '.pdf', // ini nanti menambahkan format pdf, contoh dokumen.pdf

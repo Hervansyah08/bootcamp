@@ -21,8 +21,8 @@ class MateriFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'program_id' => Program::factory(),
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
+            'program_id' => Program::inRandomOrder()->first()->id ?? Program::factory(),
             'judul' => $this->faker->sentence,
             'deskripsi' => $this->faker->paragraph,
             'file' => $this->faker->word . '.pdf', // ini nanti menambahkan format pdf, contoh dokumen.pdf
