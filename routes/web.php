@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgramController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 
@@ -18,20 +19,29 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth','user')->group(function () {
+// Rute untuk User
+Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/user', function () {
         return view('user.index');
     })->middleware(['verified'])->name('user.index');
 });
-Route::middleware('auth','admin')->group(function () {
-    Route::get('/admin', function () {
-        return view('admin.index');
-    })->name('admin.index');
+
+// rute untuk admin dan super admin
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/program', [ProgramController::class, 'index'])->name('program.index');
+    Route::get('/program/create', [ProgramController::class, 'create'])->name('program.create');
+    Route::post('/program', [ProgramController::class, 'store'])->name('program.store');
 });
-Route::middleware('auth','super_admin')->group(function () {
-    Route::get('/super-admin', function () {
-        return view('super_admin.index');
-    })->name('super_admin.index');
-});
+
+// Rute untuk Admin
+// Route::middleware(['auth', 'admin', 'verified'])->group(function () {
+//     Route::get('/admin/program', [ProgramController::class, 'index'])->name('admin.program');
+// });
+
+// Rute untuk Super Admin
+// Route::middleware(['auth', 'super_admin', 'verified'])->group(function () {
+//     Route::get('/super_admin/program', [ProgramController::class, 'index'])->name('super_admin.program');
+// });
+
 
 require __DIR__.'/auth.php';

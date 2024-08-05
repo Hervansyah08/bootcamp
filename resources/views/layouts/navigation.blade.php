@@ -15,6 +15,12 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
+{{-- Auth::check(): Memeriksa apakah ada pengguna yang sedang login. Ini untuk memastikan bahwa Auth::user() tidak mengembalikan null. --}}
+                    <x-nav-link :href="route('program.index')" :active="request()->routeIs('program.index')">
+                        {{ __('Program') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
