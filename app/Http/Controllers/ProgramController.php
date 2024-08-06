@@ -47,4 +47,39 @@ class ProgramController extends Controller
         // Redirect ke halaman program dengan pesan sukses
         return redirect()->route('program.index')->with('success', 'Program berhasil dibuat.');
     }
+
+    // Method untuk menampilkan form edit
+    public function edit(Program $program) //menggunakan route model binding
+    {
+        return view('pages.program.program_edit', compact('program'));
+    }
+
+    // Method untuk mengupdate data program
+    public function update(Request $request, Program $program)
+    {
+        // Validasi input
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'status' => 'required|string',
+        ]);
+
+        // Update data program
+        $program->update([
+            'nama' => $request->nama,
+            'deskripsi' => $request->deskripsi,
+            'status' => $request->status,
+        ]);
+
+        // Redirect ke halaman program dengan pesan sukses
+        return redirect()->route('program.index')->with('success', 'Program berhasil diperbarui.');
+    }
+
+    // Method untuk menghapus data program
+    public function destroy(Program $program) //menggunakan route model binding
+    {
+        $program->delete();
+
+        return redirect()->route('program.index')->with('success', 'Program berhasil dihapus.');
+    }
 }

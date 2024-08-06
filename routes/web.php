@@ -31,6 +31,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/program', [ProgramController::class, 'index'])->name('program.index');
     Route::get('/program/create', [ProgramController::class, 'create'])->name('program.create');
     Route::post('/program', [ProgramController::class, 'store'])->name('program.store');
+    Route::get('/program/{program}/edit', [ProgramController::class, 'edit'])->name('program.edit');
+    Route::put('/program/{program}', [ProgramController::class, 'update'])->name('program.update');
+    Route::delete('/program/{program}', [ProgramController::class, 'destroy'])->name('program.destroy');
 });
 
 // Rute untuk Admin
