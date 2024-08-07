@@ -34,6 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/program/{program}/edit', [ProgramController::class, 'edit'])->name('program.edit');
     Route::put('/program/{program}', [ProgramController::class, 'update'])->name('program.update');
     Route::delete('/program/{program}', [ProgramController::class, 'destroy'])->name('program.destroy');
+    Route::get('/program/search', [ProgramController::class, 'search'])->name('program.search');
 });
 
 // Rute untuk Admin
@@ -47,4 +48,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
