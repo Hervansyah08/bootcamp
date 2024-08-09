@@ -9,13 +9,12 @@
         <div class="max-w-7xl lg:max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('program.update', $program->id) }}" method="POST">
+                    <form id="edit-form" action="{{ route('program.update', $program->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="mb-6">
                             <label for="nama"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
-                                Program</label>
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Program</label>
                             <input type="text" name="nama" id="nama" value="{{ $program->nama }}"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 required>
@@ -32,20 +31,72 @@
                             <select id="status" name="status"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 required>
-                                <option value="Active" {{ $program->status == 'active' ? 'selected' : '' }}>Active
-                                </option>
-                                <option value="Inactive" {{ $program->status == 'inactive' ? 'selected' : '' }}>Inactive
-                                </option>
+                                <option value="Active" {{ $program->status == 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="Inactive" {{ $program->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
                             </select>
                         </div>
                         <div class="flex">
                             <a href="{{ route('program.index') }}"
                                 class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
-                            <x-biru-button>Edit</x-biru-button>
+                            <button type="button" id="edit-button"
+                                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Script SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('edit-button').addEventListener('click', function () {
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Anda ingin menyimpan perubahan ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, simpan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit form with AJAX
+                    const form = document.getElementById('edit-form');
+
+                    fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: new FormData(form)
+                    }).then(response => {
+                        if (response.ok) {
+                            Swal.fire({
+                                title: 'Data berhasil diubah!',
+                                icon: 'success',
+                                confirmButtonText: 'Oke'
+                            }).then(() => {
+                                window.location.href = "{{ route('program.index') }}"; // Redirect setelah berhasil
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Terjadi masalah saat mengubah data.',
+                                icon: 'error'
+                            });
+                        }
+                    }).catch(error => {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan yang tidak terduga.',
+                            icon: 'error'
+                        });
+                    });
+                }
+            });
+        });
+    </script>
 </x-app-layout>
