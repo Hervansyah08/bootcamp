@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MasterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use Illuminate\Auth\Events\Login;
@@ -12,6 +13,10 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::get('/welcome', function () {
+//     return view('welcome');
+// })->middleware(['auth', 'verified'])->name('welcome');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,6 +33,7 @@ Route::middleware(['auth', 'user'])->group(function () {
 
 // rute untuk admin dan super admin
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Program
     Route::get('/program', [ProgramController::class, 'index'])->name('program.index');
     Route::get('/program/create', [ProgramController::class, 'create'])->name('program.create');
     Route::post('/program', [ProgramController::class, 'store'])->name('program.store');
@@ -35,6 +41,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/program/{program}', [ProgramController::class, 'update'])->name('program.update');
     Route::delete('/program/{program}', [ProgramController::class, 'destroy'])->name('program.destroy');
     Route::get('/program/search', [ProgramController::class, 'search'])->name('program.search');
+
+    // Master
+    Route::get('/master', [MasterController::class, 'index'])->name('master.index');
+    Route::get('/master/create', [MasterController::class, 'create'])->name('master.create');
+    Route::post('/master', [MasterController::class, 'store'])->name('master.store');
 });
 
 // Rute untuk Admin

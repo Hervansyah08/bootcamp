@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Program;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ProgramController extends Controller
 {
@@ -43,7 +44,7 @@ class ProgramController extends Controller
 
         // Simpan data program baru
         Program::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::user()->id,
             'nama' => $request->nama,
             'deskripsi' => $request->deskripsi,
             'status' => $request->status,
