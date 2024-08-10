@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Pendaftaran') }}
+            {{ __('Edit Data Pendaftar') }}
         </h2>
     </x-slot>
 
@@ -9,31 +9,17 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('master.store') }}" method="POST">
+                    <form id="edit-form" action="{{ route('master.update', $master->id) }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <div class="grid gap-6 mb-6 md:grid-cols-2">
-                            @if (Auth::user()->role === 'admin' || Auth::user()->role === 'super_admin')
-                                <div>
-                                    <label for="user_id"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Username</label>
-                                    <select id="user_id" name="user_id"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        required>
-                                        <option selected>Pilih User</option>
-                                        @foreach ($users as $user)
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endif
                             <div>
                                 <label for="email"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                     Email</label>
                                 <input type="email" id="email" name="email"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    required />
+                                    value="{{ $master->email }}" required />
                             </div>
                             <div>
                                 <label for="nama"
@@ -41,7 +27,7 @@
                                     Nama</label>
                                 <input type="text" id="nama" name="nama"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    required />
+                                    value="{{ $master->nama }}" required />
                             </div>
                             <div>
                                 <label for="gender"
@@ -51,8 +37,10 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     required>
                                     <option selected>Pilih Jenis Kelamin</option>
-                                    <option value="Pria">Pria</option>
-                                    <option value="Wanita">Wanita</option>
+                                    <option value="Pria" {{ $master->gender == 'Pria' ? 'selected' : '' }}>Pria
+                                    </option>
+                                    <option value="Wanita" {{ $master->gender == 'Wanita' ? 'selected' : '' }}>Wanita
+                                    </option>
                                 </select>
                             </div>
                             <div>
@@ -61,7 +49,7 @@
                                     Tanggal Lahir</label>
                                 <input type="date" id="tanggal_lahir" name="tanggal_lahir"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    required />
+                                    value="{{ $master->tanggal_lahir }}" required />
                             </div>
                             <div>
                                 <label for="alamat"
@@ -69,15 +57,14 @@
                                     Alamat</label>
                                 <input type="text" id="alamat" name="alamat"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    required />
+                                    value="{{ $master->alamat }}" required />
                             </div>
                             <div>
                                 <label for="no_hp"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No
-                                    HP</label>
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No HP</label>
                                 <input type="text" id="no_hp" name="no_hp"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    required />
+                                    value="{{ $master->no_hp }}" required />
                             </div>
                             <div>
                                 <label for="status_pekerjaan"
@@ -87,10 +74,17 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     required>
                                     <option selected>Pilih Status Pekerjaan</option>
-                                    <option value="Pelajar">Pelajar</option>
-                                    <option value="Fresh Graduate">Fresh Graduate</option>
-                                    <option value="Karyawan">Karyawan</option>
-                                    <option value="Lain - Lain">Lain - Lain</option>
+                                    <option value="Pelajar"
+                                        {{ $master->status_pekerjaan == 'Pelajar' ? 'selected' : '' }}>Pelajar</option>
+                                    <option value="Fresh Graduate"
+                                        {{ $master->status_pekerjaan == 'Fresh Graduate' ? 'selected' : '' }}>Fresh
+                                        Graduate</option>
+                                    <option value="Karyawan"
+                                        {{ $master->status_pekerjaan == 'Karyawan' ? 'selected' : '' }}>Karyawan
+                                    </option>
+                                    <option value="Lain - Lain"
+                                        {{ $master->status_pekerjaan == 'Lain - Lain' ? 'selected' : '' }}>Lain - Lain
+                                    </option>
                                 </select>
                             </div>
                             <div>
@@ -98,7 +92,7 @@
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Instansi</label>
                                 <input type="text" id="instansi" name="instansi"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    required />
+                                    value="{{ $master->instansi }}" required />
                             </div>
                             <div>
                                 <label for="program_id"
@@ -109,24 +103,34 @@
                                     required>
                                     <option selected>Pilih Program</option>
                                     @foreach ($programs as $program)
-                                        <option value="{{ $program->id }}">{{ $program->nama }}</option>
+                                        <option value="{{ $program->id }}"
+                                            {{ $master->program_id == $program->id ? 'selected' : '' }}>
+                                            {{ $program->nama }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
                             <div>
                                 <label for="info"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Darimana
-                                    Anda
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Darimana Anda
                                     Mengetahui Program Ini</label>
                                 <select id="info" name="info"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     required>
                                     <option selected>Pilih</option>
-                                    <option value="Facebook">Facebook</option>
-                                    <option value="Instagram">Instagram</option>
-                                    <option value="Twitter">Twitter</option>
-                                    <option value="Teman / Keluarga">Teman / Keluarga</option>
-                                    <option value="Lain - Lain">Lain - Lain</option>
+                                    <option value="Facebook" {{ $master->info == 'Facebook' ? 'selected' : '' }}>
+                                        Facebook
+                                    </option>
+                                    <option value="Instagram" {{ $master->info == 'Instagram' ? 'selected' : '' }}>
+                                        Instagram</option>
+                                    <option value="Twitter" {{ $master->info == 'Twitter' ? 'selected' : '' }}>
+                                        Twitter</option>
+                                    <option value="Teman / Keluarga"
+                                        {{ $master->info == 'Teman / Keluarga' ? 'selected' : '' }}>Teman / Keluarga
+                                    </option>
+                                    <option value="Lain - Lain" {{ $master->info == 'Lain - Lain' ? 'selected' : '' }}>
+                                        Lain - Lain
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -135,7 +139,25 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Motivasi
                                 (Opsional)</label>
                             <textarea id="motivasi" name="motivasi" rows="4"
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ $master->motivasi }}</textarea>
+                        </div>
+                        <div class="mb-6">
+                            <label for="status"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+                            <select id="status" name="status"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                required>
+                                <option selected>Pilih</option>
+                                <option value="Active" {{ $master->status == 'Active' ? 'selected' : '' }}>
+                                    Active
+                                </option>
+                                <option value="Pending" {{ $master->status == 'Pending' ? 'selected' : '' }}>
+                                    Pending
+                                </option>
+                                <option value="Inactive" {{ $master->status == 'Inactive' ? 'selected' : '' }}>
+                                    Inactive
+                                </option>
+                            </select>
                         </div>
                         <div class="flex">
                             <a href="{{ route('master.index') }}"

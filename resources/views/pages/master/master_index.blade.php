@@ -10,7 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg lg:relative">
                 <div class="p-6 text-gray-900 dark:text-gray-100 ">
                     <x-biru-link href="{{ route('master.create') }}">Tambah </x-biru-link>
-                    {{-- <form action="{{ route('program.search') }}" method="GET"
+                    <form action="{{ route('master.search') }}" method="GET"
                         class="w-full mt-6 lg:absolute lg:right-7 lg:top-4 lg:mt-0 lg:max-w-sm">
                         <label for="default-search"
                             class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
@@ -24,11 +24,11 @@
                             </div>
                             <input type="search" id="default-search" name="search"
                                 class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Search Program dan Deskripsi" />
+                                placeholder="Search Email dan Nama" />
                             <button type="submit"
                                 class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                         </div>
-                    </form> --}}
+                    </form>
                     <br>
                     <div class="relative overflow-x-auto lg:mt-6">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -136,11 +136,11 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="inline-flex rounded-md shadow-sm" role="group">
-                                                {{-- <a href="{{ route('program.edit', $program->id) }}" aria-current="page"
+                                                <a href="{{ route('master.edit', $master->id) }}" aria-current="page"
                                                     class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
                                                     Edit
-                                                </a> --}}
-                                                {{-- <form action="{{ route('program.destroy', $program->id) }}"
+                                                </a>
+                                                <form action="{{ route('master.destroy', $master->id) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
@@ -148,7 +148,7 @@
                                                         class="px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
                                                         Hapus
                                                     </button>
-                                                </form> --}}
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>

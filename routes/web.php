@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\MasterController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProgramController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MasterController;
+use App\Http\Controllers\MateriController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgramController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -46,6 +47,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/master', [MasterController::class, 'index'])->name('master.index');
     Route::get('/master/create', [MasterController::class, 'create'])->name('master.create');
     Route::post('/master', [MasterController::class, 'store'])->name('master.store');
+    Route::delete('master/{master}', [MasterController::class, 'destroy'])->name('master.destroy');
+    Route::get('/master/{master}/edit', [MasterController::class, 'edit'])->name('master.edit');
+    Route::put('/master/{master}', [MasterController::class, 'update'])->name('master.update');
+    Route::get('/master/search', [MasterController::class, 'search'])->name('master.search');
+
+    // Materi
+    Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
+    Route::get('/materi/program/{program}', [MateriController::class, 'showByProgram'])->name('materi.showByProgram');
+    Route::get('/materi/create', [MateriController::class, 'create'])->name('materi.create');
 });
 
 // Rute untuk Admin
