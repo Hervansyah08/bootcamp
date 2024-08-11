@@ -81,4 +81,21 @@ class MateriController extends Controller
 
         return redirect()->route('materi.showByProgram', $request->program_id)->with('success', 'Materi berhasil ditambahkan.');
     }
+
+    public function download(Materi $materi)
+    {
+        // Path lengkap ke file
+        $filePath = storage_path('app/' . $materi->file);
+
+        // Cek apakah file ada
+        if (!file_exists($filePath)) {
+            abort(404, 'File not found.');
+        }
+
+        // Dapatkan ekstensi file dari path
+        $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+        // Mengembalikan respons unduhan
+        return response()->download($filePath, $materi->judul . '.' . $fileExtension);
+    }
 }

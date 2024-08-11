@@ -28,9 +28,9 @@
                             @endif
                             <p class="mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">
                                 {{ $materi->deskripsi }}</p>
-                            <a href="#"
+                            <a href="{{ route('materi.download', $materi->id) }}"
                                 class="inline-flex items-center text-lg text-blue-600 dark:text-blue-500 hover:underline">
-                                Lihat Materi
+                                Download Materi
                                 <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
