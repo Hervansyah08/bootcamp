@@ -55,7 +55,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Materi
     Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
     Route::get('/materi/program/{program}', [MateriController::class, 'showByProgram'])->name('materi.showByProgram');
-    Route::get('/materi/create', [MateriController::class, 'create'])->name('materi.create');
+    Route::get('/materi/create/{program}', [MateriController::class, 'create'])->name('materi.create');
+    Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
 });
 
 // Rute untuk Admin

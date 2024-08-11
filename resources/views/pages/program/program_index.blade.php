@@ -53,6 +53,9 @@
                                     <th scope="col" class="px-6 py-3">
                                         Tanggal Input
                                     </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Tanggal Edit
+                                    </th>
                                     <th scope="col" class="px-6 py-3 text-center">
                                         Aksi
                                     </th>
@@ -78,7 +81,10 @@
                                             {{ $program->user->name }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $program->created_at->format('d-m-Y H:i') }}
+                                            {{ $program->created_at->format('d-m-Y, H:i') }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            {{ $program->updated_at->format('d-m-Y, H:i') }}
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="inline-flex rounded-md shadow-sm" role="group">
@@ -113,7 +119,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.querySelectorAll('.delete-button').forEach(button => {
-            button.addEventListener('click', function (event) {
+            button.addEventListener('click', function(event) {
                 event.preventDefault(); // Mencegah pengiriman form langsung
 
                 const form = this.closest('form');
@@ -132,7 +138,8 @@
                         fetch(form.action, {
                             method: 'POST',
                             headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').getAttribute('content'),
                                 'Accept': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest'
                             },
@@ -145,7 +152,8 @@
                                     text: "Klik tombol Oke untuk melanjutkan.",
                                     confirmButtonText: "Oke"
                                 }).then(() => {
-                                    location.reload(); // Reload halaman setelah penghapusan berhasil
+                                    location
+                                        .reload(); // Reload halaman setelah penghapusan berhasil
                                 });
                             } else {
                                 Swal.fire({

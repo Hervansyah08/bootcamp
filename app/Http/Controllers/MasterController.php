@@ -22,6 +22,7 @@ class MasterController extends Controller
             $masters = Master::with('user', 'program')->latest()->paginate(5);
             foreach ($masters as $master) {
                 $master->created_at = Carbon::parse($master->created_at)->timezone('Asia/Jakarta');
+                $master->updated_at = Carbon::parse($master->updated_at)->timezone('Asia/Jakarta');
             }
             return view('pages.master.master_index', compact('masters'));
         } else {
@@ -34,7 +35,8 @@ class MasterController extends Controller
     {
         $programs = Program::where('status', 'Active')->get();
         // Menyaring berdasarkan nilai kolom tertentu. Ini adalah pencarian yang lebih spesifik, karena hanya mempertimbangkan nilai yang tepat dari kolom status.
-        $users = User::all(); // Ambil semua pengguna
+        // $users = User::all(); // Ambil semua pengguna
+        $users = User::where('role', 'User')->get();
 
         return view('pages.master.master_create', compact('programs', 'users'));
     }

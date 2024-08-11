@@ -14,7 +14,8 @@
                         @method('PUT')
                         <div class="mb-6">
                             <label for="nama"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Program</label>
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                                Program</label>
                             <input type="text" name="nama" id="nama" value="{{ $program->nama }}"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 required>
@@ -32,8 +33,10 @@
                             <select id="status" name="status"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 required>
-                                <option value="Active" {{ $program->status == 'active' ? 'selected' : '' }}>Active</option>
-                                <option value="Inactive" {{ $program->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                <option value="Active" {{ $program->status == 'Active' ? 'selected' : '' }}>Active
+                                </option>
+                                <option value="Inactive" {{ $program->status == 'Inactive' ? 'selected' : '' }}>Inactive
+                                </option>
                             </select>
                         </div>
                         <div class="flex">
@@ -51,7 +54,7 @@
     <!-- Script SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        document.getElementById('edit-button').addEventListener('click', function () {
+        document.getElementById('edit-button').addEventListener('click', function() {
             Swal.fire({
                 title: 'Apakah anda yakin?',
                 text: "Anda ingin menyimpan perubahan ini?",
@@ -68,7 +71,8 @@
                     fetch(form.action, {
                         method: 'POST',
                         headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content'),
                             'Accept': 'application/json',
                             'X-Requested-With': 'XMLHttpRequest'
                         },
@@ -80,7 +84,8 @@
                                 icon: 'success',
                                 confirmButtonText: 'Oke'
                             }).then(() => {
-                                window.location.href = "{{ route('program.index') }}"; // Redirect setelah berhasil
+                                window.location.href =
+                                    "{{ route('program.index') }}"; // Redirect setelah berhasil
                             });
                         } else {
                             Swal.fire({

@@ -81,6 +81,9 @@
                                         Tanggal Input
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
+                                        Tanggal Edit
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center">
                                         Aksi
                                     </th>
                                 </tr>
@@ -132,7 +135,10 @@
                                             {{ $master->status }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $master->created_at->format('d-m-Y H:i') }}
+                                            {{ $master->created_at->format('d-m-Y, H:i') }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            {{ $master->updated_at->format('d-m-Y, H:i') }}
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="inline-flex rounded-md shadow-sm" role="group">

@@ -20,6 +20,7 @@ class ProgramController extends Controller
             $programs = Program::with('user')->latest()->paginate(5);
             foreach ($programs as $program) {
                 $program->created_at = Carbon::parse($program->created_at)->timezone('Asia/Jakarta');
+                $program->updated_at = Carbon::parse($program->updated_at)->timezone('Asia/Jakarta');
             }
             return view('pages.program.program_index', compact('programs'));
         } else {
@@ -72,6 +73,7 @@ class ProgramController extends Controller
 
         // Update data program
         $program->update([
+            'user_id' => Auth::user()->id,
             'nama' => $request->nama,
             'deskripsi' => $request->deskripsi,
             'status' => $request->status,
