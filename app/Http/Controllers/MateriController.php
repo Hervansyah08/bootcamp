@@ -8,6 +8,7 @@ use App\Models\Materi;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MateriController extends Controller
 {
@@ -97,5 +98,45 @@ class MateriController extends Controller
 
         // Mengembalikan respons unduhan
         return response()->download($filePath, $materi->judul . '.' . $fileExtension);
+    }
+
+    public function edit(Materi $materi)
+    {
+        // $programs = Program::where('status', 'Active')->get();
+        return view('pages.materi.materi_edit', compact('materi'));
+    }
+
+    // Metode untuk menyimpan update
+    public function update(Request $request, Materi $materi)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,zip|max:209715208', // File opsional
+            'program_id' => 'required|exists:program,id',
+        ]);
+
+        // Update data materi
+        $materi->update([
+            'user_id' => Auth::user()->id,
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'program_id' => $request->program_id,
+        ]);
+
+        // Update file jika ada
+        if ($request->hasFile('file')) {
+            // Hapus file lama dari storage
+            Storage::delete($materi->file);
+
+            // Simpan file baru
+            $file = $request->file('file');
+            $filePath = $file->store('materis');
+
+            // Update path file di database
+            $materi->update(['file' => $filePath]);
+        }
+
+        return redirect()->route('materi.showByProgram', $request->program_id)->with('success', 'Materi berhasil diperbarui.');
     }
 }

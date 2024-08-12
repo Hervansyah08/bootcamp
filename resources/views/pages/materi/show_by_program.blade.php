@@ -37,19 +37,20 @@
                                         stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
                                 </svg>
                             </a>
-
-                            {{-- <h5 class="card-title">{{ $materi->judul }}</h5>
-                            <p class="card-text">{{ $materi->deskripsi }}</p>
-                            <a href="{{ Storage::url($materi->file) }}" class="btn btn-info" target="_blank">Lihat
-                                File</a> --}}
-                            {{-- <a href="{{ route('materi.edit', $materi->id) }}" class="btn btn-warning">Edit</a>
-                                <form action="{{ route('materi.destroy', $materi->id) }}" method="POST"
+                            <br>
+                            @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
+                                {{-- <a class="btn btn-warning">Edit</a> --}}
+                                <div class="flex mt-3">
+                                    <x-kuning-link href="{{ route('materi.edit', $materi->id) }}">Edit</x-kuning-link>
+                                    {{-- <form action="{{ route('materi.destroy', $materi->id) }}" method="POST"
                                     style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger"
                                         onclick="return confirm('Apakah Anda yakin ingin menghapus materi ini?')">Hapus</button>
                                 </form> --}}
+                                </div>
+                            @endif
 
                         </div>
                     @empty
