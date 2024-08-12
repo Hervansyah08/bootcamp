@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,15 +14,27 @@ class ProgramController extends Controller
     {
         // Mengambil data pengguna yang sedang login
         $user = $request->user();
-        // Memeriksa peran pengguna
+
         if ($user->role == 'admin' || $user->role == 'super_admin') {
-            // Jika pengguna adalah admin atau super admin, ambil data program dan tampilkan halaman
-            // Mengurutkan berdasarkan yang terbaru
-            $programs = Program::with('user')->latest()->paginate(5);
+            // Jika pengguna adalah admin atau super admin
+            if ($user->role == 'admin') {
+                // Jika pengguna adalah admin, hanya tampilkan program yang dibuat oleh admin tersebut
+                $programs = Program::where('user_id', $user->id)
+                    ->latest()
+                    ->paginate(5);
+            } else {
+                // Jika pengguna adalah super admin, tampilkan semua program
+                $programs = Program::with('user')
+                    ->latest()
+                    ->paginate(5);
+            }
+
+            // Mengubah timezone pada timestamp
             foreach ($programs as $program) {
                 $program->created_at = Carbon::parse($program->created_at)->timezone('Asia/Jakarta');
                 $program->updated_at = Carbon::parse($program->updated_at)->timezone('Asia/Jakarta');
             }
+
             return view('pages.program.program_index', compact('programs'));
         } else {
             // Jika pengguna tidak memiliki akses, arahkan ulang atau tampilkan pesan kesalahan
@@ -29,23 +42,29 @@ class ProgramController extends Controller
         }
     }
 
+
     public function create()
     {
-        return view('pages.program.program_create');
+        $users = User::where('role', 'admin')->get();
+        return view('pages.program.program_create', compact('users'));
     }
 
     public function store(Request $request)
     {
         // Validasi input
-        $request->validate([
+        $rules = [
             'nama' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'status' => 'required|string',
-        ]);
+        ];
+
+        if (Auth::user()->role === 'super_admin') {
+            $rules['user_id'] = 'required|exists:users,id';
+        }
 
         // Simpan data program baru
         Program::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => Auth::user()->role === 'super_admin' ? $request->user_id : Auth::user()->id,
             'nama' => $request->nama,
             'deskripsi' => $request->deskripsi,
             'status' => $request->status,
@@ -73,7 +92,6 @@ class ProgramController extends Controller
 
         // Update data program
         $program->update([
-            'user_id' => Auth::user()->id,
             'nama' => $request->nama,
             'deskripsi' => $request->deskripsi,
             'status' => $request->status,

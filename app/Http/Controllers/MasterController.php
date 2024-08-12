@@ -15,21 +15,36 @@ class MasterController extends Controller
     {
         // Mengambil data pengguna yang sedang login
         $user = $request->user();
+
         // Memeriksa peran pengguna
         if ($user->role == 'admin' || $user->role == 'super_admin') {
-            // Jika pengguna adalah admin atau super admin, ambil data program dan tampilkan halaman
-            // Mengurutkan berdasarkan yang terbaru
-            $masters = Master::with('user', 'program')->latest()->paginate(5);
+            if ($user->role == 'admin') {
+                // Jika pengguna adalah admin, ambil data program yang dibuat oleh admin tersebut
+                $programIds = Program::where('user_id', $user->id)->pluck('id');
+                $masters = Master::whereIn('program_id', $programIds)
+                    ->with('user', 'program')
+                    ->latest()
+                    ->paginate(5);
+            } else {
+                // Jika pengguna adalah super admin, ambil semua data Master
+                $masters = Master::with('user', 'program')
+                    ->latest()
+                    ->paginate(5);
+            }
+
+            // Mengubah timezone pada timestamp
             foreach ($masters as $master) {
                 $master->created_at = Carbon::parse($master->created_at)->timezone('Asia/Jakarta');
                 $master->updated_at = Carbon::parse($master->updated_at)->timezone('Asia/Jakarta');
             }
+
             return view('pages.master.master_index', compact('masters'));
         } else {
             // Jika pengguna tidak memiliki akses, arahkan ulang atau tampilkan pesan kesalahan
             abort(401);
         }
     }
+
 
     public function create()
     {
@@ -133,9 +148,13 @@ class MasterController extends Controller
             $masters = Master::with('user', 'program')->latest()->paginate(5);
         } else {
             // Jika tidak kosong, lakukan pencarian
-            $masters = Master::where('nama', 'like', "%" . $keyword . "%") //Menyaring berdasarkan pola teks dalam kolom tertentu. Ini adalah pencarian yang lebih fleksibel, karena dapat menemukan data yang memiliki substring tertentu di kolom nama.
-                ->orWhere('email', 'like', "%" . $keyword . "%")
+            $masters = Master::join('program', 'master.program_id', '=', 'program.id') //join menggabungkan tabel
+                ->where(function ($query) use ($keyword) {
+                    $query->where('master.nama', 'like', "%" . $keyword . "%")
+                        ->orWhere('program.nama', 'like', "%" . $keyword . "%");
+                })
                 ->with('user', 'program')
+                ->select('master.*') // Pastikan hanya kolom dari master yang diambil
                 ->paginate(5)
                 ->withQueryString();
         }

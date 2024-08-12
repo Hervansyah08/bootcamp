@@ -32,13 +32,13 @@
                             (opsional)</label>
                         <input
                             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                            aria-describedby="file_input_help" type="file" id="file" name="file" required>
+                            aria-describedby="file_input_help" type="file" id="file" name="file">
                         @if ($materi->file)
                             <p class="mt-1 mb-3 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">File saat
                                 ini: {{ basename($materi->file) }}</p>
                         @endif
                         <div class="flex">
-                            <a href="{{ route('materi.index') }}"
+                            <a href="{{ route('materi.showByProgram', $materi->program_id) }}"
                                 class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
                             <x-biru-button>Uploud Materi</x-biru-button>
                         </div>

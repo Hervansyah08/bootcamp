@@ -40,15 +40,20 @@
                             <br>
                             @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                 {{-- <a class="btn btn-warning">Edit</a> --}}
-                                <div class="flex mt-3">
-                                    <x-kuning-link href="{{ route('materi.edit', $materi->id) }}">Edit</x-kuning-link>
-                                    {{-- <form action="{{ route('materi.destroy', $materi->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger"
-                                        onclick="return confirm('Apakah Anda yakin ingin menghapus materi ini?')">Hapus</button>
-                                </form> --}}
+                                <div class="inline-flex rounded-md shadow-sm" role="group">
+                                    <a href="{{ route('materi.edit', $materi->id) }}" aria-current="page"
+                                        class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('materi.destroy', $materi->id) }}" method="POST"
+                                        class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 delete-button">
+                                            Hapus
+                                        </button>
+                                    </form>
                                 </div>
                             @endif
 

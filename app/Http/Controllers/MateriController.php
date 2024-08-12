@@ -27,6 +27,11 @@ class MateriController extends Controller
                 ->where('status', 'Active')
                 ->latest()
                 ->get();
+        } elseif ($user->role === 'admin') {
+            $programs = Program::withCount('materi')
+                ->where('user_id', $user->id)
+                ->latest()
+                ->get();
         } else {
             $programs = Program::with('user')
                 ->withCount('materi') // Tujuan: withCount memungkinkan Anda menghitung jumlah record yang terkait dengan model melalui relasi. jadi 1 program punya berapa materi
@@ -41,7 +46,6 @@ class MateriController extends Controller
         return view('pages.materi.materi_index', compact('programs'));
     }
 
-    // $programs = Program::with('materi')->get();
     public function showByProgram(Program $program)
     {
         $materis = Materi::with('user')
@@ -106,6 +110,7 @@ class MateriController extends Controller
         return view('pages.materi.materi_edit', compact('materi'));
     }
 
+
     // Metode untuk menyimpan update
     public function update(Request $request, Materi $materi)
     {
@@ -138,5 +143,18 @@ class MateriController extends Controller
         }
 
         return redirect()->route('materi.showByProgram', $request->program_id)->with('success', 'Materi berhasil diperbarui.');
+    }
+
+    public function destroy(Materi $materi)
+    {
+        // Hapus file dari storage
+        Storage::delete($materi->file);
+
+        // Hapus materi dari database
+        $materi->delete();
+
+        // Redirect ke halaman program dengan pesan sukses
+        return redirect()->route('materi.showByProgram', $materi->program_id)
+            ->with('success', 'Materi berhasil dihapus.');
     }
 }
