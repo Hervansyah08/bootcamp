@@ -8,12 +8,10 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl lg:max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-
                     <h3 class="text-3xl font-bold mb-5 dark:text-white">Materi untuk Program: {{ $program->nama }}</h3>
-
                     @forelse($materis as $materi)
                         <div class=" mb-3 mt-5">
                             <h4 class="text-2xl mb-2 font-bold dark:text-white">{{ $materi->judul }}</h4>
@@ -39,7 +37,6 @@
                             </a>
                             <br>
                             @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
-                                {{-- <a class="btn btn-warning">Edit</a> --}}
                                 <div class="inline-flex rounded-md shadow-sm" role="group">
                                     <a href="{{ route('materi.edit', $materi->id) }}" aria-current="page"
                                         class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">

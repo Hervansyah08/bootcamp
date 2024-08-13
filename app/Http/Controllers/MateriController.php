@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\Storage;
 
 class MateriController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        $search = $request->input('search'); // Ambil input pencarian
 
         if ($user->role === 'user') {
             $activeMasterPrograms = Master::where('user_id', $user->id)
@@ -22,28 +23,41 @@ class MateriController extends Controller
                 ->pluck('program_id')
                 ->unique();
 
-            $programs = Program::withCount('materi') // // Tujuan: withCount memungkinkan Anda menghitung jumlah record yang terkait dengan model melalui relasi. jadi 1 program punya berapa materi
+            $query = Program::withCount('materi') // menghitung jumlah maateri
                 ->whereIn('id', $activeMasterPrograms)
-                ->where('status', 'Active')
-                ->latest()
-                ->get();
+                ->where('status', 'Active');
+
+            if ($search) {
+                $query->where('nama', 'like', '%' . $search . '%');
+            }
+
+            $programs = $query->latest()->get();
         } elseif ($user->role === 'admin') {
-            $programs = Program::withCount('materi')
-                ->where('user_id', $user->id)
-                ->latest()
-                ->get();
+            $query = Program::withCount('materi')
+                ->where('user_id', $user->id);
+
+            if ($search) {
+                $query->where('nama', 'like', '%' . $search . '%');
+            }
+
+            $programs = $query->latest()->get();
         } else {
-            $programs = Program::with('user')
-                ->withCount('materi') // Tujuan: withCount memungkinkan Anda menghitung jumlah record yang terkait dengan model melalui relasi. jadi 1 program punya berapa materi
-                ->latest()
-                ->get();
+            $query = Program::with('user')
+                ->withCount('materi')
+                ->latest();
+
+            if ($search) {
+                $query->where('nama', 'like', '%' . $search . '%');
+            }
+
+            $programs = $query->get();
             foreach ($programs as $program) {
                 $program->created_at = Carbon::parse($program->created_at)->timezone('Asia/Jakarta');
                 $program->updated_at = Carbon::parse($program->updated_at)->timezone('Asia/Jakarta');
             }
         }
 
-        return view('pages.materi.materi_index', compact('programs'));
+        return view('pages.materi.materi_index', compact('programs', 'search'));
     }
 
     public function showByProgram(Program $program)
