@@ -28,28 +28,34 @@
                             @endif
                             <p class="mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">
                                 {{ $materi->deskripsi }}</p>
-                            <a href="#"
+                            <a href="{{ route('materi.download', $materi->id) }}"
                                 class="inline-flex items-center text-lg text-blue-600 dark:text-blue-500 hover:underline">
-                                Lihat Materi
+                                Download Materi
                                 <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
                                 </svg>
                             </a>
-
-                            {{-- <h5 class="card-title">{{ $materi->judul }}</h5>
-                            <p class="card-text">{{ $materi->deskripsi }}</p>
-                            <a href="{{ Storage::url($materi->file) }}" class="btn btn-info" target="_blank">Lihat
-                                File</a> --}}
-                            {{-- <a href="{{ route('materi.edit', $materi->id) }}" class="btn btn-warning">Edit</a>
-                                <form action="{{ route('materi.destroy', $materi->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger"
-                                        onclick="return confirm('Apakah Anda yakin ingin menghapus materi ini?')">Hapus</button>
-                                </form> --}}
+                            <br>
+                            @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
+                                {{-- <a class="btn btn-warning">Edit</a> --}}
+                                <div class="inline-flex rounded-md shadow-sm" role="group">
+                                    <a href="{{ route('materi.edit', $materi->id) }}" aria-current="page"
+                                        class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('materi.destroy', $materi->id) }}" method="POST"
+                                        class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 delete-button">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
 
                         </div>
                     @empty
