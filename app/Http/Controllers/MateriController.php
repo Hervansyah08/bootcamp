@@ -84,7 +84,7 @@ class MateriController extends Controller
             'program_id' => 'required|exists:program,id',
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'file' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,zip|max:20971520',
+            'file' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,zip,rar|max:20971520',
         ]);
 
         $file = $request->file('file');
@@ -131,7 +131,7 @@ class MateriController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,zip|max:209715208', // File opsional
+            'file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,zip,rar|max:209715208', // File opsional
             'program_id' => 'required|exists:program,id',
         ]);
 

@@ -8,16 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                {{-- <form method="GET" action="{{ route('materi.index') }}" class="mb-4">
-                    <input type="text" name="search" value="{{ request()->input('search') }}"
-                        placeholder="Cari Program..."
-                        class="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-                    <button type="submit"
-                        class="ml-2 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                        Cari
-                    </button>
-                </form> --}}
-                <form method="GET" action="{{ route('materi.index') }}"
+                <form method="GET" action="{{ route('tugas.index') }}"
                     class="max-w-xs mx-auto mt-4 sm:ml-auto sm:mr-5 sm:max-w-sm lg:ml-auto lg:mr-5 lg:max-w-sm">
                     <label for="default-search"
                         class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
@@ -48,32 +39,25 @@
                             </a>
                             @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                 <p class="mb-2 text-xs font-normal text-gray-500 dark:text-gray-400">
-                                    Dibuat oleh {{ $program->user->name }}
+                                    Ditambahkan oleh {{ $program->user->name }}
                                     <br>
-                                    Tanggal Input {{ $program->created_at->format('l, d-m-Y H:i') }}
+                                    Tanggal Input {{ $program->created_at->format('d-m-Y, H:i') }}
                                     <br>
-                                    Tanggal Edit {{ $program->updated_at->format('l, d-m-Y, H:i') }}
+                                    Tanggal Edit {{ $program->updated_at->format('d-m-Y, H:i') }}
                                 </p>
                                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $program->deskripsi }}
                                 </p>
                             @endif
-                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $program->materi_count }}
-                                Materi
+                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $program->tugas_count }}
+                                Tugas
                             </p>
-                            <a href="{{ route('materi.showByProgram', $program->id) }}"
+                            <a href="{{ route('tugas.showByProgram', $program->id) }}"
                                 class=" inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Lihat Materi
-
+                                Lihat Tugas
                             </a>
-                            @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
-                                <a href="{{ route('materi.create', $program->id) }}"
-                                    class=" inline-flex items-center ml-3 px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                                    Tambah Materi
-                                </a>
-                            @endif
-
                         </div>
                     @endforeach
+
                 </div>
             </div>
         </div>

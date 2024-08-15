@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('program_id')->constrained('program')->onDelete('cascade');
-            $table->foreignId('materi_id')->constrained('materi')->onDelete('cascade');
             $table->string('judul');
             $table->text('deskripsi')->nullable();
             $table->string('file');

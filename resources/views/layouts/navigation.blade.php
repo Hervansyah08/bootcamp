@@ -32,6 +32,9 @@
                     <x-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.index')">
                         {{ __('Materi') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.index')">
+                        {{ __('Tugas') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -124,6 +127,11 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.index')">
                 {{ __('Materi') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('tugas.index')" :active="request()->routeIs('tugas.index')">
+                {{ __('Tugas') }}
             </x-responsive-nav-link>
         </div>
 
