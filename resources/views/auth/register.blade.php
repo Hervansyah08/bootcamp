@@ -17,10 +17,10 @@
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
+        <div class="mt-4 relative">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
+            <x-text-input id="password" class="block mt-1 w-full pr-10"
                             type="password"
                             name="password"
                             required autocomplete="new-password" />
@@ -29,14 +29,20 @@
         </div>
 
         <!-- Confirm Password -->
-        <div class="mt-4">
+        <div class="mt-4 relative">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
+            <x-text-input id="password_confirmation" class="block mt-1 w-full pr-10"
                             type="password"
                             name="password_confirmation" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <!-- Show Password Checkbox -->
+        <div class="mt-4 flex items-center">
+            <input id="show-password" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800 mr-2" />
+            <x-input-label for="show-password" :value="__('Show Password')" class="text-sm text-gray-600 dark:text-gray-400" />
         </div>
 
         <div class="flex items-center justify-end mt-4">
@@ -49,4 +55,19 @@
             </x-primary-button>
         </div>
     </form>
+
+    <!-- Script untuk toggle password -->
+    <script>
+        document.getElementById('show-password').addEventListener('change', function() {
+            const passwordInput = document.getElementById('password');
+            const passwordConfirmationInput = document.getElementById('password_confirmation');
+            if (this.checked) {
+                passwordInput.type = 'text';
+                passwordConfirmationInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+                passwordConfirmationInput.type = 'password';
+            }
+        });
+    </script>
 </x-guest-layout>

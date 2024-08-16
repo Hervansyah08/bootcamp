@@ -146,17 +146,18 @@
                                                     class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
                                                     Edit
                                                 </a>
-                                                <form action="{{ route('master.destroy', $master->id) }}"
-                                                    method="POST">
+                                                <button type="button" id="delete-button-{{ $master->id }}"
+                                                    class="px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                                                    Hapus
+                                                </button>
+                                                <form id="delete-form-{{ $master->id }}" action="{{ route('master.destroy', $master->id) }}"
+                                                    method="POST" style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit"
-                                                        class="px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
-                                                        Hapus
-                                                    </button>
                                                 </form>
                                             </div>
                                         </td>
+                                        
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -168,4 +169,64 @@
             </div>
         </div>
     </div>
+
+    <!-- Script SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelectorAll('[id^="delete-button-"]').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Mencegah pengiriman form langsung
+
+                const masterId = this.id.replace('delete-button-', '');
+                const form = document.getElementById('delete-form-' + masterId);
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data yang sudah dihapus tidak bisa dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Gunakan AJAX untuk mengirim form
+                        fetch(form.action, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: new FormData(form)
+                        }).then(response => {
+                            if (response.ok) {
+                                Swal.fire({
+                                    title: 'Berhasil!',
+                                    text: 'Data berhasil dihapus.',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(() => {
+                                    location.reload(); // Reload halaman setelah penghapusan berhasil
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Terjadi masalah saat menghapus data.',
+                                    icon: 'error'
+                                });
+                            }
+                        }).catch(error => {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan yang tidak terduga.',
+                                icon: 'error'
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>
