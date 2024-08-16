@@ -34,7 +34,7 @@
                             <a href="{{ route('materi.index') }}"
                                 class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
                             <button type="button" id="simpan-button"
-                                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">Uploud Materi</button>
+                                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">Upload Materi</button>
                         </div>
                     </form>
                 </div>
@@ -46,15 +46,28 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.getElementById('simpan-button').addEventListener('click', function () {
-            Swal.fire({
-                title: "Materi Berhasil Ditambah",
-                icon: "success"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Submit form setelah SweetAlert dikonfirmasi
-                    document.getElementById('materi-form').submit();
-                }
-            });
+            const judul = document.getElementById('judul').value.trim();
+            const file = document.getElementById('file').files.length;
+            const deskripsi = document.getElementById('deskripsi').value.trim();
+
+            if (judul === '' || file === 0) {
+                Swal.fire({
+                    title: "Lengkapi Semua Kolom",
+                    text: "Judul dan File harus diisi.",
+                    icon: "warning",
+                    confirmButtonText: "OK"
+                });
+            } else {
+                Swal.fire({
+                    title: "Materi Berhasil Ditambah",
+                    icon: "success"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form setelah SweetAlert dikonfirmasi
+                        document.getElementById('materi-form').submit();
+                    }
+                });
+            }
         });
     </script>
 </x-app-layout>
