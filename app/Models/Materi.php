@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Materi extends Model
 {
@@ -19,6 +20,18 @@ class Materi extends Model
         'file',
     ];
 
+    protected $dates = ['created_at', 'updated_at'];
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->timezone('Asia/Jakarta');
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->timezone('Asia/Jakarta');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -26,9 +39,5 @@ class Materi extends Model
     public function program()
     {
         return $this->belongsTo(Program::class);
-    }
-    public function tugas()
-    {
-        return $this->hasMany(Tugas::class);
     }
 }

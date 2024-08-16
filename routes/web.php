@@ -2,6 +2,7 @@
 
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TugasController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfileController;
@@ -61,6 +62,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('materi/edit/{materi}', [MateriController::class, 'edit'])->name('materi.edit');
     Route::put('materi/{materi}', [MateriController::class, 'update'])->name('materi.update');
     Route::delete('/materi/{materi}', [MateriController::class, 'destroy'])->name('materi.destroy');
+
+    // Tugas
+    Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
+    Route::get('/tugas/program/{program}', [TugasController::class, 'showByProgram'])->name('tugas.showByProgram');
+    Route::get('/tugas/{program}/{tugas}', [TugasController::class, 'showDetailTugas'])->name('tugas.showDetailTugas');
 });
 
 // Rute untuk Admin

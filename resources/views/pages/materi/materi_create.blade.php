@@ -25,12 +25,16 @@
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
 
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file">Upload file</label>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            for="file">Upload file</label>
                         <input
                             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                             aria-describedby="file_input_help" type="file" id="file" name="file" required>
-                        <p class="mt-1 mb-3 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">Format: pdf,doc,docx,ppt,pptx,zip | Ukuran Maksimal : 20 MB</p>
+                        <p class="mt-1 mb-3 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">Format:
+                            pdf,doc,docx,ppt,pptx,zip,rar | Ukuran Maksimal : 20 MB</p>
+
                         <div class="flex">
+
                             <a href="{{ route('materi.index') }}"
                                 class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
                             <button type="button" id="simpan-button"
