@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('master.store') }}" method="POST">
+                    <form id="registrationForm" action="{{ route('master.store') }}" method="POST">
                         @csrf
                         <div class="grid gap-6 mb-6 md:grid-cols-2">
                             @if (Auth::user()->role === 'admin' || Auth::user()->role === 'super_admin')
@@ -148,4 +148,69 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Attach submit event listener to the form
+        document.getElementById('registrationForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Perform AJAX request to submit the form
+            axios.post('{{ route('master.store') }}', new FormData(this))
+                .then(response => {
+                    console.log(response.data); // Debugging response
+
+                    // Check the role of the logged-in user
+                    const userRole = '{{ Auth::user()->role }}';
+                    const email = document.getElementById('email').value;
+                    const nama = document.getElementById('nama').value;
+
+                    if (userRole === 'admin' || userRole === 'super_admin') {
+                        // Admin or Super Admin popup
+                        Swal.fire({
+                            title: 'Pendaftaran Berhasil!',
+                            text: 'Pendaftaran telah berhasil disimpan.',
+                            icon: 'success',
+                            confirmButtonText: 'OKE',
+                            confirmButtonColor: '#3085d6' // Optional: set button color
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Redirect back to the index page
+                                window.location.href = '{{ route('master.index') }}';
+                            }
+                        });
+                    } else {
+                        // Regular User popup
+                        Swal.fire({
+                            title: 'Pendaftaran Berhasil!',
+                            text: 'Tekan "OKE" untuk melakukan konfirmasi pendaftaran dan pembayaran. Terima Kasih.',
+                            icon: 'success',
+                            confirmButtonText: 'OKE',
+                            confirmButtonColor: '#3085d6' // Optional: set button color
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Construct the WhatsApp message with user input
+                                const message = `Saya%20ingin%20melakukan%20konfirmasi%20pendaftaran%20dan%20pembayaran.%0AEmail%20%3A%20${encodeURIComponent(email)}%0ANama%20%3A%20${encodeURIComponent(nama)}%0ATerimakasih.`;
+                                console.log(message); // Debugging WhatsApp message
+                                window.location.href = `https://wa.me/6281803354180?text=${message}`;
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error('Error during form submission:', error);
+                    console.log(error.response); // Debugging error response
+                    Swal.fire({
+                        title: 'Gagal!',
+                        text: 'Terjadi kesalahan saat mendaftar. Silakan coba lagi.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
+        });
+    });
+    </script>
+       
 </x-app-layout>

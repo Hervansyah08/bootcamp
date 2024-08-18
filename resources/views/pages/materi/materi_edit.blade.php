@@ -9,7 +9,7 @@
         <div class="max-w-7xl lg:max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('materi.update', $materi->id) }}" method="POST" enctype="multipart/form-data">
+                    <form id="edit-form" action="{{ route('materi.update', $materi->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="program_id" value="{{ $materi->program_id }}">
@@ -40,12 +40,64 @@
                         <div class="flex">
                             <a href="{{ route('materi.showByProgram', $materi->program_id) }}"
                                 class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
-                            <x-biru-button>Uploud Materi</x-biru-button>
+                            <button type="button" id="edit-button"
+                                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit Materi</button>
                         </div>
-
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('edit-button').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Anda ingin menyimpan perubahan ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, simpan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit form with AJAX
+                    const form = document.getElementById('edit-form');
+    
+                    fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: new FormData(form)
+                    }).then(response => {
+                        if (response.ok) {
+                            Swal.fire({
+                                title: 'Data berhasil diubah!',
+                                icon: 'success',
+                                confirmButtonText: 'Oke'
+                            }).then(() => {
+                                window.location.href = "{{ route('materi.showByProgram', $materi->program_id) }}"; // Redirect setelah berhasil
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Terjadi masalah saat mengubah data.',
+                                icon: 'error'
+                            });
+                        }
+                    }).catch(error => {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan yang tidak terduga.',
+                            icon: 'error'
+                        });
+                    });
+                }
+            });
+        });
+    </script>    
 </x-app-layout>
