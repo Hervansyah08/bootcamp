@@ -64,20 +64,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/materi/{materi}', [MateriController::class, 'destroy'])->name('materi.destroy');
 
     // Tugas
+    // definisikan route spesifik terlebih dahulu agar tidak error 404
+    Route::get('/tugas/create/{program}', [TugasController::class, 'create'])->name('tugas.create');
+    Route::get('/tugas/edit/{tugas}', [TugasController::class, 'edit'])->name('tugas.edit');
     Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
     Route::get('/tugas/program/{program}', [TugasController::class, 'showByProgram'])->name('tugas.showByProgram');
     Route::get('/tugas/{program}/{tugas}', [TugasController::class, 'showDetailTugas'])->name('tugas.showDetailTugas');
 });
-
-// Rute untuk Admin
-// Route::middleware(['auth', 'admin', 'verified'])->group(function () {
-//     Route::get('/admin/program', [ProgramController::class, 'index'])->name('admin.program');
-// });
-
-// Rute untuk Super Admin
-// Route::middleware(['auth', 'super_admin', 'verified'])->group(function () {
-//     Route::get('/super_admin/program', [ProgramController::class, 'index'])->name('super_admin.program');
-// });
-
 
 require __DIR__ . '/auth.php';

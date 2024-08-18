@@ -73,4 +73,14 @@ class TugasController extends Controller
         $tugas->updated_at = Carbon::parse($tugas->updated_at)->timezone('Asia/Jakarta');
         return view('pages.tugas.show_detail_tugas', compact('program', 'tugas'));
     }
+
+    public function create(Program $program)
+    {
+        return view('pages.tugas.tugas_create', compact('program'));
+    }
+
+    public function edit(Tugas $tugas)
+    {
+        return view('pages.tugas.tugas_edit', compact('tugas'));
+    }
 }

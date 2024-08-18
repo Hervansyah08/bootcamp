@@ -20,7 +20,7 @@ class ProgramController extends Controller
             if ($user->role == 'admin') {
                 // Jika pengguna adalah admin, hanya tampilkan program yang dibuat oleh admin tersebut
                 $programs = Program::where('user_id', $user->id)
-                    ->latest()
+                    ->latest() // menampilkan data terbaru
                     ->paginate(5);
             } else {
                 // Jika pengguna adalah super admin, tampilkan semua program
