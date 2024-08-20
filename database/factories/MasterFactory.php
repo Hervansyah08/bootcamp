@@ -28,12 +28,13 @@ class MasterFactory extends Factory
             'tanggal_lahir' => $this->faker->date(),
             'alamat' => $this->faker->address,
             'no_hp' => $this->faker->phoneNumber,
-            'status_pekerjaan' => $this->faker->randomElement(['Pelajar', 'Fresh Graduate','Keryawan']),
+            'status_pekerjaan' => $this->faker->randomElement(['Pelajar', 'Fresh Graduate', 'Keryawan']),
             'instansi' => $this->faker->company,
             'program_id' => Program::inRandomOrder()->first()->id ?? Program::factory(),
-            'info' => $this->faker->randomElement(['Instagram', 'FB','Keluarga']),
+            'info' => $this->faker->randomElement(['Instagram', 'FB', 'Keluarga']),
             'motivasi' => $this->faker->paragraph,
             'status' => $this->faker->randomElement(['Active', 'Pending']),
+            'tipe_kelas' => $this->faker->randomElement(['Bootcamp Full', 'Bootcamp', 'courses']),
         ];
     }
 }

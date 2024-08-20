@@ -23,16 +23,68 @@
                             @endif
                             <p class="mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">
                                 {{ $materi->deskripsi }}</p>
-                            <a href="{{ route('materi.download', $materi->id) }}"
-                                class="inline-flex items-center text-lg text-blue-600 dark:text-blue-500 hover:underline">
-                                Download Materi
-                                <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                </svg>
-                            </a>
-                            <br>
+                            <div class="mb-3">
+                                <a href="{{ route('materi.download', $materi->id) }}"
+                                    class="inline-flex items-center text-lg text-blue-600 dark:text-blue-500 hover:underline">
+                                    Download Materi
+                                    <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                                    </svg>
+                                </a>
+                            </div>
+                            <!-- Tombol untuk membuka modal -->
+                            <div class="mb-4">
+                                @if ($materi->video)
+                                    <button type="button" data-modal-target="video-modal-{{ $materi->id }}"
+                                        data-modal-toggle="video-modal-{{ $materi->id }}"
+                                        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                        type="button">
+                                        Lihat Video
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div id="video-modal-{{ $materi->id }}" tabindex="-1"
+                                        class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+                                        <div class="relative w-full h-full max-w-2xl md:h-auto">
+                                            <!-- Modal content -->
+                                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                <!-- Modal header -->
+                                                <div
+                                                    class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                        Video Materi
+                                                    </h3>
+                                                    <button type="button"
+                                                        class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                        data-modal-toggle="video-modal-{{ $materi->id }}">
+                                                        <svg class="w-5 h-5" aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 14 14">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-width="2"
+                                                                d="M1 1l12 12M1 13L13 1" />
+                                                        </svg>
+                                                        <span class="sr-only">Close modal</span>
+                                                    </button>
+                                                </div>
+                                                <!-- Modal body -->
+                                                <div class="p-6 space-y-6">
+                                                    <video class="w-full" autoplay muted controls
+                                                        controlsList="nodownload">
+                                                        <source
+                                                            src="{{ route('materi.streamVideo', basename($materi->video)) }}"
+                                                            type="video/mp4">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+
                             @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                 <div class="inline-flex rounded-md shadow-sm" role="group">
                                     <a href="{{ route('materi.edit', $materi->id) }}" aria-current="page"
@@ -60,63 +112,63 @@
         </div>
     </div>
 
-   <!-- Script SweetAlert -->
-   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-   <script>
-       document.querySelectorAll('.delete-button').forEach(button => {
-           button.addEventListener('click', function(event) {
-               event.preventDefault(); // Mencegah pengiriman form langsung
+    <!-- Script SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Mencegah pengiriman form langsung
 
-               const form = this.closest('form');
+                const form = this.closest('form');
 
-               Swal.fire({
-                   title: "Apa anda yakin?",
-                   text: "Data yang sudah terhapus tidak dapat dikembalikan!",
-                   icon: "warning",
-                   showCancelButton: true,
-                   confirmButtonColor: "#3085d6",
-                   cancelButtonColor: "#d33",
-                   confirmButtonText: "Ya, hapus!"
-               }).then((result) => {
-                   if (result.isConfirmed) {
-                       // Gunakan AJAX untuk mengirim form
-                       fetch(form.action, {
-                           method: 'POST',
-                           headers: {
-                               'X-CSRF-TOKEN': document.querySelector(
-                                   'meta[name="csrf-token"]').getAttribute('content'),
-                               'Accept': 'application/json',
-                               'X-Requested-With': 'XMLHttpRequest'
-                           },
-                           body: new FormData(form)
-                       }).then(response => {
-                           if (response.ok) {
-                               Swal.fire({
-                                   title: "Data berhasil dihapus!",
-                                   icon: "success",
-                                   text: "Klik tombol Oke untuk melanjutkan.",
-                                   confirmButtonText: "Oke"
-                               }).then(() => {
-                                   location
-                                       .reload(); // Reload halaman setelah penghapusan berhasil
-                               });
-                           } else {
-                               Swal.fire({
-                                   title: "Error!",
-                                   text: "Terjadi masalah saat menghapus data.",
-                                   icon: "error"
-                               });
-                           }
-                       }).catch(error => {
-                           Swal.fire({
-                               title: "Error!",
-                               text: "Terjadi kesalahan yang tidak terduga.",
-                               icon: "error"
-                           });
-                       });
-                   }
-               });
-           });
-       });
-   </script>
+                Swal.fire({
+                    title: "Apa anda yakin?",
+                    text: "Data yang sudah terhapus tidak dapat dikembalikan!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, hapus!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Gunakan AJAX untuk mengirim form
+                        fetch(form.action, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').getAttribute('content'),
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: new FormData(form)
+                        }).then(response => {
+                            if (response.ok) {
+                                Swal.fire({
+                                    title: "Data berhasil dihapus!",
+                                    icon: "success",
+                                    text: "Klik tombol Oke untuk melanjutkan.",
+                                    confirmButtonText: "Oke"
+                                }).then(() => {
+                                    location
+                                        .reload(); // Reload halaman setelah penghapusan berhasil
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Terjadi masalah saat menghapus data.",
+                                    icon: "error"
+                                });
+                            }
+                        }).catch(error => {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "Terjadi kesalahan yang tidak terduga.",
+                                icon: "error"
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>

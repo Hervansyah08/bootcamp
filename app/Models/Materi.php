@@ -18,6 +18,7 @@ class Materi extends Model
         'judul',
         'deskripsi',
         'file',
+        'video',
     ];
 
     protected $dates = ['created_at', 'updated_at'];

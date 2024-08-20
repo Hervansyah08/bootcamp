@@ -9,7 +9,8 @@
         <div class="max-w-7xl lg:max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form id="edit-form" action="{{ route('materi.update', $materi->id) }}" method="POST" enctype="multipart/form-data">
+                    <form id="edit-form" action="{{ route('materi.update', $materi->id) }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="program_id" value="{{ $materi->program_id }}">
@@ -37,11 +38,25 @@
                             <p class="mt-1 mb-3 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">File saat
                                 ini: {{ basename($materi->file) }}</p>
                         @endif
+                        <div class="mb-4">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                for="video">Video
+                                (opsional)</label>
+                            <input
+                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                aria-describedby="file_input_help" type="file" id="video" name="video">
+                            @if ($materi->video)
+                                <p class="mt-1 mb-3 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">Video
+                                    saat
+                                    ini: {{ basename($materi->video) }}</p>
+                            @endif
+                        </div>
                         <div class="flex">
                             <a href="{{ route('materi.showByProgram', $materi->program_id) }}"
                                 class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
                             <button type="button" id="edit-button"
-                                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit Materi</button>
+                                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit
+                                Materi</button>
                         </div>
                     </form>
                 </div>
@@ -64,11 +79,12 @@
                 if (result.isConfirmed) {
                     // Submit form with AJAX
                     const form = document.getElementById('edit-form');
-    
+
                     fetch(form.action, {
                         method: 'POST',
                         headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content'),
                             'Accept': 'application/json',
                             'X-Requested-With': 'XMLHttpRequest'
                         },
@@ -80,7 +96,8 @@
                                 icon: 'success',
                                 confirmButtonText: 'Oke'
                             }).then(() => {
-                                window.location.href = "{{ route('materi.showByProgram', $materi->program_id) }}"; // Redirect setelah berhasil
+                                window.location.href =
+                                    "{{ route('materi.showByProgram', $materi->program_id) }}"; // Redirect setelah berhasil
                             });
                         } else {
                             Swal.fire({
@@ -99,5 +116,5 @@
                 }
             });
         });
-    </script>    
+    </script>
 </x-app-layout>

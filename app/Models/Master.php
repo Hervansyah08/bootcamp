@@ -26,6 +26,7 @@ class Master extends Model
         'info',
         'motivasi',
         'status',
+        'tipe_kelas',
     ];
 
     protected $dates = ['created_at', 'updated_at'];

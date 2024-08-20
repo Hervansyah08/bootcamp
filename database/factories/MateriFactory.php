@@ -25,7 +25,8 @@ class MateriFactory extends Factory
             'program_id' => Program::inRandomOrder()->first()->id ?? Program::factory(),
             'judul' => $this->faker->sentence,
             'deskripsi' => $this->faker->paragraph,
-            'file' => $this->faker->word . '.pdf', // ini nanti menambahkan format pdf, contoh dokumen.pdf
+            'file' => $this->faker->word . '.pdf', // Format file PDF, contoh dokumen.pdf
+            'video' => $this->faker->word . '.mp4', // Format video MP4, contoh video.mp4
         ];
     }
 }

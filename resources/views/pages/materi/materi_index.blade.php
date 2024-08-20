@@ -37,43 +37,49 @@
                     </div>
                 </form>
                 <div class="p-6 flex flex-wrap text-gray-900 dark:text-gray-100">
-
-
-                    @foreach ($programs as $program)
-                        <div
-                            class="max-w-sm p-6 mx-3 mb-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                            <a href="{{ route('materi.showByProgram', $program->id) }}">
-                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                    {{ $program->nama }}</h5>
-                            </a>
-                            @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
-                                <p class="mb-2 text-xs font-normal text-gray-500 dark:text-gray-400">
-                                    Dibuat oleh {{ $program->user->name }}
-                                    <br>
-                                    Tanggal Input {{ $program->created_at->format('l, d-m-Y H:i') }}
-                                    <br>
-                                    Tanggal Edit {{ $program->updated_at->format('l, d-m-Y, H:i') }}
-                                </p>
-                                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $program->deskripsi }}
-                                </p>
-                            @endif
-                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $program->materi_count }}
-                                Materi
-                            </p>
-                            <a href="{{ route('materi.showByProgram', $program->id) }}"
-                                class=" inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Lihat Materi
-
-                            </a>
-                            @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
-                                <a href="{{ route('materi.create', $program->id) }}"
-                                    class=" inline-flex items-center ml-3 px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                                    Tambah Materi
-                                </a>
-                            @endif
-
+                    @if ($programs->isEmpty())
+                        <div class="w-full text-center text-gray-500 dark:text-gray-400">
+                            <p>Anda Belum Mendaftar Program</p>
                         </div>
-                    @endforeach
+                    @else
+                        @foreach ($programs as $program)
+                            <div
+                                class="max-w-sm p-6 mx-3 mb-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                <a href="{{ route('materi.showByProgram', $program->id) }}">
+                                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                        {{ $program->nama }}</h5>
+                                </a>
+                                @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
+                                    <p class="mb-2 text-xs font-normal text-gray-500 dark:text-gray-400">
+                                        Dibuat oleh {{ $program->user->name }}
+                                        <br>
+                                        Tanggal Input {{ $program->created_at->format('l, d-m-Y H:i') }}
+                                        <br>
+                                        Tanggal Edit {{ $program->updated_at->format('l, d-m-Y, H:i') }}
+                                    </p>
+                                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                        {{ $program->deskripsi }}
+                                    </p>
+                                @endif
+                                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                    {{ $program->materi_count }}
+                                    Materi
+                                </p>
+                                <a href="{{ route('materi.showByProgram', $program->id) }}"
+                                    class=" inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Lihat Materi
+
+                                </a>
+                                @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
+                                    <a href="{{ route('materi.create', $program->id) }}"
+                                        class=" inline-flex items-center ml-3 px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                        Tambah Materi
+                                    </a>
+                                @endif
+
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>

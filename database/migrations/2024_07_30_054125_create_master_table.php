@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('info');
             $table->text('motivasi')->nullable();
             $table->string('status')->default('Pending');
+            $table->string('tipe_kelas')->nullable();
             $table->timestamps();
         });
     }

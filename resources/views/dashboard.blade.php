@@ -11,11 +11,15 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if (Auth::user()->role == 'super_admin')
                         <h1>Selamat Datang Super Admin</h1>
-                        @elseif (Auth::user()->role == 'admin')
-                            <h1>Selamat Datang Admin</h1>
-                            @elseif (Auth::user()->role == 'user')
-                                <h1>Selamat Datang User</h1>
+                    @elseif (Auth::user()->role == 'admin')
+                        <h1>Selamat Datang Admin</h1>
+                    @elseif (Auth::user()->role == 'user')
+                        <h1>Selamat Datang User</h1>
                     @endif
+
+
+
+
                 </div>
             </div>
         </div>

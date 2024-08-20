@@ -85,10 +85,14 @@ class MateriController extends Controller
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'file' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,zip,rar|max:20971520',
+            'video' => 'nullable|file|mimes:mp4,mov,ogg,qt,avi,mkv|max:307200', // Validasi video file dengan ukuran maksimum 300MB
         ]);
 
         $file = $request->file('file');
-        $filePath = $file->store('materis');
+        $filePath = $file->store('materis/files');
+
+        $video = $request->file('video');
+        $videoPath = $video->store('materis/videos'); // Simpan video di folder terpisah
 
         Materi::create([
             'user_id' => Auth::id(),
@@ -96,6 +100,7 @@ class MateriController extends Controller
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'file' => $filePath,
+            'video' => $videoPath,
         ]);
 
         return redirect()->route('materi.showByProgram', $request->program_id)->with('success', 'Materi berhasil ditambahkan.');
@@ -118,6 +123,22 @@ class MateriController extends Controller
         return response()->download($filePath, $materi->judul . '.' . $fileExtension);
     }
 
+    public function streamVideo($filename)
+    {
+        $path = storage_path('app/materis/videos/' . $filename);
+
+        if (!file_exists($path)) {
+            abort(404, 'Video not found.');
+        }
+
+        $mimeType = mime_content_type($path);
+
+        return response()->file($path, [
+            'Content-Type' => $mimeType,
+        ]);
+    }
+
+
     public function edit(Materi $materi)
     {
         // $programs = Program::where('status', 'Active')->get();
@@ -131,7 +152,8 @@ class MateriController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,zip,rar|max:209715208', // File opsional
+            'file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,zip,rar|max:20971520', // File opsional
+            'video' => 'nullable|file|mimes:mp4,mov,ogg,qt,avi,mkv|max:307200', // Validasi video file dengan ukuran maksimum 300MB
             'program_id' => 'required|exists:program,id',
         ]);
 
@@ -150,10 +172,21 @@ class MateriController extends Controller
 
             // Simpan file baru
             $file = $request->file('file');
-            $filePath = $file->store('materis');
+            $filePath = $file->store('materis/files');
 
             // Update path file di database
             $materi->update(['file' => $filePath]);
+        }
+        if ($request->hasFile('video')) {
+            // Hapus file lama dari storage
+            Storage::delete($materi->video);
+
+            // Simpan file baru
+            $file = $request->file('video');
+            $filePath = $file->store('materis/videos');
+
+            // Update path file di database
+            $materi->update(['video' => $filePath]);
         }
 
         return redirect()->route('materi.showByProgram', $request->program_id)->with('success', 'Materi berhasil diperbarui.');
@@ -163,6 +196,7 @@ class MateriController extends Controller
     {
         // Hapus file dari storage
         Storage::delete($materi->file);
+        Storage::delete($materi->video);
 
         // Hapus materi dari database
         $materi->delete();

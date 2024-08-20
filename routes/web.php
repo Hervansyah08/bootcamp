@@ -59,6 +59,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/materi/create/{program}', [MateriController::class, 'create'])->name('materi.create');
     Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
     Route::get('/materi/download/{materi}', [MateriController::class, 'download'])->name('materi.download');
+    Route::get('materi/video/{filename}', [MateriController::class, 'streamVideo'])->name('materi.streamVideo');
     Route::get('materi/edit/{materi}', [MateriController::class, 'edit'])->name('materi.edit');
     Route::put('materi/{materi}', [MateriController::class, 'update'])->name('materi.update');
     Route::delete('/materi/{materi}', [MateriController::class, 'destroy'])->name('materi.destroy');
