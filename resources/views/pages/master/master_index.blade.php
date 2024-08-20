@@ -78,6 +78,9 @@
                                         Status
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
+                                        Tipe Kelas
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center">
                                         Tanggal Input
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
@@ -135,6 +138,9 @@
                                             {{ $master->status }}
                                         </td>
                                         <td class="px-6 py-4">
+                                            {{ $master->tipe_kelas }}
+                                        </td>
+                                        <td class="px-6 py-4">
                                             {{ $master->created_at->format('l, d-m-Y, H:i') }}
                                         </td>
                                         <td class="px-6 py-4">
@@ -150,14 +156,15 @@
                                                     class="px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
                                                     Hapus
                                                 </button>
-                                                <form id="delete-form-{{ $master->id }}" action="{{ route('master.destroy', $master->id) }}"
-                                                    method="POST" style="display: none;">
+                                                <form id="delete-form-{{ $master->id }}"
+                                                    action="{{ route('master.destroy', $master->id) }}" method="POST"
+                                                    style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
                                             </div>
                                         </td>
-                                        
+
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -195,7 +202,8 @@
                         fetch(form.action, {
                             method: 'POST',
                             headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').getAttribute('content'),
                                 'Accept': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest'
                             },
@@ -208,7 +216,8 @@
                                     icon: 'success',
                                     confirmButtonText: 'OK'
                                 }).then(() => {
-                                    location.reload(); // Reload halaman setelah penghapusan berhasil
+                                    location
+                                        .reload(); // Reload halaman setelah penghapusan berhasil
                                 });
                             } else {
                                 Swal.fire({

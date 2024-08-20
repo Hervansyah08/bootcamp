@@ -129,6 +129,19 @@
                                     <option value="Lain - Lain">Lain - Lain</option>
                                 </select>
                             </div>
+                            <div>
+                                <label for="tipe_kelas"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe
+                                    Kelas</label>
+                                <select id="tipe_kelas" name="tipe_kelas"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    required>
+                                    <option selected>Pilih Kelas</option>
+                                    <option value="Course">Course</option>
+                                    <option value="Lengkap">Lengkap</option>
+                                    <option value="Dokumen">Dokumen</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-6">
                             <label for="motivasi"
@@ -137,16 +150,18 @@
                             <textarea id="motivasi" name="motivasi" rows="4"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
-                        <div class="flex">
-                            <a href="{{ route('master.index') }}"
-                                class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
-                            <button type="submit"
-                                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">Simpan</button>
-                        </div>
-                    </form>
+
                 </div>
+                <div class="flex">
+                    <a href="{{ route('master.index') }}"
+                        class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
+                    <button type="submit"
+                        class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">Simpan</button>
+                </div>
+                </form>
             </div>
         </div>
+    </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -133,6 +133,23 @@
                                     </option>
                                 </select>
                             </div>
+                            <div>
+                                <label for="tipe_kelas"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe
+                                    Kelas (Opsional)</label>
+                                <select id="tipe_kelas" name="tipe_kelas"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    required>
+                                    <option selected>Pilih Kelas</option>
+                                    <option value="Course" {{ $master->tipe_kelas == 'Course' ? 'selected' : '' }}>
+                                        Course
+                                    </option>
+                                    <option value="Lengkap" {{ $master->tipe_kelas == 'Lengkap' ? 'selected' : '' }}>
+                                        Lengkap</option>
+                                    <option value="Dokumen" {{ $master->tipe_kelas == 'Dokumen' ? 'selected' : '' }}>
+                                        Dokumen</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-6">
                             <label for="motivasi"
@@ -163,7 +180,7 @@
                             <a href="{{ route('master.index') }}"
                                 class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
                             <button type="button" id="edit-button"
-                                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">Simpan</button>                            
+                                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">Simpan</button>
                         </div>
                     </form>
                 </div>

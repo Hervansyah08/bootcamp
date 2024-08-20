@@ -70,6 +70,7 @@ class MasterController extends Controller
             'program_id' => 'required|exists:program,id',
             'info' => 'required|string',
             'motivasi' => 'nullable|string',
+            'tipe_kelas' => 'required|string',
         ];
 
         if (Auth::user()->role === 'admin' || Auth::user()->role === 'super_admin') {
@@ -91,6 +92,7 @@ class MasterController extends Controller
             'program_id' => $request->program_id,
             'info' => $request->info,
             'motivasi' => $request->motivasi,
+            'tipe_kelas' => $request->tipe_kelas,
         ]);
 
         if (Auth::user()->role === 'admin' || Auth::user()->role === "super_admin") {
@@ -131,6 +133,7 @@ class MasterController extends Controller
             'info' => 'required|string',
             'motivasi' => 'nullable|string',
             'status' => 'nullable|string',
+            'tipe_data' => 'nullable|string',
         ]);
 
         $master->update($request->all());
