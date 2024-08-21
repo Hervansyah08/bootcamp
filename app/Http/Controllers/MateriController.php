@@ -62,15 +62,57 @@ class MateriController extends Controller
 
     public function showByProgram(Program $program)
     {
-        $materis = Materi::with('user')
-            ->where('program_id', $program->id)
-            ->get();
+        $user = Auth::user();
+
+        if ($user->role == 'admin' || $user->role == 'super_admin') {
+            // Ambil semua materi untuk admin dan super admin
+            $materis = Materi::with('user')
+                ->where('program_id', $program->id)
+                ->get();
+
+            // Tidak perlu inisialisasi tipe_kelas untuk admin dan super admin
+            $tipeKelas = 'all';
+        } else {
+            // Ambil tipe kelas berdasarkan user_id dan program_id dari tabel master
+            $master = Master::where('user_id', $user->id)
+                ->where('program_id', $program->id)
+                ->first();
+
+            // Default tipe_kelas adalah 'lengkap'
+            $tipeKelas = $master->tipe_kelas;
+
+            // Ambil materi berdasarkan tipe kelas
+            $materis = Materi::with('user')
+                ->where('program_id', $program->id)
+                ->when($tipeKelas == 'course', function ($query) {
+                    return $query->whereNotNull('video')->whereNull('file');
+                })
+                ->when($tipeKelas == 'dokumen', function ($query) {
+                    return $query->whereNotNull('file')->whereNull('video');
+                })
+                ->when($tipeKelas == 'lengkap', function ($query) {
+                    return $query->whereNotNull('file')->orWhereNotNull('video');
+                })
+                ->get();
+        }
+
+        // Format timestamp sesuai timezone Asia/Jakarta
         foreach ($materis as $materi) {
             $materi->created_at = Carbon::parse($materi->created_at)->timezone('Asia/Jakarta');
             $materi->updated_at = Carbon::parse($materi->updated_at)->timezone('Asia/Jakarta');
         }
-        return view('pages.materi.show_by_program', compact('program', 'materis'));
+
+        // Return view dengan data program, materi, dan tipe_kelas
+        return view('pages.materi.show_by_program', [
+            'program' => $program,
+            'materis' => $materis,
+            'tipeKelas' => $tipeKelas
+        ]);
     }
+
+
+
+
 
     public function create(Program $program)
     {

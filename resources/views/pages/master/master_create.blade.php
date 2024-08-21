@@ -143,18 +143,20 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-6">
+                        <div class="">
                             <label for="motivasi"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Motivasi
                                 (Opsional)</label>
                             <textarea id="motivasi" name="motivasi" rows="4"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
-
                 </div>
-                <div class="flex">
-                    <a href="{{ route('master.index') }}"
-                        class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
+                <div class="flex ml-6 mb-4">
+                    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin')
+                        <a href="{{ route('master.index') }}"
+                            class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
+                    @endif
+
                     <button type="submit"
                         class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">Simpan</button>
                 </div>
