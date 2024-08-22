@@ -81,10 +81,10 @@
                                             {{ $program->user->name }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $program->created_at->format('d-m-Y, H:i') }}
+                                            {{ $program->created_at->format('l, d-m-Y, H:i') }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $program->updated_at->format('d-m-Y, H:i') }}
+                                            {{ $program->updated_at->format('l, d-m-Y, H:i') }}
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="inline-flex rounded-md shadow-sm" role="group">
