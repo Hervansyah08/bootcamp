@@ -65,16 +65,28 @@
     <!-- Script SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        document.getElementById('simpan-button').addEventListener('click', function() {
-            Swal.fire({
-                title: "Data Program Berhasil Ditambah",
-                icon: "success"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Submit form setelah SweetAlert dikonfirmasi
-                    document.getElementById('program-form').submit();
-                }
-            });
+        document.getElementById('simpan-button').addEventListener('click', function () {
+            const nama = document.getElementById('nama').value.trim();
+            const deskripsi = document.getElementById('deskripsi').value.trim();
+
+            if (nama === '') {
+                Swal.fire({
+                    title: "Lengkapi Semua Kolom",
+                    text: "Kolom Nama Program tidak boleh kosong.",
+                    icon: "warning",
+                    confirmButtonText: "OK"
+                });
+            } else {
+                Swal.fire({
+                    title: "Program Berhasil Ditambah",
+                    icon: "success"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form setelah SweetAlert dikonfirmasi
+                        document.getElementById('program-form').submit();
+                    }
+                });
+            }
         });
     </script>
 </x-app-layout>

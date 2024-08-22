@@ -53,7 +53,7 @@
             if (judul === '' || file === 0) {
                 Swal.fire({
                     title: "Lengkapi Semua Kolom",
-                    text: "Judul dan File harus diisi.",
+                    text: "Kolom Judul dan File tidak boleh kosong.",
                     icon: "warning",
                     confirmButtonText: "OK"
                 });
