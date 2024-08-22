@@ -13,24 +13,26 @@
         </div>
 
         <!-- Password -->
-        <div class="mt-4 relative">
+        <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
-            <input id="password" class="block mt-1 w-full pr-10" type="password" name="password" required autocomplete="current-password" />
-
-            <!-- Checkbox for Show Password -->
-            <div class="mt-2 flex items-center">
-                <input id="show-password" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" />
-                <label for="show-password" class="ms-2 text-sm text-gray-600 dark:text-gray-400 font-normal">{{ __('Show Password') }}</label>
+            <div class="relative flex items-center">
+                <input id="password" class="block mt-1 w-full pr-10" type="password" name="password" required autocomplete="current-password" />
             </div>
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
+        <!-- Show Password Checkbox -->
+        <div class="flex items-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+            <input id="show_password" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800 h-4 w-4" />
+            <label for="show_password" class="ms-2">{{ __('Show Password') }}</label>
+        </div>
+
         <!-- Remember Me -->
         <div class="block mt-4 text-sm text-gray-600 dark:text-gray-400">
             <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
+                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800 h-4 w-4" name="remember">
                 <span class="ms-2">{{ __('Remember me') }}</span>
             </label>
         </div>
@@ -59,13 +61,9 @@
 
     <!-- Script untuk toggle password -->
     <script>
-        document.getElementById('show-password').addEventListener('change', function() {
+        document.getElementById('show_password').addEventListener('change', function() {
             const passwordInput = document.getElementById('password');
-            if (this.checked) {
-                passwordInput.type = 'text';
-            } else {
-                passwordInput.type = 'password';
-            }
+            passwordInput.type = this.checked ? 'text' : 'password';
         });
     </script>
 </x-guest-layout>
