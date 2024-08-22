@@ -11,6 +11,9 @@
                     <div class="mb-4">
                         <h3 class="text-3xl font-bold dark:text-white">{{ $tugas->judul }}</h3>
                     </div>
+                    <p class="mb-2 text-base font-normal text-gray-500 dark:text-gray-400">
+                        Deadline: {{ $tugas->deadline }}
+                    </p>
                     @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                         <p class="mb-2 text-xs font-normal text-gray-500 dark:text-gray-400">
                             Ditambahkan oleh {{ $tugas->user->name }}

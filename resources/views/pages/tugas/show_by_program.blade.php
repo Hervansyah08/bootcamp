@@ -10,10 +10,9 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
-                        <a href="{{ route('tugas.create', $program->id) }}"
-                            class="inline-flex items-center ml-3 px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                            Tambah Tugas
-                        </a>
+                        <div class="mb-8">
+                            <x-biru-link href="{{ route('tugas.create', $program->id) }}">Tambah Tugas</x-biru-link>
+                        </div>
                     @endif
                     <div class="relative overflow-x-auto">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -31,6 +30,9 @@
                                             Dibuat Oleh
                                         </th>
                                     @endif
+                                    <th scope="col" class="px-6 py-3">
+                                        Deadline
+                                    </th>
                                     <th scope="col" class="px-6 py-3">
                                         Aksi
                                     </th>
@@ -51,6 +53,9 @@
                                                 {{ $tugas->user->name }}
                                             </td>
                                         @endif
+                                        <td class="px-6 py-4">
+                                            {{ $tugas->deadline }}
+                                        </td>
                                         <td class="px-6 py-4">
                                             <a href="{{ route('tugas.showDetailTugas', ['program' => $tugas->program_id, 'tugas' => $tugas->id]) }}"
                                                 class=" inline-flex items-center ml-3 px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">

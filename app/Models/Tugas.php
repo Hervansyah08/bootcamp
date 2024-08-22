@@ -18,6 +18,7 @@ class Tugas extends Model
         'judul',
         'deskripsi',
         'file',
+        'deadline',
     ];
 
     protected $dates = ['created_at', 'updated_at'];

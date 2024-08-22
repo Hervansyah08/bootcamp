@@ -27,6 +27,7 @@ class TugasFactory extends Factory
             'judul' => $this->faker->sentence,
             'deskripsi' => $this->faker->paragraph,
             'file' => $this->faker->word . '.pdf', // ini nanti menambahkan format pdf, contoh dokumen.pdf
+            'deadline' => $this->faker->optional()->dateTimeBetween('now', '+1 year'),
         ];
     }
 }
