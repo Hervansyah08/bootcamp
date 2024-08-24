@@ -110,6 +110,23 @@ class TugasController extends Controller
         return redirect()->route('tugas.showByProgram', $request->program_id)->with('success', 'Tugas berhasil ditambahkan.');
     }
 
+    public function download(Tugas $tugas)
+    {
+        // Path lengkap ke file
+        $filePath = storage_path('app/' . $tugas->file);
+
+        // Cek apakah file ada
+        if (!file_exists($filePath)) {
+            abort(404, 'File not found.');
+        }
+
+        // Dapatkan ekstensi file dari path
+        $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+        // Mengembalikan respons unduhan
+        return response()->download($filePath, $tugas->judul . '.' . $fileExtension);
+    }
+
     public function edit(Tugas $tugas)
     {
         return view('pages.tugas.tugas_edit', compact('tugas'));

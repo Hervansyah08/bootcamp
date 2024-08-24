@@ -24,7 +24,7 @@
                             <p class="mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">
                                 {{ $tugas->deskripsi }}</p>
                         </div>
-                        <a href=""
+                        <a href="{{ route('tugas.download', $tugas->id) }}"
                             class="inline-flex items-center text-lg text-blue-600 dark:text-blue-500 hover:underline">
                             Download Tugas
                             <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true"

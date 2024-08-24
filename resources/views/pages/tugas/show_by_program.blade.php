@@ -33,7 +33,7 @@
                                     <th scope="col" class="px-6 py-3">
                                         Deadline
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 text-center">
                                         Aksi
                                     </th>
                                 </tr>
@@ -62,7 +62,7 @@
                                                 Lihat Detail Tugas
                                             </a>
                                             <a href="{{ route('tugas.edit', $tugas->id) }}" aria-current="page"
-                                                class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
+                                                class="ml-3 px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
                                                 Edit
                                             </a>
                                         </td>

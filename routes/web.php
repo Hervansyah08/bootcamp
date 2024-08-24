@@ -68,6 +68,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // definisikan route spesifik terlebih dahulu agar tidak error 404
     Route::get('/tugas/create/{program}', [TugasController::class, 'create'])->name('tugas.create');
     Route::get('/tugas/edit/{tugas}', [TugasController::class, 'edit'])->name('tugas.edit');
+    Route::get('/tugas/download/{tugas}', [TugasController::class, 'download'])->name('tugas.download');
     Route::get('/tugas', [TugasController::class, 'index'])->name('tugas.index');
     Route::get('/tugas/program/{program}', [TugasController::class, 'showByProgram'])->name('tugas.showByProgram');
     Route::get('/tugas/{program}/{tugas}', [TugasController::class, 'showDetailTugas'])->name('tugas.showDetailTugas');
