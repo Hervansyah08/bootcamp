@@ -33,7 +33,7 @@
                                     <th scope="col" class="px-6 py-3">
                                         Deadline
                                     </th>
-                                    <th scope="col" class="px-6 py-3 text-center">
+                                    <th scope="col" class="px-6 py-3">
                                         Aksi
                                     </th>
                                 </tr>
@@ -56,15 +56,27 @@
                                         <td class="px-6 py-4">
                                             {{ $tugas->deadline }}
                                         </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-6 py-4 lg:flex-wrap">
                                             <a href="{{ route('tugas.showDetailTugas', ['program' => $tugas->program_id, 'tugas' => $tugas->id]) }}"
-                                                class=" inline-flex items-center ml-3 px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                class=" inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                                                 Lihat Detail Tugas
                                             </a>
-                                            <a href="{{ route('tugas.edit', $tugas->id) }}" aria-current="page"
-                                                class="ml-3 px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
-                                                Edit
-                                            </a>
+                                            <div class="inline-flex rounded-md shadow-sm mt-3 lg:mt-0 lg:ml-3"
+                                                role="group">
+                                                <a href="{{ route('tugas.edit', $tugas->id) }}" aria-current="page"
+                                                    class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
+                                                    Edit
+                                                </a>
+                                                <form action="{{ route('tugas.destroy', $tugas->id) }}" method="POST"
+                                                    class="delete-form">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 delete-button">
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

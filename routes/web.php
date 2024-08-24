@@ -73,6 +73,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/tugas/program/{program}', [TugasController::class, 'showByProgram'])->name('tugas.showByProgram');
     Route::get('/tugas/{program}/{tugas}', [TugasController::class, 'showDetailTugas'])->name('tugas.showDetailTugas');
     Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
+    Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
 });
 
 require __DIR__ . '/auth.php';

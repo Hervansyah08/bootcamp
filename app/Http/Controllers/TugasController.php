@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Tugas;
 use App\Models\Master;
 use App\Models\Program;
-use App\Models\Tugas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class TugasController extends Controller
 {
@@ -130,5 +131,18 @@ class TugasController extends Controller
     public function edit(Tugas $tugas)
     {
         return view('pages.tugas.tugas_edit', compact('tugas'));
+    }
+
+    public function destroy(Tugas $tugas)
+    {
+        // Hapus file dari storage
+        Storage::delete($tugas->file);
+
+        // Hapus materi dari database
+        $tugas->delete();
+
+        // Redirect ke halaman program dengan pesan sukses
+        return redirect()->route('tugas.showByProgram', $tugas->program_id)
+            ->with('success', 'Tugas berhasil dihapus.');
     }
 }
