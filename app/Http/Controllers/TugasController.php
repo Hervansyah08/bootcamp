@@ -133,6 +133,42 @@ class TugasController extends Controller
         return view('pages.tugas.tugas_edit', compact('tugas'));
     }
 
+    public function update(Request $request, Tugas $tugas)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,zip,rar|max:20971520', // File opsional
+            'deadline' => 'nullable|date_format:Y-m-d\TH:i',
+            'program_id' => 'required|exists:program,id',
+        ]);
+
+        // Update data materi
+        $tugas->update([
+            'user_id' => Auth::user()->id,
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'deadline' => $request->input('deadline') ? Carbon::parse($request->input('deadline')) : null,
+            'program_id' => $request->program_id,
+
+        ]);
+
+        // Update file jika ada
+        if ($request->hasFile('file')) {
+            // Hapus file lama dari storage
+            Storage::delete($tugas->file);
+
+            // Simpan file baru
+            $file = $request->file('file');
+            $filePath = $file->store('materis/tugas');
+
+            // Update path file di database
+            $tugas->update(['file' => $filePath]);
+        }
+
+        return redirect()->route('tugas.showByProgram', $request->program_id)->with('success', 'Tugas berhasil diperbarui.');
+    }
+
     public function destroy(Tugas $tugas)
     {
         // Hapus file dari storage

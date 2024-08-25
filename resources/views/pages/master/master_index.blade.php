@@ -99,7 +99,7 @@
                                             {{ $masters->firstItem() + $index }}
                                         </th>
                                         <td class="px-6 py-4">
-                                            {{ $master->user->name }}
+                                            {{ $master->user?->name ?? 'deleted' }}
                                         </td>
                                         <td class="px-6 py-4">
                                             {{ $master->email }}
@@ -126,7 +126,7 @@
                                             {{ $master->instansi }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $master->program->nama }}
+                                            {{ $master->program?->nama ?? 'deleted' }}
                                         </td>
                                         <td class="px-6 py-4">
                                             {{ $master->info }}

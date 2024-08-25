@@ -78,7 +78,7 @@
                                             {{ $program->status }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $program->user->name }}
+                                            {{ $program->user?->name ?? 'deleted' }}
                                         </td>
                                         <td class="px-6 py-4">
                                             {{ $program->created_at->format('l, d-m-Y, H:i') }}

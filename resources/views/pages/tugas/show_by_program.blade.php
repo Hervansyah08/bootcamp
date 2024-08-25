@@ -50,7 +50,7 @@
                                         </td>
                                         @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                             <td class="px-6 py-4">
-                                                {{ $tugas->user->name }}
+                                                {{ $tugas->user?->name ?? 'deleted' }}
                                             </td>
                                         @endif
                                         <td class="px-6 py-4">
@@ -61,6 +61,7 @@
                                                 class=" inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                                                 Lihat Detail Tugas
                                             </a>
+
                                             <div class="inline-flex rounded-md shadow-sm mt-3 lg:mt-0 lg:ml-3"
                                                 role="group">
                                                 <a href="{{ route('tugas.edit', $tugas->id) }}" aria-current="page"
