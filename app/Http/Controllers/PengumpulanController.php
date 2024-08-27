@@ -10,13 +10,16 @@ use Illuminate\Support\Facades\Auth;
 
 class PengumpulanController extends Controller
 {
-    public function index(Request $request)
+
+    public function index(Tugas $tugas)
     {
-        $user = Auth::user();
-        if ($user->role === 'user') {
-            # code...
-        }
+        $pengumpulans = Pengumpulan::where('tugas_id', $tugas->id)
+            ->with('user')
+            ->get();
+
+        return view('pages.pengumpulan.pengumpulan_index', compact('pengumpulans', 'tugas'));
     }
+
     public function create(Program $program, Tugas $tugas)
     {
         return view('pages.pengumpulan.pengumpulan_create', compact('program', 'tugas'));
@@ -42,7 +45,7 @@ class PengumpulanController extends Controller
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'file' => $filePath,
-            'status' => 'submitted',
+            'status' => 'Done',
         ]);
 
         return redirect()->route('tugas.showDetailTugas', [$request->program_id, $request->tugas_id])

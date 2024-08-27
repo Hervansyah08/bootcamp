@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Tugas;
 use App\Models\Master;
+use App\Models\Pengumpulan;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,14 +73,29 @@ class TugasController extends Controller
         }
         return view('pages.tugas.show_by_program', compact('program', 'tugass'));
     }
+
     public function showDetailTugas(Program $program, Tugas $tugas)
-    // program ini untuk menyimpan id program agar bisa kembali ke showByProgram
     {
+        $user = Auth::user();
+        $pengumpulan = Pengumpulan::where('user_id', $user->id)
+            ->where('tugas_id', $tugas->id)
+            ->first();
+
         $tugas->deadline = $tugas->deadline ? Carbon::parse($tugas->deadline)->translatedFormat('l, d-m-Y H:i') : 'Tidak Ada';
         $tugas->created_at = Carbon::parse($tugas->created_at)->timezone('Asia/Jakarta');
         $tugas->updated_at = Carbon::parse($tugas->updated_at)->timezone('Asia/Jakarta');
-        return view('pages.tugas.show_detail_tugas', compact('program', 'tugas'));
+
+        // Menghitung waktu tersisa
+        $now = Carbon::now('Asia/Jakarta');
+        $deadline = Carbon::parse($tugas->deadline);
+
+        // Memeriksa apakah deadline telah lewat dan memformat waktu tersisa
+        $timeLeft = $deadline->diff($now);
+        $remainingTime = $now->greaterThan($deadline) ? 'Waktu telah habis' : $timeLeft->format('%a hari %h jam %i menit %s detik');
+
+        return view('pages.tugas.show_detail_tugas', compact('program', 'tugas', 'pengumpulan', 'remainingTime'));
     }
+
 
     public function create(Program $program)
     {
@@ -171,14 +187,26 @@ class TugasController extends Controller
 
     public function destroy(Tugas $tugas)
     {
-        // Hapus file dari storage
-        Storage::delete($tugas->file);
+        // Hapus file pengumpulan yang terkait dengan tugas id
+        $pengumpulans = $tugas->pengumpulan;
 
-        // Hapus materi dari database
+        foreach ($pengumpulans as $pengumpulan) {
+            if ($pengumpulan->file) {
+                Storage::delete($pengumpulan->file);
+            }
+            $pengumpulan->delete();
+        }
+
+        // Hapus file tugas dari storage
+        if ($tugas->file) {
+            Storage::delete($tugas->file);
+        }
+
+        // Hapus tugas dari database
         $tugas->delete();
 
         // Redirect ke halaman program dengan pesan sukses
         return redirect()->route('tugas.showByProgram', $tugas->program_id)
-            ->with('success', 'Tugas berhasil dihapus.');
+            ->with('success', 'Tugas dan semua pengumpulan terkait berhasil dihapus.');
     }
 }

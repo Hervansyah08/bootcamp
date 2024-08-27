@@ -36,12 +36,83 @@
                         <p class="mb-2 text-xs font-normal text-gray-500 dark:text-gray-400">
                             {{ $tugas->updated_at->format('l, d-m-Y, H:i') }}
                         </p>
+                        <p>
+                            Waktu tersisa : {{ $remainingTime }}
+                        </p>
                     </div>
-                    <div class="mb-4">
-                        <x-biru-link href="{{ route('pengumpulan.create', [$program->id, $tugas->id]) }}">Kirimkan
-                            Pengumpulan (Tugas)</x-biru-link>
-                    </div>
-
+                    @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
+                        <div class="mb-4 lg:flex">
+                            <div class="mb-8 lg:mr-3 lg:mb-0">
+                                <x-biru-link
+                                    href="{{ route('pengumpulan.create', [$program->id, $tugas->id]) }}">Kirimkan
+                                    Pengumpulan (Tugas)</x-biru-link>
+                            </div>
+                            <x-biru-link href="{{ route('pengumpulan.index', [$tugas->id]) }}">Lihat Semua
+                                Pengumpulan</x-biru-link>
+                        </div>
+                    @else
+                        <div class="mb-4">
+                            @if ($pengumpulan)
+                                <h4 class="text-xl font-bold mb-4 dark:text-white">Status Pengajuan</h4>
+                                <div class="relative overflow-x-auto">
+                                    <table
+                                        class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-700 whitespace-nowrap bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                Status Pengajuan
+                                            </th>
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-700 whitespace-nowrap bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                {{ $pengumpulan->status ? 'Sudah Melakukan Pengajuan' : 'Belum ada pengajuan yang dibuat ' }}
+                                            </th>
+                                        </tr>
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Terakhir diubah
+                                            </th>
+                                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                                {{ $pengumpulan->updated_at->format('l, d-m-Y, H:i') }}
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-700 whitespace-nowrap bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                Judul
+                                            </th>
+                                            <td
+                                                class="px-6 py-4 font-medium text-gray-700 whitespace-nowrap bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                {{ $pengumpulan->judul }}
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Deskripsi
+                                            </th>
+                                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                                {{ $pengumpulan->deskripsi }}
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-700 whitespace-nowrap bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                File
+                                            </th>
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-700 whitespace-nowrap bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            @else
+                                <x-biru-link
+                                    href="{{ route('pengumpulan.create', [$program->id, $tugas->id]) }}">Kirimkan
+                                    Pengumpulan (Tugas)</x-biru-link>
+                            @endif
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
