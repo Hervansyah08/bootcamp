@@ -19,7 +19,7 @@
                             Ditambahkan oleh {{ $tugas->user?->name ?? 'deleted' }}
                         </p>
                     @endif
-                    <div class="mb-4">
+                    <div class="mb-6">
                         <div class="mb-4">
                             <p class="mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">
                                 {{ $tugas->deskripsi }}</p>
@@ -37,6 +37,11 @@
                             {{ $tugas->updated_at->format('l, d-m-Y, H:i') }}
                         </p>
                     </div>
+                    <div class="mb-4">
+                        <x-biru-link href="{{ route('pengumpulan.create', [$program->id, $tugas->id]) }}">Kirimkan
+                            Pengumpulan (Tugas)</x-biru-link>
+                    </div>
+
                 </div>
             </div>
         </div>

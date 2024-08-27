@@ -19,6 +19,7 @@ class Pengumpulan extends Model
         'judul',
         'deskripsi',
         'file',
+        'status',
     ];
 
 

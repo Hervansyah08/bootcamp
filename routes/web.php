@@ -7,6 +7,7 @@ use App\Http\Controllers\MasterController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\PengumpulanController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -75,6 +76,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
     Route::put('tugas/{tugas}', [TugasController::class, 'update'])->name('tugas.update');
     Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
+
+    // Pengumpulan
+    Route::get('/pengumpulan/create/{program}/{tugas}', [PengumpulanController::class, 'create'])->name('pengumpulan.create');
+    Route::post('/pengumpulan/store', [PengumpulanController::class, 'store'])->name('pengumpulan.store');
 });
 
 require __DIR__ . '/auth.php';
