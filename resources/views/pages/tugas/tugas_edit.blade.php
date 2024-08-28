@@ -33,7 +33,7 @@
                             (opsional)</label>
                         <input
                             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                            aria-describedby="file_input_help" type="file" id="file" name="file" required>
+                            aria-describedby="file_input_help" type="file" id="file" name="file">
                         @if ($tugas->file)
                             <p class="mt-1 mb-3 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">File saat
                                 ini: {{ basename($tugas->file) }}</p>
@@ -62,12 +62,12 @@
     <script>
         document.getElementById('edit-button').addEventListener('click', function() {
             const judul = document.getElementById('judul').value.trim();
-            const file = document.getElementById('file').value.trim();
+            // const file = document.getElementById('file').value.trim();
 
-            if (!judul || !file) {
+            if (!judul) {
                 Swal.fire({
                     title: 'Lengkapi Semua Kolom',
-                    text: 'Kolom Judul dan File tidak boleh kosong.',
+                    text: 'Kolom Judul tidak boleh kosong.',
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });

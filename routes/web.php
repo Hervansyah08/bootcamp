@@ -80,10 +80,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
 
     // Pengumpulan
-    Route::get('/pengumpulan/tugas/{tugas}', [PengumpulanController::class, 'index'])
+    // Route::get('/pengumpulan/tugas/{program}/{tugas}', [PengumpulanController::class, 'index'])
+    //     ->name('pengumpulan.index');
+    Route::get('program/{program}/tugas/{tugas}/pengumpulan', [PengumpulanController::class, 'index'])
         ->name('pengumpulan.index');
     Route::get('/pengumpulan/create/{program}/{tugas}', [PengumpulanController::class, 'create'])->name('pengumpulan.create');
     Route::post('/pengumpulan/store', [PengumpulanController::class, 'store'])->name('pengumpulan.store');
+    Route::delete('program/{program}/tugas/{tugas}/pengumpulan/{pengumpulan}', [PengumpulanController::class, 'destroy'])
+        ->name('pengumpulan.destroy');
+    Route::delete('program/{program}/tugas/{tugas}/pengumpulan/{pengumpulan}/user', [PengumpulanController::class, 'destroyForUser'])
+        ->name('pengumpulan.destroyForUser');
 });
 
 require __DIR__ . '/auth.php';

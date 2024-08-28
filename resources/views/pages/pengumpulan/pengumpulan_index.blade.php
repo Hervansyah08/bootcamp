@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        {{-- <a href="{{ route('tugas.showDetailTugas', [$program->id, $tugas->id]) }}"
+        <a href="{{ route('tugas.showDetailTugas', [$program->id, $tugas->id]) }}"
             class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
             Back
-        </a> --}}
+        </a>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl lg:max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
@@ -61,7 +61,30 @@
                                                 {{ $pengumpulan->updated_at->format('l, d-m-Y, H:i') }}
                                             </td>
                                             <td class="px-6 py-4">
-                                                edit
+                                                <div class="inline-flex rounded-md shadow-sm" role="group">
+                                                    {{-- <a href="{{ route('program.edit', $program->id) }}"
+                                                        aria-current="page"
+                                                        class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
+                                                        Edit
+                                                    </a> --}}
+                                                    <form
+                                                        action="{{ route('pengumpulan.destroy', [$program->id, $tugas->id, $pengumpulan->id]) }}"
+                                                        method="POST" class="delete-form">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 delete-button">
+                                                            Hapus
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                {{-- <form
+                                                    action="{{ route('pengumpulan.destroy', [$program->id, $tugas->id, $pengumpulan->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                                </form> --}}
                                             </td>
                                         </tr>
                                     @endforeach

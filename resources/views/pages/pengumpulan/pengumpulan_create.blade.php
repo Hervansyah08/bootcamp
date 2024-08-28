@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Kirim Tugas') }}
+            {{ __('Kirimkan Pengajuan (Tugas)') }}
         </h2>
     </x-slot>
 
@@ -13,12 +13,30 @@
                         @csrf
                         <input type="hidden" name="program_id" value="{{ $program->id }}">
                         <input type="hidden" name="tugas_id" value="{{ $tugas->id }}">
-
+                        @if (Auth::user()->role === 'admin' || Auth::user()->role === 'super_admin')
+                            <div class="mb-4">
+                                <label for="user_id"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Username
+                                </label>
+                                <select id="user_id" name="user_id"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    required>
+                                    <option value="" selected>Pilih User</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}"
+                                            {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                            {{ $user->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                         <div class="mb-4">
                             <label for="judul"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Judul
                                 Pengumpulan</label>
-                            <input type="text" name="judul" id="judul"
+                            <input type="text" name="judul" id="judul" value="{{ old('judul') }}"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 required>
                         </div>
@@ -27,7 +45,7 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi
                                 (Opsional)</label>
                             <textarea name="deskripsi" id="deskripsi" rows="4"
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ old('deskripsi') }}</textarea>
                         </div>
                         <div class="mb-4">
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"

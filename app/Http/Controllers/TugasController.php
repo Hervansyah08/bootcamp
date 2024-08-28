@@ -64,13 +64,22 @@ class TugasController extends Controller
 
     public function showByProgram(Program $program)
     {
+        $userId = Auth::id(); // Mengambil ID user yang sedang login
+
         $tugass = Tugas::with('user')
-            ->where('program_id', $program->id)
+            ->leftJoin('pengumpulan', function ($join) use ($userId) {
+                $join->on('tugas.id', '=', 'pengumpulan.tugas_id')
+                    ->where('pengumpulan.user_id', '=', $userId);
+            })
+            ->where('tugas.program_id', $program->id)
+            ->select('tugas.*', 'pengumpulan.status')
             ->paginate(5);
 
         foreach ($tugass as $tugas) {
             $tugas->deadline = $tugas->deadline ? Carbon::parse($tugas->deadline)->translatedFormat('l, d-m-Y H:i') : 'Tidak ada deadline';
+            $tugas->status = $tugas->status ?? 'Belum ada pengajuan yang dibuat'; // Jika status null, berarti belum mengumpulkan
         }
+
         return view('pages.tugas.show_by_program', compact('program', 'tugass'));
     }
 

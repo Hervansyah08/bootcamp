@@ -45,14 +45,25 @@
                             <div class="mb-8 lg:mr-3 lg:mb-0">
                                 <x-biru-link
                                     href="{{ route('pengumpulan.create', [$program->id, $tugas->id]) }}">Kirimkan
-                                    Pengumpulan (Tugas)</x-biru-link>
+                                    Pengajuan (Tugas)</x-biru-link>
                             </div>
-                            <x-biru-link href="{{ route('pengumpulan.index', [$tugas->id]) }}">Lihat Semua
-                                Pengumpulan</x-biru-link>
+                            <x-biru-link
+                                href="{{ route('pengumpulan.index', ['program' => $tugas->program_id, 'tugas' => $tugas->id]) }}">
+                                Lihat Semua Pengajuan</x-biru-link>
                         </div>
                     @else
                         <div class="mb-4">
                             @if ($pengumpulan)
+                                <form
+                                    action="{{ route('pengumpulan.destroyForUser', [$program->id, $tugas->id, $pengumpulan->id]) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button"
+                                        class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Hapus
+                                        Pengajuan</button>
+                                </form>
+
                                 <h4 class="text-xl font-bold mb-4 dark:text-white">Status Pengajuan</h4>
                                 <div class="relative overflow-x-auto">
                                     <table
@@ -109,7 +120,7 @@
                             @else
                                 <x-biru-link
                                     href="{{ route('pengumpulan.create', [$program->id, $tugas->id]) }}">Kirimkan
-                                    Pengumpulan (Tugas)</x-biru-link>
+                                    Pengajuan (Tugas)</x-biru-link>
                             @endif
                         </div>
                     @endif
