@@ -54,16 +54,20 @@
                     @else
                         <div class="mb-4">
                             @if ($pengumpulan)
-                                <form
-                                    action="{{ route('pengumpulan.destroyForUser', [$program->id, $tugas->id, $pengumpulan->id]) }}"
-                                    method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button"
-                                        class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Hapus
-                                        Pengajuan</button>
-                                </form>
-
+                                <div class="flex mb-2">
+                                    <a href="{{ route('pengumpulan.edit', $pengumpulan->id) }}"
+                                        class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Edit
+                                        Pengajuan</a>
+                                    <form
+                                        action="{{ route('pengumpulan.destroyForUser', [$program->id, $tugas->id, $pengumpulan->id]) }}"
+                                        method="POST" class="">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Hapus
+                                            Pengajuan</button>
+                                    </form>
+                                </div>
                                 <h4 class="text-xl font-bold mb-4 dark:text-white">Status Pengajuan</h4>
                                 <div class="relative overflow-x-auto">
                                     <table
@@ -103,7 +107,7 @@
                                                 Deskripsi
                                             </th>
                                             <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                                {{ $pengumpulan->deskripsi }}
+                                                {{ $pengumpulan->deskripsi ?? '-' }}
                                             </td>
                                         </tr>
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -113,6 +117,8 @@
                                             </th>
                                             <th scope="row"
                                                 class="px-6 py-4 font-medium text-gray-700 whitespace-nowrap bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                <a
+                                                    href="{{ route('pengumpulan.download', $pengumpulan->id) }}">{{ $pengumpulan->file }}</a>
                                             </th>
                                         </tr>
                                     </table>

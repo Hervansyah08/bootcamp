@@ -80,16 +80,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
 
     // Pengumpulan
-    // Route::get('/pengumpulan/tugas/{program}/{tugas}', [PengumpulanController::class, 'index'])
-    //     ->name('pengumpulan.index');
     Route::get('program/{program}/tugas/{tugas}/pengumpulan', [PengumpulanController::class, 'index'])
         ->name('pengumpulan.index');
-    Route::get('/pengumpulan/create/{program}/{tugas}', [PengumpulanController::class, 'create'])->name('pengumpulan.create');
+    Route::get('program/{program}/tugas/{tugas}/pengumpulan/create', [PengumpulanController::class, 'create'])->name('pengumpulan.create');
     Route::post('/pengumpulan/store', [PengumpulanController::class, 'store'])->name('pengumpulan.store');
     Route::delete('program/{program}/tugas/{tugas}/pengumpulan/{pengumpulan}', [PengumpulanController::class, 'destroy'])
         ->name('pengumpulan.destroy');
     Route::delete('program/{program}/tugas/{tugas}/pengumpulan/{pengumpulan}/user', [PengumpulanController::class, 'destroyForUser'])
         ->name('pengumpulan.destroyForUser');
+    Route::get('/pengumpulan/download/{pengumpulan}', [PengumpulanController::class, 'download'])->name('pengumpulan.download');
+    Route::get('/pengumpulan/edit/{pengumpulan}', [PengumpulanController::class, 'edit'])->name('pengumpulan.edit');
+    Route::put('pengumpulan/{pengumpulan}', [PengumpulanController::class, 'update'])->name('pengumpulan.update');
 });
 
 require __DIR__ . '/auth.php';

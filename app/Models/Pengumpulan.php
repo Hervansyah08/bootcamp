@@ -20,6 +20,7 @@ class Pengumpulan extends Model
         'deskripsi',
         'file',
         'status',
+        'file_path',
     ];
 
 

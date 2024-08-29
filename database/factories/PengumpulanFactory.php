@@ -29,6 +29,7 @@ class PengumpulanFactory extends Factory
             'deskripsi' => $this->faker->paragraph,
             'file' => $this->faker->word . '.pdf', // ini nanti menambahkan format pdf, contoh dokumen.pdf
             'status' => $this->faker->randomElement(['Sudah Mengumpulkan']),
+            'file_path' => $this->faker->word . '.pdf',
         ];
     }
 }

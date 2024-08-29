@@ -52,21 +52,22 @@
                                                 {{ $pengumpulan->judul }}
                                             </td>
                                             <td class="px-6 py-4">
-                                                {{ $pengumpulan->deskripsi }}
+                                                {{ $pengumpulan->deskripsi ?? '-' }}
                                             </td>
                                             <td class="px-6 py-4">
-                                                file
+                                                <a
+                                                    href="{{ route('pengumpulan.download', $pengumpulan->id) }}">{{ $pengumpulan->file }}</a>
                                             </td>
                                             <td class="px-6 py-4">
                                                 {{ $pengumpulan->updated_at->format('l, d-m-Y, H:i') }}
                                             </td>
                                             <td class="px-6 py-4">
                                                 <div class="inline-flex rounded-md shadow-sm" role="group">
-                                                    {{-- <a href="{{ route('program.edit', $program->id) }}"
+                                                    <a href="{{ route('pengumpulan.edit', $pengumpulan->id) }}"
                                                         aria-current="page"
                                                         class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
                                                         Edit
-                                                    </a> --}}
+                                                    </a>
                                                     <form
                                                         action="{{ route('pengumpulan.destroy', [$program->id, $tugas->id, $pengumpulan->id]) }}"
                                                         method="POST" class="delete-form">
