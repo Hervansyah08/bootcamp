@@ -68,9 +68,9 @@
     <script>
         document.getElementById('edit-button').addEventListener('click', function() {
             const judul = document.getElementById('judul').value.trim();
-            const file = document.getElementById('file').value.trim();
+            // const file = document.getElementById('file').value.trim();
 
-            if (!judul || !file) {
+            if (!judul) {
                 Swal.fire({
                     title: 'Lengkapi Semua Kolom',
                     text: 'Kolom Judul dan File tidak boleh kosong.',
