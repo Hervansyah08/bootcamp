@@ -1,1 +1,2 @@
-<img src="{{ asset('assets/images/logo.png') }}" width="100px">
+<img src="{{ asset('assets/images/logo.png') }}" alt="Logo Light Mode" class="block dark:hidden w-20 h-33">
+<img src="{{ asset('assets/images/logo2.png') }}" alt="Logo Dark Mode" class="hidden dark:block w-20 h-33">

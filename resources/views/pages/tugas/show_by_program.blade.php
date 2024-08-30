@@ -100,4 +100,64 @@
             </div>
         </div>
     </div>
+
+    <!-- Script SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Mencegah pengiriman form langsung
+
+                const form = this.closest('form');
+
+                Swal.fire({
+                    title: "Apa anda yakin?",
+                    text: "Data yang sudah terhapus tidak dapat dikembalikan!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, hapus!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Gunakan AJAX untuk mengirim form
+                        fetch(form.action, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').getAttribute('content'),
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: new FormData(form)
+                        }).then(response => {
+                            if (response.ok) {
+                                Swal.fire({
+                                    title: "Data berhasil dihapus!",
+                                    icon: "success",
+                                    text: "Klik tombol Oke untuk melanjutkan.",
+                                    confirmButtonText: "Oke"
+                                }).then(() => {
+                                    location
+                                        .reload(); // Reload halaman setelah penghapusan berhasil
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Terjadi masalah saat menghapus data.",
+                                    icon: "error"
+                                });
+                            }
+                        }).catch(error => {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "Terjadi kesalahan yang tidak terduga.",
+                                icon: "error"
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>

@@ -68,8 +68,16 @@
         document.getElementById('simpan-button').addEventListener('click', function () {
             const nama = document.getElementById('nama').value.trim();
             const deskripsi = document.getElementById('deskripsi').value.trim();
+            const user_id = document.getElementById('user_id') ? document.getElementById('user_id').value : '';
 
-            if (nama === '') {
+            if (user_id === 'Pilih Admin') {
+                Swal.fire({
+                    title: "Pilih Admin Terlebih Dahulu",
+                    text: "Anda harus memilih admin sebelum melanjutkan.",
+                    icon: "warning",
+                    confirmButtonText: "OK"
+                });
+            } else if (nama === '') {
                 Swal.fire({
                     title: "Lengkapi Semua Kolom",
                     text: "Kolom Nama Program tidak boleh kosong.",
