@@ -7,6 +7,7 @@ use App\Http\Controllers\MasterController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\PengumpulanController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -64,6 +65,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('materi/{materi}', [MateriController::class, 'update'])->name('materi.update');
     Route::delete('/materi/{materi}', [MateriController::class, 'destroy'])->name('materi.destroy');
 
+
+
     // Tugas
     // definisikan route spesifik terlebih dahulu agar tidak error 404
     Route::get('/tugas/create/{program}', [TugasController::class, 'create'])->name('tugas.create');
@@ -75,6 +78,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tugas', [TugasController::class, 'store'])->name('tugas.store');
     Route::put('tugas/{tugas}', [TugasController::class, 'update'])->name('tugas.update');
     Route::delete('/tugas/{tugas}', [TugasController::class, 'destroy'])->name('tugas.destroy');
+
+    // Pengumpulan
+    Route::get('program/{program}/tugas/{tugas}/pengumpulan', [PengumpulanController::class, 'index'])
+        ->name('pengumpulan.index');
+    Route::get('program/{program}/tugas/{tugas}/pengumpulan/create', [PengumpulanController::class, 'create'])->name('pengumpulan.create');
+    Route::post('/pengumpulan/store', [PengumpulanController::class, 'store'])->name('pengumpulan.store');
+    Route::delete('program/{program}/tugas/{tugas}/pengumpulan/{pengumpulan}', [PengumpulanController::class, 'destroy'])
+        ->name('pengumpulan.destroy');
+    Route::delete('program/{program}/tugas/{tugas}/pengumpulan/{pengumpulan}/user', [PengumpulanController::class, 'destroyForUser'])
+        ->name('pengumpulan.destroyForUser');
+    Route::get('/pengumpulan/download/{pengumpulan}', [PengumpulanController::class, 'download'])->name('pengumpulan.download');
+    Route::get('/pengumpulan/edit/{pengumpulan}', [PengumpulanController::class, 'edit'])->name('pengumpulan.edit');
+    Route::put('pengumpulan/{pengumpulan}', [PengumpulanController::class, 'update'])->name('pengumpulan.update');
 });
 
 require __DIR__ . '/auth.php';

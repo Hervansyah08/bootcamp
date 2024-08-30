@@ -75,8 +75,7 @@
                                                         </button>
                                                     </div>
                                                     <div class="p-6 space-y-6">
-                                                        <video class="w-full" autoplay muted controls
-                                                            controlsList="nodownload">
+                                                        <video class="w-full" muted controls controlsList="nodownload">
                                                             <source
                                                                 src="{{ route('materi.streamVideo', basename($materi->video)) }}"
                                                                 type="video/mp4">
