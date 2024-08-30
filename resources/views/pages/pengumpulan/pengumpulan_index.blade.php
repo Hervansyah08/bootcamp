@@ -11,10 +11,10 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
-                    <h4 class="text-2xl mb-4 font-bold dark:text-white">Pengumpulan Tugas - {{ $tugas->judul }}</h4>
+                    <h4 class="text-2xl mb-4 font-bold dark:text-white">Pengajuan Tugas - {{ $tugas->judul }}</h4>
 
                     @if ($pengumpulans->isEmpty())
-                        <p class="text-center text-gray-500 dark:text-gray-400">Belum ada pengumpulan.</p>
+                        <p class="text-center text-gray-500 dark:text-gray-400">Belum Ada Pengajuan.</p>
                     @else
                         <div class="relative overflow-x-auto">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
