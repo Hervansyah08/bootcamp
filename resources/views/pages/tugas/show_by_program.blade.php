@@ -8,6 +8,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <h3 class="text-2xl text-center font-bold mb-5 dark:text-white">Tugas untuk Program:
+                        {{ $program->nama }}
+                    </h3>
                     @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                         <div class="mb-8">
                             <x-biru-link href="{{ route('tugas.create', $program->id) }}">Tambah Tugas</x-biru-link>

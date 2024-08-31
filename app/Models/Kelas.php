@@ -31,4 +31,13 @@ class Kelas extends Model
     {
         return Carbon::parse($value)->timezone('Asia/Jakarta');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
 }

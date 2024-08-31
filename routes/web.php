@@ -97,6 +97,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Kelas
     Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');
     Route::get('/kelas/program/{program}', [KelasController::class, 'showByProgram'])->name('kelas.showByProgram');
+    Route::get('/kelas/create/{program}', [KelasController::class, 'create'])->name('kelas.create');
+    Route::post('/kelas', [KelasController::class, 'store'])->name('kelas.store');
 });
 
 require __DIR__ . '/auth.php';

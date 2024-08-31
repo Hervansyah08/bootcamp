@@ -8,11 +8,16 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{-- @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
+
+                    <h3 class="text-2xl text-center font-bold mb-5 dark:text-white">Jadwal Kelas untuk Program:
+                        {{ $program->nama }}
+                    </h3>
+                    @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                         <div class="mb-8">
-                            <x-biru-link href="{{ route('tugas.create', $program->id) }}">Tambah Tugas</x-biru-link>
+                            <x-biru-link href="{{ route('kelas.create', $program->id) }}">Tambah Jadwal
+                                Kelas</x-biru-link>
                         </div>
-                    @endif --}}
+                    @endif
                     <div class="relative overflow-x-auto">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead
@@ -61,12 +66,12 @@
                                         </td>
                                         @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                             <td class="px-6 py-4">
-                                                {{ $tugas->user?->name ?? 'deleted' }}
+                                                {{ $kelas->user?->name ?? 'deleted' }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ $kelas->created_at->format('l, d-m-Y, H:i') }}
                                             </td>
                                         @endif
-                                        <td class="px-6 py-4">
-                                            {{ $kelas->created_at }}
-                                        </td>
                                         <td class="px-6 py-4 ">
                                             {{-- @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                                 <div class="inline-flex rounded-md shadow-sm mt-3 " role="group">
