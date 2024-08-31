@@ -132,7 +132,7 @@
                                             {{ $master->info }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $master->motivasi }}
+                                            {{ $master->motivasi ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4">
                                             {{ $master->status }}

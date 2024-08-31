@@ -38,9 +38,15 @@
                 </form>
                 <div class="p-6 flex flex-wrap text-gray-900 dark:text-gray-100">
                     @if ($programs->isEmpty())
-                        <div class="w-full text-center text-gray-500 dark:text-gray-400">
-                            <p>Anda Belum Mendaftar Program</p>
-                        </div>
+                        @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
+                            <div class="w-full text-center text-gray-500 dark:text-gray-400">
+                                <p>Anda Belum Membuat Program</p>
+                            </div>
+                        @else
+                            <div class="w-full text-center text-gray-500 dark:text-gray-400">
+                                <p>Anda Belum Mendaftar Program</p>
+                            </div>
+                        @endif
                     @else
                         @foreach ($programs as $program)
                             <div

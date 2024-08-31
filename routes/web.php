@@ -2,12 +2,14 @@
 
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\PengumpulanController;
+use App\Models\Kelas;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -91,6 +93,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pengumpulan/download/{pengumpulan}', [PengumpulanController::class, 'download'])->name('pengumpulan.download');
     Route::get('/pengumpulan/edit/{pengumpulan}', [PengumpulanController::class, 'edit'])->name('pengumpulan.edit');
     Route::put('pengumpulan/{pengumpulan}', [PengumpulanController::class, 'update'])->name('pengumpulan.update');
+
+    // Kelas
+    Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');
+    Route::get('/kelas/program/{program}', [KelasController::class, 'showByProgram'])->name('kelas.showByProgram');
 });
 
 require __DIR__ . '/auth.php';

@@ -1,8 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Tugas') }}
-        </h2>
+        <a href="{{ route('tugas.index') }}"
+            class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Back</a>
     </x-slot>
 
     <div class="py-12">
@@ -66,14 +65,13 @@
                                                 {{ $tugas->status }}
                                             </td>
                                         @endif
-                                        <td class="px-6 py-4 lg:flex-wrap">
+                                        <td class="px-6 py-4 ">
                                             <a href="{{ route('tugas.showDetailTugas', ['program' => $tugas->program_id, 'tugas' => $tugas->id]) }}"
-                                                class=" inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                class=" inline-flex items-center mr-2 px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                                                 Lihat Detail Tugas
                                             </a>
                                             @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
-                                                <div class="inline-flex rounded-md shadow-sm mt-3 lg:mt-0 lg:ml-3"
-                                                    role="group">
+                                                <div class="inline-flex rounded-md shadow-sm mt-3 " role="group">
                                                     <a href="{{ route('tugas.edit', $tugas->id) }}" aria-current="page"
                                                         class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
                                                         Edit
@@ -95,7 +93,10 @@
                             </tbody>
                         </table>
                     </div>
-                    {{ $tugass->links() }}
+                    <div class="mt-5 mb-2">
+                        {{ $tugass->links() }}
+                    </div>
+
                 </div>
             </div>
         </div>

@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Tugas') }}
+            {{ __('Kelas') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <form method="GET" action="{{ route('tugas.index') }}"
+                <form method="GET" action="{{ route('kelas.index') }}"
                     class="max-w-xs mx-auto mt-4 sm:ml-auto sm:mr-5 sm:max-w-sm lg:ml-auto lg:mr-5 lg:max-w-sm">
                     <label for="default-search"
                         class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
@@ -58,13 +58,9 @@
                                         {{ $program->deskripsi }}
                                     </p>
                                 @endif
-                                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                                    {{ $program->tugas_count }}
-                                    Tugas
-                                </p>
-                                <a href="{{ route('tugas.showByProgram', $program->id) }}"
+                                <a href="{{ route('kelas.showByProgram', $program->id) }}"
                                     class=" inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Lihat Tugas
+                                    Lihat Kelas
                                 </a>
                             </div>
                         @endforeach

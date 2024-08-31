@@ -72,7 +72,7 @@
                                             {{ $program->nama }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $program->deskripsi }}
+                                            {{ $program->deskripsi ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4">
                                             {{ $program->status }}
