@@ -37,7 +37,7 @@
                                     </th>
                                     @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                         <th scope="col" class="px-6 py-3">
-                                            Dibuat Oleh
+                                            Edit By
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             Tanggal Input
@@ -73,13 +73,13 @@
                                             </td>
                                         @endif
                                         <td class="px-6 py-4 ">
-                                            {{-- @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
+                                            @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                                 <div class="inline-flex rounded-md shadow-sm mt-3 " role="group">
-                                                    <a href="{{ route('tugas.edit', $tugas->id) }}" aria-current="page"
+                                                    <a href="{{ route('kelas.edit', $kelas->id) }}" aria-current="page"
                                                         class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
                                                         Edit
                                                     </a>
-                                                    <form action="{{ route('tugas.destroy', $tugas->id) }}"
+                                                    {{-- <form action="{{ route('tugas.destroy', $tugas->id) }}"
                                                         method="POST" class="delete-form">
                                                         @csrf
                                                         @method('DELETE')
@@ -87,9 +87,9 @@
                                                             class="px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 delete-button">
                                                             Hapus
                                                         </button>
-                                                    </form>
+                                                    </form> --}}
                                                 </div>
-                                            @endif --}}
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

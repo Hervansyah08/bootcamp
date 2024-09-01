@@ -29,7 +29,7 @@
                                     </th>
                                     @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                         <th scope="col" class="px-6 py-3">
-                                            Dibuat Oleh
+                                            edit by
                                         </th>
                                     @endif
                                     <th scope="col" class="px-6 py-3">

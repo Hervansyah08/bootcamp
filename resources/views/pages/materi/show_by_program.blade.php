@@ -14,7 +14,7 @@
                             <h4 class="text-2xl mb-2 font-bold dark:text-white">{{ $materi->judul }}</h4>
                             @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                 <p class="mb-2 text-xs font-normal text-gray-500 dark:text-gray-400">
-                                    Ditambahkan oleh {{ $materi->user?->name ?? 'deleted' }}
+                                    Edit by {{ $materi->user?->name ?? 'deleted' }}
                                     <br>
                                     Tanggal Input {{ $materi->created_at->format('l, d-m-Y, H:i') }}
                                     <br>

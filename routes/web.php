@@ -99,6 +99,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/kelas/program/{program}', [KelasController::class, 'showByProgram'])->name('kelas.showByProgram');
     Route::get('/kelas/create/{program}', [KelasController::class, 'create'])->name('kelas.create');
     Route::post('/kelas', [KelasController::class, 'store'])->name('kelas.store');
+    Route::get('/kelas/edit/{kelas}', [KelasController::class, 'edit'])->name('kelas.edit');
+    Route::put('kelas/{kelas}', [KelasController::class, 'update'])->name('kelas.update');
 });
 
 require __DIR__ . '/auth.php';

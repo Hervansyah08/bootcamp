@@ -42,13 +42,13 @@
                         @foreach ($programs as $program)
                             <div
                                 class="max-w-sm p-6 mx-3 mb-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                <a href="{{ route('materi.showByProgram', $program->id) }}">
+                                <a href="{{ route('tugas.showByProgram', $program->id) }}">
                                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                         {{ $program->nama }}</h5>
                                 </a>
                                 @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                     <p class="mb-2 text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        Ditambahkan oleh {{ $program->user?->name ?? 'deleted' }}
+                                        Edit by {{ $program->user?->name ?? 'deleted' }}
                                         <br>
                                         Tanggal Input {{ $program->created_at->format('d-m-Y, H:i') }}
                                         <br>

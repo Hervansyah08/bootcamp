@@ -42,7 +42,7 @@
                         @foreach ($programs as $program)
                             <div
                                 class="max-w-sm p-6 mx-3 mb-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                <a href="{{ route('materi.showByProgram', $program->id) }}">
+                                <a href="{{ route('kelas.showByProgram', $program->id) }}">
                                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                         {{ $program->nama }}</h5>
                                 </a>
@@ -59,7 +59,7 @@
                                     </p>
                                 @endif
                                 <a href="{{ route('kelas.showByProgram', $program->id) }}"
-                                    class=" inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    class=" mt-1.5 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     Lihat Kelas
                                 </a>
                             </div>

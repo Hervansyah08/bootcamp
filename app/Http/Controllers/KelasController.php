@@ -91,4 +91,31 @@ class KelasController extends Controller
 
         return redirect()->route('kelas.showByProgram', $request->program_id)->with('success', 'Kelas berhasil ditambahkan.');
     }
+
+    public function edit(Kelas $kelas)
+    {
+        return view('pages.kelas.kelas_edit', compact('kelas'));
+    }
+
+    public function update(Request $request, Kelas $kelas)
+    {
+        // Validasi input
+        $request->validate([
+            'program_id' => 'required|exists:program,id',
+            'judul' => 'required|string|max:255',
+            'detail' => 'nullable|string',
+            'link' => 'required|string',
+        ]);
+
+        // Update data program
+        $kelas->update([
+            'user_id' => Auth::id(),
+            'program_id' => $request->program_id,
+            'judul' => $request->judul,
+            'detail' => $request->detail,
+            'link' => $request->link,
+        ]);
+
+        return redirect()->route('kelas.showByProgram', $request->program_id)->with('success', 'Kelas berhasil diedit ditambahkan.');
+    }
 }

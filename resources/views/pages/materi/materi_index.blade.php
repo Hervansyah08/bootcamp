@@ -57,7 +57,7 @@
                                 </a>
                                 @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                     <p class="mb-2 text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        Dibuat oleh {{ $program->user?->name ?? 'deleted' }}
+                                        Edit by {{ $program->user?->name ?? 'deleted' }}
                                         <br>
                                         Tanggal Input {{ $program->created_at->format('l, d-m-Y H:i') }}
                                         <br>
