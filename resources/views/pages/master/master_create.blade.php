@@ -166,70 +166,99 @@
     </div>
     </div>
 
+    <!-- Script SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Attach submit event listener to the form
             document.getElementById('registrationForm').addEventListener('submit', function(e) {
-                e.preventDefault(); // Prevent default form submission
-
-                // Perform AJAX request to submit the form
+                e.preventDefault(); // Mencegah submit form default
+    
+                // Mendapatkan nilai dari elemen form
+                const email = document.getElementById('email').value;
+                const nama = document.getElementById('nama').value;
+                const status_pekerjaan = document.getElementById('status_pekerjaan').value;
+                const gender = document.getElementById('gender').value;
+                const program_id = document.getElementById('program_id').value;
+                const info = document.getElementById('info').value;
+                const tipe_kelas = document.getElementById('tipe_kelas').value;
+    
+                // Buat array untuk menyimpan pesan error
+                let errors = [];
+    
+                // Cek apakah field kosong atau pilihannya adalah opsi placeholder
+                if (!email) errors.push('Email harus diisi.');
+                if (!nama) errors.push('Nama harus diisi.');
+                if (gender === 'Pilih Jenis Kelamin') errors.push('Jenis Kelamin harus dipilih.');
+                if (status_pekerjaan === 'Pilih Status Pekerjaan') errors.push('Status Pekerjaan harus dipilih.');
+                if (program_id === 'Pilih Program') errors.push('Program harus dipilih.');
+                if (info === 'Pilih') errors.push('Informasi sumber harus dipilih.');
+                if (tipe_kelas === 'Pilih Kelas') errors.push('Tipe Kelas harus dipilih.');
+    
+                // Jika ada error, tampilkan pesan dan hentikan submit form
+                if (errors.length > 0) {
+                    Swal.fire({
+                        title: 'Error!',
+                        html: errors.join('<br>'), // Gabungkan pesan error dengan HTML line break
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+                    return; // Hentikan submit form
+                }
+    
+                // Submit form menggunakan Axios
                 axios.post('{{ route('master.store') }}', new FormData(this))
                     .then(response => {
                         console.log(response.data); // Debugging response
-
-                        // Check the role of the logged-in user
+    
                         const userRole = '{{ Auth::user()->role }}';
-                        const email = document.getElementById('email').value;
-                        const nama = document.getElementById('nama').value;
-
+    
                         if (userRole === 'admin' || userRole === 'super_admin') {
-                            // Admin or Super Admin popup
                             Swal.fire({
                                 title: 'Pendaftaran Berhasil!',
                                 text: 'Pendaftaran telah berhasil disimpan.',
                                 icon: 'success',
                                 confirmButtonText: 'OKE',
-                                confirmButtonColor: '#3085d6' // Optional: set button color
+                                confirmButtonColor: '#3085d6',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    // Redirect back to the index page
                                     window.location.href = '{{ route('master.index') }}';
                                 }
                             });
                         } else {
-                            // Regular User popup
                             Swal.fire({
                                 title: 'Pendaftaran Berhasil!',
                                 text: 'Tekan "OKE" untuk melakukan konfirmasi pendaftaran dan pembayaran. Terima Kasih.',
                                 icon: 'success',
                                 confirmButtonText: 'OKE',
-                                confirmButtonColor: '#3085d6' // Optional: set button color
+                                confirmButtonColor: '#3085d6',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    // Construct the WhatsApp message with user input
-                                    const message =
-                                        `Saya%20ingin%20melakukan%20konfirmasi%20pendaftaran%20dan%20pembayaran.%0AEmail%20%3A%20${encodeURIComponent(email)}%0ANama%20%3A%20${encodeURIComponent(nama)}%0ATerimakasih.`;
+                                    const message = `Saya ingin melakukan konfirmasi pendaftaran dan pembayaran.%0AEmail : ${encodeURIComponent(email)}%0ANama : ${encodeURIComponent(nama)}%0ATerimakasih.`;
                                     console.log(message); // Debugging WhatsApp message
-                                    window.location.href =
-                                        `https://wa.me/6281803354180?text=${message}`;
+                                    window.location.href = `https://wa.me/6281803354180?text=${message}`;
                                 }
                             });
                         }
                     })
                     .catch(error => {
-                        // Handle error
                         console.error('Error during form submission:', error);
                         console.log(error.response); // Debugging error response
                         Swal.fire({
                             title: 'Gagal!',
                             text: 'Terjadi kesalahan saat mendaftar. Silakan coba lagi.',
                             icon: 'error',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
                         });
                     });
             });
         });
     </script>
-
 </x-app-layout>

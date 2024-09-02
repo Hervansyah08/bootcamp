@@ -117,15 +117,16 @@
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, hapus!"
+                    confirmButtonText: "Ya, hapus!",
+                    backdrop: true, // Mengaktifkan backdrop
+                    allowOutsideClick: false // Mencegah klik di luar pop-up
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Gunakan AJAX untuk mengirim form
                         fetch(form.action, {
                             method: 'POST',
                             headers: {
-                                'X-CSRF-TOKEN': document.querySelector(
-                                    'meta[name="csrf-token"]').getAttribute('content'),
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                                 'Accept': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest'
                             },
@@ -136,10 +137,11 @@
                                     title: "Data berhasil dihapus!",
                                     icon: "success",
                                     text: "Klik tombol Oke untuk melanjutkan.",
-                                    confirmButtonText: "Oke"
+                                    confirmButtonText: "Oke",
+                                    backdrop: true, // Menampilkan latar belakang gelap
+                                    allowOutsideClick: false // Mencegah klik di luar pop-up
                                 }).then(() => {
-                                    location
-                                        .reload(); // Reload halaman setelah penghapusan berhasil
+                                    location.reload(); // Reload halaman setelah penghapusan berhasil
                                 });
                             } else {
                                 Swal.fire({

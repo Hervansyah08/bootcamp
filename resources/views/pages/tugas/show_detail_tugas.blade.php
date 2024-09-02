@@ -60,12 +60,12 @@
                                         Pengajuan</a>
                                     <form
                                         action="{{ route('pengumpulan.destroyForUser', [$program->id, $tugas->id, $pengumpulan->id]) }}"
-                                        method="POST" class="">
+                                        method="POST" class="delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
-                                            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Hapus
-                                            Pengajuan</button>
+                                        <button type="button"
+                                            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                                            id="delete-button-{{ $pengumpulan->id }}">Hapus Pengajuan</button>
                                     </form>
                                 </div>
                                 <h4 class="text-xl font-bold mb-4 dark:text-white">Status Pengajuan</h4>
@@ -135,4 +135,82 @@
         </div>
     </div>
     </div>
+
+    <!-- Script SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[id^="delete-button-"]').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); // Mencegah pengiriman form langsung
+                    
+                    console.log('Delete button clicked'); // Ini untuk debug
+
+                    const masterId = this.id.replace('delete-button-', '');
+                    const form = document.querySelector(`form.delete-form[action*="${masterId}"]`); // Menggunakan selector query
+
+                    if (!form) {
+                        console.error('Form not found for ID:', masterId); // Menampilkan pesan kesalahan jika form tidak ditemukan
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: 'Apakah Anda yakin?',
+                        text: "Data yang sudah dihapus tidak bisa dikembalikan!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, Hapus',
+                        cancelButtonText: 'Batal',
+                        backdrop: true,  // Menambahkan latar belakang gelap
+                        allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            console.log('Confirmation received'); // Ini untuk debug
+                            
+                            fetch(form.action, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                    'Accept': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: new FormData(form)
+                            }).then(response => {
+                                if (response.ok) {
+                                    Swal.fire({
+                                        title: 'Berhasil!',
+                                        text: 'Data berhasil dihapus.',
+                                        icon: 'success',
+                                        confirmButtonText: 'OK',
+                                        backdrop: true,  // Menambahkan latar belakang gelap
+                                        allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                    }).then(() => {
+                                        location.reload(); // Reload halaman setelah penghapusan berhasil
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'Terjadi masalah saat menghapus data.',
+                                        icon: 'error',
+                                        backdrop: true,  // Menambahkan latar belakang gelap
+                                        allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                    });
+                                }
+                            }).catch(error => {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Terjadi kesalahan yang tidak terduga.',
+                                    icon: 'error',
+                                    backdrop: true,  // Menambahkan latar belakang gelap
+                                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                });
+                            });
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </x-app-layout>

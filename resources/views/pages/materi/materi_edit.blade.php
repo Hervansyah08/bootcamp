@@ -64,18 +64,20 @@
         </div>
     </div>
 
+    <!-- Script SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.getElementById('edit-button').addEventListener('click', function() {
             const judul = document.getElementById('judul').value.trim();
-            // const file = document.getElementById('file').value.trim();
 
             if (!judul) {
                 Swal.fire({
                     title: 'Lengkapi Semua Kolom',
                     text: 'Kolom Judul tidak boleh kosong.',
                     icon: 'error',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
                 });
                 return; // Stop form submission if validation fails
             }
@@ -87,17 +89,30 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, simpan!'
+                confirmButtonText: 'Ya, simpan!',
+                backdrop: true,
+                allowOutsideClick: false
             }).then((result) => {
                 if (result.isConfirmed) {
+                    // Menampilkan pop-up "Uploading..."
+                    Swal.fire({
+                        title: 'Uploading...',
+                        text: 'Tunggu sebentar, sedang mengunggah perubahan materi.',
+                        icon: 'info',
+                        allowOutsideClick: false,
+                        showConfirmButton: false, // Tidak ada tombol konfirmasi
+                        willOpen: () => {
+                            Swal.showLoading(); // Menampilkan animasi loading
+                        }
+                    });
+
                     // Submit form with AJAX
                     const form = document.getElementById('edit-form');
 
                     fetch(form.action, {
                         method: 'POST',
                         headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .getAttribute('content'),
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                             'Accept': 'application/json',
                             'X-Requested-With': 'XMLHttpRequest'
                         },
@@ -107,23 +122,28 @@
                             Swal.fire({
                                 title: 'Data berhasil diubah!',
                                 icon: 'success',
-                                confirmButtonText: 'Oke'
+                                confirmButtonText: 'Oke',
+                                backdrop: true,
+                                allowOutsideClick: false
                             }).then(() => {
-                                window.location.href =
-                                    "{{ route('materi.showByProgram', $materi->program_id) }}"; // Redirect setelah berhasil
+                                window.location.href = "{{ route('materi.showByProgram', $materi->program_id) }}";
                             });
                         } else {
                             Swal.fire({
                                 title: 'Error!',
                                 text: 'Terjadi masalah saat mengubah data.',
-                                icon: 'error'
+                                icon: 'error',
+                                backdrop: true,
+                                allowOutsideClick: false
                             });
                         }
                     }).catch(error => {
                         Swal.fire({
                             title: 'Error!',
                             text: 'Terjadi kesalahan yang tidak terduga.',
-                            icon: 'error'
+                            icon: 'error',
+                            backdrop: true,
+                            allowOutsideClick: false
                         });
                     });
                 }
