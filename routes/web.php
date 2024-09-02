@@ -101,6 +101,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/kelas', [KelasController::class, 'store'])->name('kelas.store');
     Route::get('/kelas/edit/{kelas}', [KelasController::class, 'edit'])->name('kelas.edit');
     Route::put('kelas/{kelas}', [KelasController::class, 'update'])->name('kelas.update');
+    Route::delete('kelas/{kelas}', [KelasController::class, 'destroy'])->name('kelas.destroy');
 });
 
 require __DIR__ . '/auth.php';

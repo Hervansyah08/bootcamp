@@ -118,4 +118,10 @@ class KelasController extends Controller
 
         return redirect()->route('kelas.showByProgram', $request->program_id)->with('success', 'Kelas berhasil diedit ditambahkan.');
     }
+    public function destroy(Kelas $kelas) //menggunakan route model binding
+    {
+        $kelas->delete();
+
+        return redirect()->route('kelas.showByProgram', $kelas->program_id)->with('success', 'Jadwal Kelas berhasil dihapus.');
+    }
 }
