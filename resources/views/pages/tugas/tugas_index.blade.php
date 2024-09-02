@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Materi') }}
+            {{ __('Tugas') }}
         </h2>
     </x-slot>
 
@@ -29,20 +29,26 @@
                 </form>
                 <div class="p-6 flex flex-wrap text-gray-900 dark:text-gray-100">
                     @if ($programs->isEmpty())
-                        <div class="w-full text-center text-gray-500 dark:text-gray-400">
-                            <p>Anda Belum Mendaftar Program</p>
-                        </div>
+                        @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
+                            <div class="w-full text-center text-gray-500 dark:text-gray-400">
+                                <p>Anda Belum Membuat Program</p>
+                            </div>
+                        @else
+                            <div class="w-full text-center text-gray-500 dark:text-gray-400">
+                                <p>Anda Belum Mendaftar Program</p>
+                            </div>
+                        @endif
                     @else
                         @foreach ($programs as $program)
                             <div
                                 class="max-w-sm p-6 mx-3 mb-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                <a href="{{ route('materi.showByProgram', $program->id) }}">
+                                <a href="{{ route('tugas.showByProgram', $program->id) }}">
                                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                         {{ $program->nama }}</h5>
                                 </a>
                                 @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                     <p class="mb-2 text-xs font-normal text-gray-500 dark:text-gray-400">
-                                        Ditambahkan oleh {{ $program->user?->name ?? 'deleted' }}
+                                        Edit by {{ $program->user?->name ?? 'deleted' }}
                                         <br>
                                         Tanggal Input {{ $program->created_at->format('d-m-Y, H:i') }}
                                         <br>
@@ -52,7 +58,8 @@
                                         {{ $program->deskripsi }}
                                     </p>
                                 @endif
-                                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $program->tugas_count }}
+                                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                    {{ $program->tugas_count }}
                                     Tugas
                                 </p>
                                 <a href="{{ route('tugas.showByProgram', $program->id) }}"

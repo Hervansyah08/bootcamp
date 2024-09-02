@@ -17,11 +17,10 @@ class PengumpulanController extends Controller
     {
         $pengumpulans = Pengumpulan::where('tugas_id', $tugas->id)
             ->with('user')
-            ->get();
+            ->paginate(5);
 
         return view('pages.pengumpulan.pengumpulan_index', compact('pengumpulans', 'tugas', 'program'));
     }
-
 
     public function create(Program $program, Tugas $tugas)
     {

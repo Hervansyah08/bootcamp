@@ -16,7 +16,7 @@
                     </p>
                     @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                         <p class="mb-2 text-xs font-normal text-gray-500 dark:text-gray-400">
-                            Ditambahkan oleh {{ $tugas->user?->name ?? 'deleted' }}
+                            Edit by {{ $tugas->user?->name ?? 'deleted' }}
                         </p>
                     @endif
                     <div class="mb-6">

@@ -19,15 +19,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory(10)->create();
-        Program::factory(10)->create();
-        Master::factory(10)->create();
-        Materi::factory(10)->create();
-        Tugas::factory(10)->create();
-        Pengumpulan::factory(10)->create();
+        // Program::factory(10)->create();
+        // Master::factory(10)->create();
+        // Materi::factory(10)->create();
+        // Tugas::factory(10)->create();
+        // Pengumpulan::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
     }
 }

@@ -11,16 +11,19 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
-                    <h4 class="text-2xl mb-4 font-bold dark:text-white">Pengumpulan Tugas - {{ $tugas->judul }}</h4>
+                    <h4 class="text-2xl mb-4 font-bold dark:text-white">Pengajuan Tugas - {{ $tugas->judul }}</h4>
 
                     @if ($pengumpulans->isEmpty())
-                        <p class="text-center text-gray-500 dark:text-gray-400">Belum ada pengumpulan.</p>
+                        <p class="text-center text-gray-500 dark:text-gray-400">Belum Ada Pengajuan.</p>
                     @else
                         <div class="relative overflow-x-auto">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <thead
                                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            No
+                                        </th>
                                         <th scope="col" class="px-6 py-3">
                                             Username
                                         </th>
@@ -46,8 +49,11 @@
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <th scope="row"
                                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                {{ $pengumpulan->user->name }}
+                                                {{ $pengumpulans->firstItem() + $index }}
                                             </th>
+                                            <td class="px-6 py-4">
+                                                {{ $pengumpulan->user->name }}
+                                            </td>
                                             <td class="px-6 py-4">
                                                 {{ $pengumpulan->judul }}
                                             </td>
@@ -81,13 +87,6 @@
                                                         </button>
                                                     </form>
                                                 </div>
-                                                {{-- <form
-                                                    action="{{ route('pengumpulan.destroy', [$program->id, $tugas->id, $pengumpulan->id]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger">Hapus</button>
-                                                </form> --}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -95,6 +94,7 @@
                             </table>
                         </div>
                     @endif
+                    {{ $pengumpulans->links() }}
                 </div>
             </div>
         </div>
