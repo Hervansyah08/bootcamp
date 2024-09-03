@@ -107,7 +107,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
     Route::get('/quiz/program/{program}', [QuizController::class, 'showByProgram'])->name('quiz.showByProgram');
     Route::get('/quiz/create/{program}', [QuizController::class, 'create'])->name('quiz.create');
-    Route::post('/Quiz', [QuizController::class, 'store'])->name('quiz.store');
+    Route::post('quiz', [QuizController::class, 'store'])->name('quiz.store');
+    Route::delete('quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
 });
 
 require __DIR__ . '/auth.php';

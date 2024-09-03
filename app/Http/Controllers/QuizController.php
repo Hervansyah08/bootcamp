@@ -90,4 +90,12 @@ class QuizController extends Controller
 
         return redirect()->route('quiz.showByProgram', $request->program_id)->with('success', 'Quiz berhasil ditambahkan.');
     }
+
+    public function destroy(Quiz $quiz) //menggunakan route model binding
+    {
+
+        $quiz->delete();
+
+        return redirect()->route('quiz.showByProgram', $quiz->program_id)->with('success', 'Quiz berhasil dihapus.');
+    }
 }
