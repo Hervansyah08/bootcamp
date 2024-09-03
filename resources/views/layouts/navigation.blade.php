@@ -38,6 +38,9 @@
                     <x-nav-link :href="route('kelas.index')" :active="request()->routeIs('kelas.index')">
                         {{ __('Kelas') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('quiz.index')" :active="request()->routeIs('quiz.index')">
+                        {{ __('Quiz') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -147,6 +150,11 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('kelas.index')" :active="request()->routeIs('kelas.index')">
                 {{ __('Kelas') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('quiz.index')" :active="request()->routeIs('quiz.index')">
+                {{ __('Quiz') }}
             </x-responsive-nav-link>
         </div>
 

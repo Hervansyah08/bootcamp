@@ -49,10 +49,10 @@ class KelasController extends Controller
             }
 
             $programs = $query->get();
-            foreach ($programs as $program) {
-                $program->created_at = Carbon::parse($program->created_at)->timezone('Asia/Jakarta');
-                $program->updated_at = Carbon::parse($program->updated_at)->timezone('Asia/Jakarta');
-            }
+            // foreach ($programs as $program) {
+            //     $program->created_at = Carbon::parse($program->created_at)->timezone('Asia/Jakarta');
+            //     $program->updated_at = Carbon::parse($program->updated_at)->timezone('Asia/Jakarta');
+            // }
         }
 
         return view('pages.kelas.kelas_index', compact('programs', 'search'));
@@ -120,6 +120,7 @@ class KelasController extends Controller
     }
     public function destroy(Kelas $kelas) //menggunakan route model binding
     {
+
         $kelas->delete();
 
         return redirect()->route('kelas.showByProgram', $kelas->program_id)->with('success', 'Jadwal Kelas berhasil dihapus.');
