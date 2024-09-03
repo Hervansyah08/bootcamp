@@ -56,7 +56,9 @@
                     title: 'Lengkapi Semua Kolom',
                     text: 'Kolom Nama Program tidak boleh kosong.',
                     icon: 'error',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    backdrop: true,  // Menambahkan latar belakang gelap
+                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                 });
                 return; // Stop form submission if validation fails
             }
@@ -69,7 +71,9 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, simpan!'
+                confirmButtonText: 'Ya, simpan!',
+                backdrop: true,  // Menambahkan latar belakang gelap
+                allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Submit form dengan AJAX
@@ -88,7 +92,9 @@
                             Swal.fire({
                                 title: 'Data berhasil diubah!',
                                 icon: 'success',
-                                confirmButtonText: 'Oke'
+                                confirmButtonText: 'Oke',
+                                backdrop: true,  // Menambahkan latar belakang gelap
+                                allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                             }).then(() => {
                                 window.location.href = "{{ route('program.index') }}"; // Redirect setelah berhasil
                             });
@@ -96,14 +102,18 @@
                             Swal.fire({
                                 title: 'Error!',
                                 text: 'Terjadi masalah saat mengubah data.',
-                                icon: 'error'
+                                icon: 'error',
+                                backdrop: true,  // Menambahkan latar belakang gelap
+                                allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                             });
                         }
                     }).catch(error => {
                         Swal.fire({
                             title: 'Error!',
                             text: 'Terjadi kesalahan yang tidak terduga.',
-                            icon: 'error'
+                            icon: 'error',
+                            backdrop: true,  // Menambahkan latar belakang gelap
+                            allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                         });
                     });
                 }

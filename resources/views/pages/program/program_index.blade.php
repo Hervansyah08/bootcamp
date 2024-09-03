@@ -131,7 +131,9 @@
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, hapus!"
+                    confirmButtonText: "Ya, hapus!",
+                    backdrop: true,  // Menambahkan latar belakang gelap
+                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Gunakan AJAX untuk mengirim form
@@ -150,23 +152,28 @@
                                     title: "Data berhasil dihapus!",
                                     icon: "success",
                                     text: "Klik tombol Oke untuk melanjutkan.",
-                                    confirmButtonText: "Oke"
+                                    confirmButtonText: "Oke",
+                                    backdrop: true,  // Menambahkan latar belakang gelap
+                                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                                 }).then(() => {
-                                    location
-                                        .reload(); // Reload halaman setelah penghapusan berhasil
+                                    location.reload(); // Reload halaman setelah penghapusan berhasil
                                 });
                             } else {
                                 Swal.fire({
                                     title: "Error!",
                                     text: "Terjadi masalah saat menghapus data.",
-                                    icon: "error"
+                                    icon: "error",
+                                    backdrop: true,  // Menambahkan latar belakang gelap
+                                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                                 });
                             }
                         }).catch(error => {
                             Swal.fire({
                                 title: "Error!",
                                 text: "Terjadi kesalahan yang tidak terduga.",
-                                icon: "error"
+                                icon: "error",
+                                backdrop: true,  // Menambahkan latar belakang gelap
+                                allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                             });
                         });
                     }

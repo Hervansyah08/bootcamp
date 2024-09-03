@@ -75,19 +75,25 @@
                     title: "Pilih Admin Terlebih Dahulu",
                     text: "Anda harus memilih admin sebelum melanjutkan.",
                     icon: "warning",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    backdrop: true,  // Menambahkan latar belakang gelap
+                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                 });
             } else if (nama === '') {
                 Swal.fire({
                     title: "Lengkapi Semua Kolom",
                     text: "Kolom Nama Program tidak boleh kosong.",
                     icon: "warning",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    backdrop: true,  // Menambahkan latar belakang gelap
+                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                 });
             } else {
                 Swal.fire({
                     title: "Program Berhasil Ditambah",
-                    icon: "success"
+                    icon: "success",
+                    backdrop: true,  // Menambahkan latar belakang gelap
+                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Submit form setelah SweetAlert dikonfirmasi

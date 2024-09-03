@@ -195,15 +195,16 @@
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Ya, Hapus',
-                    cancelButtonText: 'Cancel'
+                    cancelButtonText: 'Cancel',
+                    backdrop: true,  // Menambahkan latar belakang gelap
+                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Gunakan AJAX untuk mengirim form
                         fetch(form.action, {
                             method: 'POST',
                             headers: {
-                                'X-CSRF-TOKEN': document.querySelector(
-                                    'meta[name="csrf-token"]').getAttribute('content'),
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                                 'Accept': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest'
                             },
@@ -214,23 +215,28 @@
                                     title: 'Berhasil!',
                                     text: 'Data berhasil dihapus.',
                                     icon: 'success',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    backdrop: true,  // Menambahkan latar belakang gelap
+                                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                                 }).then(() => {
-                                    location
-                                        .reload(); // Reload halaman setelah penghapusan berhasil
+                                    location.reload(); // Reload halaman setelah penghapusan berhasil
                                 });
                             } else {
                                 Swal.fire({
                                     title: 'Error!',
                                     text: 'Terjadi masalah saat menghapus data.',
-                                    icon: 'error'
+                                    icon: 'error',
+                                    backdrop: true,  // Menambahkan latar belakang gelap
+                                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                                 });
                             }
                         }).catch(error => {
                             Swal.fire({
                                 title: 'Error!',
                                 text: 'Terjadi kesalahan yang tidak terduga.',
-                                icon: 'error'
+                                icon: 'error',
+                                backdrop: true,  // Menambahkan latar belakang gelap
+                                allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                             });
                         });
                     }

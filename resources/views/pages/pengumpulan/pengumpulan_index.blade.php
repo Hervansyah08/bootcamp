@@ -75,11 +75,13 @@
                                                         Edit
                                                     </a>
                                                     <form
+                                                        id="delete-form-{{ $pengumpulan->id }}"
                                                         action="{{ route('pengumpulan.destroy', [$program->id, $tugas->id, $pengumpulan->id]) }}"
                                                         method="POST" class="delete-form">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit"
+                                                        <button type="button"
+                                                            id="delete-button-{{ $pengumpulan->id }}"
                                                             class="px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 delete-button">
                                                             Hapus
                                                         </button>
@@ -97,4 +99,75 @@
             </div>
         </div>
     </div>
+
+    <!-- Script SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[id^="delete-button-"]').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); // Mencegah pengiriman form langsung
+                    console.log('Delete button clicked'); // Tambahkan ini untuk debug
+
+                    const masterId = this.id.replace('delete-button-', '');
+                    const form = document.getElementById('delete-form-' + masterId);
+
+                    Swal.fire({
+                        title: 'Apakah Anda yakin?',
+                        text: "Data yang sudah dihapus tidak bisa dikembalikan!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, Hapus',
+                        cancelButtonText: 'Batal',
+                        backdrop: true,  // Menambahkan latar belakang gelap
+                        allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            console.log('Confirmation received'); // Tambahkan ini untuk debug
+                            fetch(form.action, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                    'Accept': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: new FormData(form)
+                            }).then(response => {
+                                if (response.ok) {
+                                    Swal.fire({
+                                        title: 'Berhasil!',
+                                        text: 'Data berhasil dihapus.',
+                                        icon: 'success',
+                                        confirmButtonText: 'OK',
+                                        backdrop: true,  // Menambahkan latar belakang gelap
+                                        allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                    }).then(() => {
+                                        location.reload(); // Reload halaman setelah penghapusan berhasil
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'Terjadi masalah saat menghapus data.',
+                                        icon: 'error',
+                                        backdrop: true,  // Menambahkan latar belakang gelap
+                                        allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                    });
+                                }
+                            }).catch(error => {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Terjadi kesalahan yang tidak terduga.',
+                                    icon: 'error',
+                                    backdrop: true,  // Menambahkan latar belakang gelap
+                                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                });
+                            });
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </x-app-layout>

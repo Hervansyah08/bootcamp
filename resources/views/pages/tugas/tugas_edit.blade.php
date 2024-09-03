@@ -61,18 +61,32 @@
         </div>
     </div>
 
+
+    <!-- Script SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.getElementById('edit-button').addEventListener('click', function() {
             const judul = document.getElementById('judul').value.trim();
-            // const file = document.getElementById('file').value.trim();
+            const deadline = document.getElementById('deadline').value.trim();
 
             if (!judul) {
                 Swal.fire({
                     title: 'Lengkapi Semua Kolom',
                     text: 'Kolom Judul tidak boleh kosong.',
                     icon: 'error',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false // Mencegah klik di luar pop-up
+                });
+                return; // Stop form submission if validation fails
+            }
+
+            if (!deadline) {
+                Swal.fire({
+                    title: 'Deadline Masih Kosong',
+                    text: 'Silakan isi deadline untuk tugas.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false // Mencegah klik di luar pop-up
                 });
                 return; // Stop form submission if validation fails
             }
@@ -84,43 +98,61 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, simpan!'
+                confirmButtonText: 'Ya, simpan!',
+                allowOutsideClick: false // Mencegah klik di luar pop-up
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Submit form with AJAX
+                    // Menampilkan pop-up "Uploading..."
+                    Swal.fire({
+                        title: 'Uploading...',
+                        text: 'Tunggu sebentar, sedang mengunggah perubahan tugas.',
+                        icon: 'info',
+                        allowOutsideClick: false, // Mencegah klik di luar pop-up
+                        showConfirmButton: false, // Menghilangkan tombol konfirmasi
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    // Submit form dengan AJAX
                     const form = document.getElementById('edit-form');
 
                     fetch(form.action, {
                         method: 'POST',
                         headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .getAttribute('content'),
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                             'Accept': 'application/json',
                             'X-Requested-With': 'XMLHttpRequest'
                         },
                         body: new FormData(form)
                     }).then(response => {
+                        Swal.close(); // Menutup pop-up "Uploading..." setelah mendapat respon
+
                         if (response.ok) {
                             Swal.fire({
                                 title: 'Data berhasil diubah!',
                                 icon: 'success',
-                                confirmButtonText: 'Oke'
+                                confirmButtonText: 'Oke',
+                                allowOutsideClick: false // Mencegah klik di luar pop-up
                             }).then(() => {
-                                window.location.href =
-                                    "{{ route('tugas.showByProgram', $tugas->program_id) }}"; // Redirect setelah berhasil
+                                window.location.href = "{{ route('tugas.showByProgram', $tugas->program_id) }}"; // Redirect setelah berhasil
                             });
                         } else {
                             Swal.fire({
                                 title: 'Error!',
                                 text: 'Terjadi masalah saat mengubah data.',
-                                icon: 'error'
+                                icon: 'error',
+                                allowOutsideClick: false // Mencegah klik di luar pop-up
                             });
                         }
                     }).catch(error => {
+                        Swal.close(); // Menutup pop-up "Uploading..." jika ada error
+
                         Swal.fire({
                             title: 'Error!',
                             text: 'Terjadi kesalahan yang tidak terduga.',
-                            icon: 'error'
+                            icon: 'error',
+                            allowOutsideClick: false // Mencegah klik di luar pop-up
                         });
                     });
                 }
