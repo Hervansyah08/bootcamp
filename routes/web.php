@@ -108,6 +108,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/quiz/program/{program}', [QuizController::class, 'showByProgram'])->name('quiz.showByProgram');
     Route::get('/quiz/create/{program}', [QuizController::class, 'create'])->name('quiz.create');
     Route::post('quiz', [QuizController::class, 'store'])->name('quiz.store');
+    Route::get('/quiz/edit/{quiz}', [QuizController::class, 'edit'])->name('quiz.edit');
+    Route::put('quiz/{quiz}', [QuizController::class, 'update'])->name('quiz.update');
     Route::delete('quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
 });
 

@@ -74,12 +74,12 @@
                                         <td class="px-6 py-4 ">
                                             @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                                                 <div class="inline-flex rounded-md shadow-sm mt-3 " role="group">
-                                                    {{-- <a href="{{ route('kelas.edit', $kelas->id) }}" aria-current="page"
+                                                    <a href="{{ route('quiz.edit', $quiz->id) }}" aria-current="page"
                                                         class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
                                                         Edit
-                                                    </a> --}}
-                                                    <form action="{{ route('quiz.destroy', $quiz->id) }}" method="POST"
-                                                        class="delete-form">
+                                                    </a>
+                                                    <form action="{{ route('quiz.destroy', $quiz->id) }}"
+                                                        method="POST" class="delete-form">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"

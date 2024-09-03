@@ -91,6 +91,33 @@ class QuizController extends Controller
         return redirect()->route('quiz.showByProgram', $request->program_id)->with('success', 'Quiz berhasil ditambahkan.');
     }
 
+    public function edit(Quiz $quiz)
+    {
+        return view('pages.quiz.quiz_edit', compact('quiz'));
+    }
+
+    public function update(Request $request, Quiz $quiz)
+    {
+        // Validasi input
+        $request->validate([
+            'program_id' => 'required|exists:program,id',
+            'judul' => 'required|string|max:255',
+            'detail' => 'nullable|string',
+            'link' => 'required|string',
+        ]);
+
+        // Update data program
+        $quiz->update([
+            'user_id' => Auth::id(),
+            'program_id' => $request->program_id,
+            'judul' => $request->judul,
+            'detail' => $request->detail,
+            'link' => $request->link,
+        ]);
+
+        return redirect()->route('quiz.showByProgram', $request->program_id)->with('success', 'Quiz berhasil diedit ditambahkan.');
+    }
+
     public function destroy(Quiz $quiz) //menggunakan route model binding
     {
 
