@@ -65,4 +65,29 @@ class QuizController extends Controller
 
         return view('pages.quiz.show_by_program', compact('program', 'quizs'));
     }
+
+    public function create(Program $program)
+    {
+        return view('pages.quiz.quiz_create', compact('program'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'program_id' => 'required|exists:program,id',
+            'judul' => 'required|string|max:255',
+            'detail' => 'nullable|string',
+            'link' => 'required|string',
+        ]);
+
+        Quiz::create([
+            'user_id' => Auth::id(),
+            'program_id' => $request->program_id,
+            'judul' => $request->judul,
+            'detail' => $request->detail,
+            'link' => $request->link,
+        ]);
+
+        return redirect()->route('quiz.showByProgram', $request->program_id)->with('success', 'Quiz berhasil ditambahkan.');
+    }
 }

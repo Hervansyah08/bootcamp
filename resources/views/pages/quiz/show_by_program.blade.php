@@ -12,12 +12,11 @@
                     <h3 class="text-2xl text-center font-bold mb-5 dark:text-white">Quiz untuk Program:
                         {{ $program->nama }}
                     </h3>
-                    {{-- @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
+                    @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin'))
                         <div class="mb-8">
-                            <x-biru-link href="{{ route('kelas.create', $program->id) }}">Tambah Jadwal
-                                Kelas</x-biru-link>
+                            <x-biru-link href="{{ route('quiz.create', $program->id) }}">Tambah Quiz</x-biru-link>
                         </div>
-                    @endif --}}
+                    @endif
                     <div class="relative overflow-x-auto">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead
