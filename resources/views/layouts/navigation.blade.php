@@ -41,6 +41,11 @@
                     <x-nav-link :href="route('quiz.index')" :active="request()->routeIs('quiz.index')">
                         {{ __('Quiz') }}
                     </x-nav-link>
+                    @if (Auth::check() && Auth::user()->role == 'super_admin')
+                        <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                            {{ __('User') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -157,6 +162,13 @@
                 {{ __('Quiz') }}
             </x-responsive-nav-link>
         </div>
+        @if (Auth::check() && Auth::user()->role == 'super_admin')
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                    {{ __('User') }}
+                </x-responsive-nav-link>
+            </div>
+        @endif
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
