@@ -2,6 +2,8 @@
 
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\MasterController;
@@ -9,7 +11,6 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\PengumpulanController;
-use App\Models\Kelas;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -30,11 +31,11 @@ Route::middleware('auth')->group(function () {
 });
 
 // Rute untuk User
-Route::middleware(['auth', 'user'])->group(function () {
-    Route::get('/user', function () {
-        return view('user.index');
-    })->middleware(['verified'])->name('user.index');
-});
+// Route::middleware(['auth', 'user'])->group(function () {
+//     Route::get('/user', function () {
+//         return view('user.index');
+//     })->middleware(['verified'])->name('user.index');
+// });
 
 // rute untuk admin dan super admin
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -102,6 +103,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/kelas/edit/{kelas}', [KelasController::class, 'edit'])->name('kelas.edit');
     Route::put('kelas/{kelas}', [KelasController::class, 'update'])->name('kelas.update');
     Route::delete('kelas/{kelas}', [KelasController::class, 'destroy'])->name('kelas.destroy');
+
+    // Quiz
+    Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
+    Route::get('/quiz/program/{program}', [QuizController::class, 'showByProgram'])->name('quiz.showByProgram');
+    Route::get('/quiz/create/{program}', [QuizController::class, 'create'])->name('quiz.create');
+    Route::post('quiz', [QuizController::class, 'store'])->name('quiz.store');
+    Route::get('/quiz/edit/{quiz}', [QuizController::class, 'edit'])->name('quiz.edit');
+    Route::put('quiz/{quiz}', [QuizController::class, 'update'])->name('quiz.update');
+    Route::delete('quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
+
+    // role
+    Route::get('/user', [RoleController::class, 'showUser'])->name('user.index');
 });
 
 require __DIR__ . '/auth.php';

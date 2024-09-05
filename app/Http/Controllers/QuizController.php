@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Kelas;
+use App\Models\Quiz;
 use App\Models\Master;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class KelasController extends Controller
+class QuizController extends Controller
 {
     public function index(Request $request)
     {
@@ -55,21 +54,21 @@ class KelasController extends Controller
             // }
         }
 
-        return view('pages.kelas.kelas_index', compact('programs', 'search'));
+        return view('pages.quiz.quiz_index', compact('programs', 'search'));
     }
 
     public function showByProgram(Program $program)
     {
-        $kelass = Kelas::with('user')
+        $quizs = Quiz::with('user')
             ->where('program_id', $program->id)
             ->paginate(5);
 
-        return view('pages.kelas.show_by_program', compact('program', 'kelass'));
+        return view('pages.quiz.show_by_program', compact('program', 'quizs'));
     }
 
     public function create(Program $program)
     {
-        return view('pages.kelas.kelas_create', compact('program'));
+        return view('pages.quiz.quiz_create', compact('program'));
     }
 
     public function store(Request $request)
@@ -81,7 +80,7 @@ class KelasController extends Controller
             'link' => 'required|string',
         ]);
 
-        Kelas::create([
+        Quiz::create([
             'user_id' => Auth::id(),
             'program_id' => $request->program_id,
             'judul' => $request->judul,
@@ -89,15 +88,15 @@ class KelasController extends Controller
             'link' => $request->link,
         ]);
 
-        return redirect()->route('kelas.showByProgram', $request->program_id)->with('success', 'Kelas berhasil ditambahkan.');
+        return redirect()->route('quiz.showByProgram', $request->program_id)->with('success', 'Quiz berhasil ditambahkan.');
     }
 
-    public function edit(Kelas $kelas)
+    public function edit(Quiz $quiz)
     {
-        return view('pages.kelas.kelas_edit', compact('kelas'));
+        return view('pages.quiz.quiz_edit', compact('quiz'));
     }
 
-    public function update(Request $request, Kelas $kelas)
+    public function update(Request $request, Quiz $quiz)
     {
         // Validasi input
         $request->validate([
@@ -108,7 +107,7 @@ class KelasController extends Controller
         ]);
 
         // Update data program
-        $kelas->update([
+        $quiz->update([
             'user_id' => Auth::id(),
             'program_id' => $request->program_id,
             'judul' => $request->judul,
@@ -116,13 +115,14 @@ class KelasController extends Controller
             'link' => $request->link,
         ]);
 
-        return redirect()->route('kelas.showByProgram', $request->program_id)->with('success', 'Kelas berhasil diedit ditambahkan.');
+        return redirect()->route('quiz.showByProgram', $request->program_id)->with('success', 'Quiz berhasil diedit ditambahkan.');
     }
-    public function destroy(Kelas $kelas) //menggunakan route model binding
+
+    public function destroy(Quiz $quiz) //menggunakan route model binding
     {
 
-        $kelas->delete();
+        $quiz->delete();
 
-        return redirect()->route('kelas.showByProgram', $kelas->program_id)->with('success', 'Jadwal Kelas berhasil dihapus.');
+        return redirect()->route('quiz.showByProgram', $quiz->program_id)->with('success', 'Quiz berhasil dihapus.');
     }
 }

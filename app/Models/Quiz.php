@@ -6,17 +6,18 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Program extends Model
+class Quiz extends Model
 {
     use HasFactory;
 
-    protected $table = 'program';
+    protected $table = 'quizzes';
 
     protected $fillable = [
         'user_id',
-        'nama',
-        'deskripsi',
-        'status',
+        'program_id',
+        'judul',
+        'detail',
+        'link',
     ];
 
     protected $dates = ['created_at', 'updated_at'];
@@ -35,29 +36,8 @@ class Program extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function master()
+    public function program()
     {
-        return $this->hasMany(Master::class);
-    }
-    public function materi()
-    {
-        return $this->hasMany(Materi::class);
-    }
-    public function tugas()
-    {
-        return $this->hasMany(Tugas::class);
-    }
-    public function pengumpulan()
-    {
-        return $this->hasMany(Pengumpulan::class);
-    }
-
-    public function kelas()
-    {
-        return $this->hasMany(Kelas::class);
-    }
-    public function quiz()
-    {
-        return $this->hasMany(Quiz::class);
+        return $this->belongsTo(Program::class);
     }
 }

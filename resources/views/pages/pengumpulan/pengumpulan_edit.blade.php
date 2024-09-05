@@ -51,13 +51,8 @@
                                 <a href="{{ route('tugas.showDetailTugas', [$pengumpulan->program_id, $pengumpulan->tugas_id]) }}"
                                     class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Back</a>
                             @endif
-<<<<<<< HEAD
                             <button type="button" id="edit-button"
                                 class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit
-=======
-                            <button type="submit" id="simpan-button"
-                                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">Edit
->>>>>>> a554d9f5b08fc444face21a63ea0fb53aa49db08
                                 Pengajuan</button>
                         </div>
                     </form>
