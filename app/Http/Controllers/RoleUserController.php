@@ -66,4 +66,11 @@ class RoleUserController extends Controller
         // Redirect ke halaman program dengan pesan sukses
         return redirect()->route('user.index')->with('success', 'User berhasil diperbarui.');
     }
+
+    public function destroy(User $user) //menggunakan route model binding
+    {
+        $user->delete();
+
+        return redirect()->route('user.index')->with('success', 'User berhasil dihapus.');
+    }
 }
