@@ -45,7 +45,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($pengumpulans as $pengumpulan)
+                                    @foreach ($pengumpulans as $index => $pengumpulan)
                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <th scope="row"
                                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -74,8 +74,7 @@
                                                         class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
                                                         Edit
                                                     </a>
-                                                    <form
-                                                        id="delete-form-{{ $pengumpulan->id }}"
+                                                    <form id="delete-form-{{ $pengumpulan->id }}"
                                                         action="{{ route('pengumpulan.destroy', [$program->id, $tugas->id, $pengumpulan->id]) }}"
                                                         method="POST" class="delete-form">
                                                         @csrf
@@ -103,7 +102,7 @@
     <!-- Script SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('[id^="delete-button-"]').forEach(button => {
                 button.addEventListener('click', function(event) {
                     event.preventDefault(); // Mencegah pengiriman form langsung
@@ -121,15 +120,18 @@
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Ya, Hapus',
                         cancelButtonText: 'Batal',
-                        backdrop: true,  // Menambahkan latar belakang gelap
-                        allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                        backdrop: true, // Menambahkan latar belakang gelap
+                        allowOutsideClick: false // Menonaktifkan klik di luar pop-up
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            console.log('Confirmation received'); // Tambahkan ini untuk debug
+                            console.log(
+                                'Confirmation received'); // Tambahkan ini untuk debug
                             fetch(form.action, {
                                 method: 'POST',
                                 headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').getAttribute(
+                                        'content'),
                                     'Accept': 'application/json',
                                     'X-Requested-With': 'XMLHttpRequest'
                                 },
@@ -141,18 +143,19 @@
                                         text: 'Data berhasil dihapus.',
                                         icon: 'success',
                                         confirmButtonText: 'OK',
-                                        backdrop: true,  // Menambahkan latar belakang gelap
-                                        allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                        backdrop: true, // Menambahkan latar belakang gelap
+                                        allowOutsideClick: false // Menonaktifkan klik di luar pop-up
                                     }).then(() => {
-                                        location.reload(); // Reload halaman setelah penghapusan berhasil
+                                        location
+                                            .reload(); // Reload halaman setelah penghapusan berhasil
                                     });
                                 } else {
                                     Swal.fire({
                                         title: 'Error!',
                                         text: 'Terjadi masalah saat menghapus data.',
                                         icon: 'error',
-                                        backdrop: true,  // Menambahkan latar belakang gelap
-                                        allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                        backdrop: true, // Menambahkan latar belakang gelap
+                                        allowOutsideClick: false // Menonaktifkan klik di luar pop-up
                                     });
                                 }
                             }).catch(error => {
@@ -160,8 +163,8 @@
                                     title: 'Error!',
                                     text: 'Terjadi kesalahan yang tidak terduga.',
                                     icon: 'error',
-                                    backdrop: true,  // Menambahkan latar belakang gelap
-                                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                    backdrop: true, // Menambahkan latar belakang gelap
+                                    allowOutsideClick: false // Menonaktifkan klik di luar pop-up
                                 });
                             });
                         }

@@ -9,8 +9,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg lg:relative">
                 <div class="p-6 text-gray-900 dark:text-gray-100 ">
-                    {{-- <x-biru-link href="{{ route('program.create') }}">Tambah </x-biru-link>
-                    <form action="{{ route('program.search') }}" method="GET"
+                    <x-biru-link href="{{ route('user.create') }}">Tambah User</x-biru-link>
+                    {{-- <form action="{{ route('program.search') }}" method="GET"
                         class="w-full mt-6 lg:absolute lg:right-7 lg:top-4 lg:mt-0 lg:max-w-sm">
                         <label for="default-search"
                             class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>

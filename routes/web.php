@@ -10,6 +10,7 @@ use App\Http\Controllers\MasterController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\RoleUserController;
 use App\Http\Controllers\PengumpulanController;
 
 Route::get('/', function () {
@@ -114,7 +115,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
 
     // role
-    Route::get('/user', [RoleController::class, 'showUser'])->name('user.index');
+    Route::get('/user', [RoleUserController::class, 'index'])->name('user.index');
+    Route::get('/user/create', [RoleUserController::class, 'create'])->name('user.create');
+    Route::post('/user', [RoleUserController::class, 'store'])->name('user.store');
 });
 
 require __DIR__ . '/auth.php';

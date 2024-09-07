@@ -51,14 +51,9 @@
                                 <a href="{{ route('tugas.showDetailTugas', [$pengumpulan->program_id, $pengumpulan->tugas_id]) }}"
                                     class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Back</a>
                             @endif
-<<<<<<< HEAD
                             <button type="button" id="edit-button"
                                 class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit
-=======
-                            <button type="submit" id="simpan-button"
-                                class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">Edit
->>>>>>> a554d9f5b08fc444face21a63ea0fb53aa49db08
-                                Pengajuan</button>
+
                         </div>
                     </form>
                 </div>
@@ -79,8 +74,8 @@
                     text: 'Kolom Judul tidak boleh kosong.',
                     icon: 'error',
                     confirmButtonText: 'OK',
-                    backdrop: true,  // Menambahkan latar belakang gelap
-                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                    backdrop: true, // Menambahkan latar belakang gelap
+                    allowOutsideClick: false // Menonaktifkan klik di luar pop-up
                 });
                 return; // Stop form submission if validation fails
             }
@@ -93,8 +88,8 @@
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ya, simpan!',
-                backdrop: true,  // Menambahkan latar belakang gelap
-                allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                backdrop: true, // Menambahkan latar belakang gelap
+                allowOutsideClick: false // Menonaktifkan klik di luar pop-up
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Tampilkan pop-up "Uploading..."
@@ -116,7 +111,8 @@
                     fetch(form.action, {
                         method: 'POST',
                         headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content'),
                             'Accept': 'application/json',
                             'X-Requested-With': 'XMLHttpRequest'
                         },
@@ -128,13 +124,15 @@
                                 title: 'Data berhasil diubah!',
                                 icon: 'success',
                                 confirmButtonText: 'Oke',
-                                backdrop: true,  // Menambahkan latar belakang gelap
-                                allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                backdrop: true, // Menambahkan latar belakang gelap
+                                allowOutsideClick: false // Menonaktifkan klik di luar pop-up
                             }).then(() => {
                                 if (userRole === 'admin' || userRole === 'super_admin') {
-                                    window.location.href = "{{ route('pengumpulan.index', [$pengumpulan->program_id, $pengumpulan->tugas_id]) }}"; // Redirect untuk admin
+                                    window.location.href =
+                                        "{{ route('pengumpulan.index', [$pengumpulan->program_id, $pengumpulan->tugas_id]) }}"; // Redirect untuk admin
                                 } else {
-                                    window.location.href = "{{ route('tugas.showDetailTugas', [$pengumpulan->program_id, $pengumpulan->tugas_id]) }}"; // Redirect untuk user
+                                    window.location.href =
+                                        "{{ route('tugas.showDetailTugas', [$pengumpulan->program_id, $pengumpulan->tugas_id]) }}"; // Redirect untuk user
                                 }
                             });
                         } else {
@@ -142,8 +140,8 @@
                                 title: 'Error!',
                                 text: 'Terjadi masalah saat mengubah data.',
                                 icon: 'error',
-                                backdrop: true,  // Menambahkan latar belakang gelap
-                                allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                backdrop: true, // Menambahkan latar belakang gelap
+                                allowOutsideClick: false // Menonaktifkan klik di luar pop-up
                             });
                         }
                     }).catch(error => {
@@ -152,8 +150,8 @@
                             title: 'Error!',
                             text: 'Terjadi kesalahan yang tidak terduga.',
                             icon: 'error',
-                            backdrop: true,  // Menambahkan latar belakang gelap
-                            allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                            backdrop: true, // Menambahkan latar belakang gelap
+                            allowOutsideClick: false // Menonaktifkan klik di luar pop-up
                         });
                     });
                 }
