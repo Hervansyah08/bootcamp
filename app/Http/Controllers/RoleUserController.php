@@ -73,4 +73,23 @@ class RoleUserController extends Controller
 
         return redirect()->route('user.index')->with('success', 'User berhasil dihapus.');
     }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->input('search');
+
+        // Cek apakah keyword kosong
+        if (empty($keyword)) {
+            // Jika kosong, ambil semua data
+            $users = User::paginate(5);
+        } else {
+            // Jika tidak kosong, lakukan pencarian
+            $users = User::where('name', 'like', "%" . $keyword . "%")
+                ->orWhere('email', 'like', "%" . $keyword . "%")
+                ->paginate(5)
+                ->withQueryString();
+        }
+
+        return view('pages.role.user.user_index', compact('users'));
+    }
 }

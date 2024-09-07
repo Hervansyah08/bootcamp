@@ -121,6 +121,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/user/edit/{user}', [RoleUserController::class, 'edit'])->name('user.edit');
     Route::put('user/{user}', [RoleUserController::class, 'update'])->name('user.update');
     Route::delete('user/{user}', [RoleUserController::class, 'destroy'])->name('user.destroy');
+    Route::get('/user/search', [RoleUserController::class, 'search'])->name('user.search');
 });
 
 require __DIR__ . '/auth.php';
