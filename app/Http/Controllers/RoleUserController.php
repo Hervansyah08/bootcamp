@@ -43,6 +43,27 @@ class RoleUserController extends Controller
 
     public function edit(User $user) //menggunakan route model binding
     {
-        return view('pages.program.program_edit', compact('user'));
+        return view('pages.role.user.user_edit', compact('user'));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|string',
+        ]);
+
+
+        // Update data program
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+        ]);
+
+        // Redirect ke halaman program dengan pesan sukses
+        return redirect()->route('user.index')->with('success', 'User berhasil diperbarui.');
     }
 }

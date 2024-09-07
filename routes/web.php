@@ -118,6 +118,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/user', [RoleUserController::class, 'index'])->name('user.index');
     Route::get('/user/create', [RoleUserController::class, 'create'])->name('user.create');
     Route::post('/user', [RoleUserController::class, 'store'])->name('user.store');
+    Route::get('/user/edit/{user}', [RoleUserController::class, 'edit'])->name('user.edit');
+    Route::put('user/{user}', [RoleUserController::class, 'update'])->name('user.update');
 });
 
 require __DIR__ . '/auth.php';
