@@ -127,6 +127,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // admin
     Route::get('/admin', [RoleAdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/create', [RoleAdminController::class, 'create'])->name('admin.create');
+    Route::post('/admin', [RoleAdminController::class, 'store'])->name('admin.store');
 });
 
 require __DIR__ . '/auth.php';
