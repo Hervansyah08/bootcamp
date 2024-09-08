@@ -11,6 +11,7 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\RoleUserController;
+use App\Http\Controllers\RoleAdminController;
 use App\Http\Controllers\PengumpulanController;
 
 Route::get('/', function () {
@@ -115,6 +116,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
 
     // role
+    // user
     Route::get('/user', [RoleUserController::class, 'index'])->name('user.index');
     Route::get('/user/create', [RoleUserController::class, 'create'])->name('user.create');
     Route::post('/user', [RoleUserController::class, 'store'])->name('user.store');
@@ -122,6 +124,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('user/{user}', [RoleUserController::class, 'update'])->name('user.update');
     Route::delete('user/{user}', [RoleUserController::class, 'destroy'])->name('user.destroy');
     Route::get('/user/search', [RoleUserController::class, 'search'])->name('user.search');
+
+    // admin
+    Route::get('/admin', [RoleAdminController::class, 'index'])->name('admin.index');
 });
 
 require __DIR__ . '/auth.php';

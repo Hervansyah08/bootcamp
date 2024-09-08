@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('User') }}
+            {{ __('Admin') }}
         </h2>
     </x-slot>
 
@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg lg:relative">
                 <div class="p-6 text-gray-900 dark:text-gray-100 ">
-                    <x-biru-link href="{{ route('user.create') }}">Tambah User</x-biru-link>
+                    {{-- <x-biru-link href="{{ route('user.create') }}">Tambah User</x-biru-link>
                     <form action="{{ route('user.search') }}" method="GET"
                         class="w-full mt-6 lg:absolute lg:right-7 lg:top-4 lg:mt-0 lg:max-w-sm">
                         <label for="default-search"
@@ -24,11 +24,11 @@
                             </div>
                             <input type="search" id="default-search" name="search"
                                 class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Search Nama dan Email" />
+                                placeholder="Search Program dan Deskripsi" />
                             <button type="submit"
                                 class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                         </div>
-                    </form>
+                    </form> --}}
                     <br>
                     <div class="relative overflow-x-auto lg:mt-6">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -81,7 +81,7 @@
                                             {{ $user->updated_at->format('l, d-m-Y, H:i') }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            <div class="inline-flex rounded-md shadow-sm" role="group">
+                                            {{-- <div class="inline-flex rounded-md shadow-sm" role="group">
                                                 <a href="{{ route('user.edit', $user->id) }}" aria-current="page"
                                                     class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
                                                     Edit
@@ -95,7 +95,7 @@
                                                         Hapus
                                                     </button>
                                                 </form>
-                                            </div>
+                                            </div> --}}
                                         </td>
                                     </tr>
                                 @endforeach
