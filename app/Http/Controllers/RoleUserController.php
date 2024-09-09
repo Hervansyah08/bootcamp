@@ -81,7 +81,8 @@ class RoleUserController extends Controller
         // Cek apakah keyword kosong
         if (empty($keyword)) {
             // Jika kosong, ambil semua data
-            $users = User::paginate(5);
+            $users = User::where('role', 'user')
+                ->paginate(5);
         } else {
             // Jika tidak kosong, lakukan pencarian
             $users = User::where('name', 'like', "%" . $keyword . "%")
