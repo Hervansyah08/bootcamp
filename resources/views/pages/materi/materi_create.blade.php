@@ -68,11 +68,47 @@
     <script>
         document.getElementById('simpan-button').addEventListener('click', function() {
             const judul = document.getElementById('judul').value.trim();
-            const file = document.getElementById('file').files.length;
-            const video = document.getElementById('video').files.length;
+            const fileInput = document.getElementById('file');
+            const videoInput = document.getElementById('video');
 
-            // Cek setiap kondisi
-            if (judul === '' && file === 0 && video === 0) {
+            const file = fileInput.files[0];
+            const video = videoInput.files[0];
+
+            // Allowed file types and sizes
+            const allowedFileTypes = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip', 'rar'];
+            const allowedVideoTypes = ['mp4', 'mov', 'ogg', 'qt', 'avi', 'mkv'];
+            const maxFileSize = 20 * 1024 * 1024; // 20 MB
+            const maxVideoSize = 300 * 1024 * 1024; // 300 MB
+
+            let fileTypeValid = true;
+            let videoTypeValid = true;
+            let fileSizeValid = true;
+            let videoSizeValid = true;
+
+            // Check file type and size
+            if (file) {
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                if (!allowedFileTypes.includes(fileExtension)) {
+                    fileTypeValid = false;
+                }
+                if (file.size > maxFileSize) {
+                    fileSizeValid = false;
+                }
+            }
+
+            // Check video type and size
+            if (video) {
+                const videoExtension = video.name.split('.').pop().toLowerCase();
+                if (!allowedVideoTypes.includes(videoExtension)) {
+                    videoTypeValid = false;
+                }
+                if (video.size > maxVideoSize) {
+                    videoSizeValid = false;
+                }
+            }
+
+            // Check each condition
+            if (judul === '' && !file && !video) {
                 Swal.fire({
                     title: "Lengkapi Semua Kolom",
                     text: "Kolom Judul, File, dan Video masih kosong.",
@@ -80,7 +116,7 @@
                     confirmButtonText: "OK",
                     allowOutsideClick: false
                 });
-            } else if (judul === '' && file === 0) {
+            } else if (judul === '' && !file) {
                 Swal.fire({
                     title: "Lengkapi Kolom",
                     text: "Kolom Judul dan File masih kosong.",
@@ -88,7 +124,7 @@
                     confirmButtonText: "OK",
                     allowOutsideClick: false
                 });
-            } else if (judul === '' && video === 0) {
+            } else if (judul === '' && !video) {
                 Swal.fire({
                     title: "Lengkapi Kolom",
                     text: "Kolom Judul dan Video masih kosong.",
@@ -96,7 +132,7 @@
                     confirmButtonText: "OK",
                     allowOutsideClick: false
                 });
-            } else if (file === 0 && video === 0) {
+            } else if (!file && !video) {
                 Swal.fire({
                     title: "Lengkapi Kolom",
                     text: "Kolom File dan Video masih kosong.",
@@ -112,7 +148,7 @@
                     confirmButtonText: "OK",
                     allowOutsideClick: false
                 });
-            } else if (file === 0) {
+            } else if (!file) {
                 Swal.fire({
                     title: "Kolom File Masih Kosong",
                     text: "Silakan unggah File.",
@@ -120,11 +156,43 @@
                     confirmButtonText: "OK",
                     allowOutsideClick: false
                 });
-            } else if (video === 0) {
+            } else if (!video) {
                 Swal.fire({
                     title: "Kolom Video Masih Kosong",
                     text: "Silakan unggah Video.",
                     icon: "warning",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                });
+            } else if (!fileTypeValid) {
+                Swal.fire({
+                    title: "Format File Tidak Valid",
+                    text: `Format file yang diperbolehkan: ${allowedFileTypes.join(', ')}`,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                });
+            } else if (!videoTypeValid) {
+                Swal.fire({
+                    title: "Format Video Tidak Valid",
+                    text: `Format video yang diperbolehkan: ${allowedVideoTypes.join(', ')}`,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                });
+            } else if (!fileSizeValid) {
+                Swal.fire({
+                    title: "Ukuran File Terlalu Besar",
+                    text: `Ukuran file melebihi batas maksimal: 20 MB`,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                });
+            } else if (!videoSizeValid) {
+                Swal.fire({
+                    title: "Ukuran Video Terlalu Besar",
+                    text: `Ukuran video melebihi batas maksimal: 300 MB`,
+                    icon: "error",
                     confirmButtonText: "OK",
                     allowOutsideClick: false
                 });
@@ -140,7 +208,7 @@
                     }
                 });
 
-                // Gunakan AJAX untuk mengirim form dan menangani respons
+                // Use AJAX to submit the form and handle the response
                 const form = document.getElementById('materi-form');
                 const formData = new FormData(form);
 
@@ -149,7 +217,7 @@
                     body: formData
                 })
                 .then(response => {
-                    Swal.close(); // Tutup pop-up loading
+                    Swal.close(); // Close loading popup
                     if (response.ok) {
                         Swal.fire({
                             title: "Materi Berhasil Ditambah",
@@ -158,7 +226,7 @@
                             allowOutsideClick: false
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = "{{ route('materi.index') }}"; // Redirect setelah sukses
+                                window.location.href = "{{ route('materi.index') }}"; // Redirect on success
                             }
                         });
                     } else {
@@ -172,7 +240,7 @@
                     }
                 })
                 .catch(error => {
-                    Swal.close(); // Tutup pop-up loading jika ada error
+                    Swal.close(); // Close loading popup on error
                     Swal.fire({
                         title: "Error",
                         text: "Terjadi kesalahan saat mengunggah materi.",

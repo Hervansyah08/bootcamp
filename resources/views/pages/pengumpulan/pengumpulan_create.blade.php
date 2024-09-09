@@ -75,89 +75,185 @@
     <script>
         document.getElementById('simpan-button').addEventListener('click', function() {
             const judul = document.getElementById('judul').value.trim();
-            const file = document.getElementById('file').files.length;
+            const fileInput = document.getElementById('file');
+            const file = fileInput.files.length;
+            const user_id = document.getElementById('user_id') ? document.getElementById('user_id').value : null;
 
-            // Cek setiap kondisi
-            if (judul === '' && file === 0) {
-                Swal.fire({
-                    title: "Lengkapi Semua Kolom",
-                    text: "Judul dan File harus diisi.",
-                    icon: "warning",
-                    confirmButtonText: "OK",
-                    allowOutsideClick: false
-                });
-            } else if (judul === '') {
-                Swal.fire({
-                    title: "Kolom Judul Masih Kosong",
-                    text: "Silakan isi kolom Judul.",
-                    icon: "warning",
-                    confirmButtonText: "OK",
-                    allowOutsideClick: false
-                });
-            } else if (file === 0) {
-                Swal.fire({
-                    title: "Kolom File Masih Kosong",
-                    text: "Silakan unggah File.",
-                    icon: "warning",
-                    confirmButtonText: "OK",
-                    allowOutsideClick: false
-                });
-            } else {
-                // Tampilkan pop-up "Uploading..."
-                Swal.fire({
-                    title: 'Uploading...',
-                    text: 'Tunggu sebentar, sedang mengunggah pengajuan tugas.',
-                    icon: 'info',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
+            // Mendapatkan peran pengguna dari variabel JavaScript
+            const userRole = @json(Auth::user()->role);
 
-                // Kirim form menggunakan AJAX
-                const form = document.getElementById('submission-form');
-                const formData = new FormData(form);
+            // Daftar format file yang diizinkan
+            const allowedFileTypes = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip', 'rar'];
+            const maxFileSize = 20 * 1024 * 1024; // 20 MB
+            let fileTypeValid = true;
+            let fileSizeValid = true;
 
-                fetch(form.action, {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => {
-                        Swal.close(); // Tutup pop-up loading
-                        if (response.ok) {
-                            Swal.fire({
-                                title: "Pengajuan Berhasil Dikirim",
-                                icon: "success",
-                                confirmButtonText: "OK",
-                                allowOutsideClick: false
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href =
-                                        "{{ route('tugas.showDetailTugas', [$program->id, $tugas->id]) }}"; // Redirect setelah sukses
-                                }
-                            });
-                        } else {
-                            Swal.fire({
-                                title: "Error",
-                                text: "Terjadi kesalahan saat mengirim pengajuan.",
-                                icon: "error",
-                                confirmButtonText: "OK",
-                                allowOutsideClick: false
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        Swal.close(); // Tutup pop-up loading jika ada error
-                        Swal.fire({
-                            title: "Error",
-                            text: "Terjadi kesalahan saat mengirim pengajuan.",
-                            icon: "error",
-                            confirmButtonText: "OK",
-                            allowOutsideClick: false
-                        });
+            // Jika ada file yang diunggah, periksa ekstensi file dan ukuran file
+            if (file > 0) {
+                const fileExtension = fileInput.files[0].name.split('.').pop().toLowerCase();
+                if (!allowedFileTypes.includes(fileExtension)) {
+                    fileTypeValid = false;
+                }
+                if (fileInput.files[0].size > maxFileSize) {
+                    fileSizeValid = false;
+                }
+            }
+
+            // Validasi berdasarkan peran pengguna
+            if (userRole === 'admin' || userRole === 'super_admin') {
+                if (user_id === null || user_id === '') {
+                    Swal.fire({
+                        title: "Pilih User",
+                        text: "Silakan pilih User.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
                     });
+                } else if (judul === '' && file === 0) {
+                    Swal.fire({
+                        title: "Lengkapi Semua Kolom",
+                        text: "Isi Judul, dan Unggah File.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    });
+                } else if (!fileTypeValid) {
+                    Swal.fire({
+                        title: "Format File Tidak Didukung",
+                        text: "Silakan unggah file dengan format: pdf, doc, docx, ppt, pptx, zip, rar.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    });
+                } else if (!fileSizeValid) {
+                    Swal.fire({
+                        title: "Ukuran File Terlalu Besar",
+                        text: "Ukuran file melebihi batas maksimal: 20 MB.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    });
+                } else if (judul === '') {
+                    Swal.fire({
+                        title: "Kolom Judul Masih Kosong",
+                        text: "Silakan isi kolom Judul.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    });
+                } else if (file === 0) {
+                    Swal.fire({
+                        title: "Kolom File Masih Kosong",
+                        text: "Silakan unggah File.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    });
+                } else {
+                    submitForm();
+                }
+            } else {
+                // Validasi untuk user biasa
+                if (judul === '' && file === 0) {
+                    Swal.fire({
+                        title: "Lengkapi Semua Kolom",
+                        text: "Isi Judul dan Unggah File.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    });
+                } else if (!fileTypeValid) {
+                    Swal.fire({
+                        title: "Format File Tidak Didukung",
+                        text: "Silakan unggah file dengan format: pdf, doc, docx, ppt, pptx, zip, rar.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    });
+                } else if (!fileSizeValid) {
+                    Swal.fire({
+                        title: "Ukuran File Terlalu Besar",
+                        text: "Ukuran file melebihi batas maksimal: 20 MB.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    });
+                } else if (judul === '') {
+                    Swal.fire({
+                        title: "Kolom Judul Masih Kosong",
+                        text: "Silakan isi kolom Judul.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    });
+                } else if (file === 0) {
+                    Swal.fire({
+                        title: "Kolom File Masih Kosong",
+                        text: "Silakan unggah File.",
+                        icon: "warning",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    });
+                } else {
+                    submitForm();
+                }
             }
         });
+
+        function submitForm() {
+            // Tampilkan pop-up "Uploading..."
+            Swal.fire({
+                title: 'Uploading...',
+                text: 'Tunggu sebentar, sedang mengunggah pengajuan tugas.',
+                icon: 'info',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Kirim form menggunakan AJAX
+            const form = document.getElementById('submission-form');
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                Swal.close(); // Tutup pop-up loading
+                if (response.ok) {
+                    Swal.fire({
+                        title: "Pengajuan Berhasil Dikirim",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "{{ route('tugas.showDetailTugas', [$program->id, $tugas->id]) }}"; // Redirect setelah sukses
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Terjadi kesalahan saat mengirim pengajuan.",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: false
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.close(); // Tutup pop-up loading jika ada error
+                Swal.fire({
+                    title: "Error",
+                    text: "Terjadi kesalahan saat mengirim pengajuan.",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                });
+            });
+        }
     </script>
 </x-app-layout>

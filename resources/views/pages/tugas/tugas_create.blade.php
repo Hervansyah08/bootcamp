@@ -10,7 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h6 class="text-lg font-bold mb-3 dark:text-white">Tambah Tugas untuk Program: {{ $program->nama }}</h6>
-                    <form id="materi-form" action="{{ route('tugas.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="tugas-form" action="{{ route('tugas.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="program_id" value="{{ $program->id }}">
                         <div class="mb-3">
@@ -45,16 +45,75 @@
     <script>
         document.getElementById('simpan-button').addEventListener('click', function() {
             const judul = document.getElementById('judul').value.trim();
-            const file = document.getElementById('file').files.length;
+            const fileInput = document.getElementById('file');
             const deadline = document.getElementById('deadline').value.trim();
 
-            if (judul === '' || file === 0) {
+            const file = fileInput.files.length;
+            const allowedFileTypes = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip', 'rar'];
+            const maxFileSize = 20 * 1024 * 1024; // 20 MB
+            let fileTypeValid = true;
+            let fileSizeValid = true;
+
+            if (file > 0) {
+                const fileExtension = fileInput.files[0].name.split('.').pop().toLowerCase();
+                if (!allowedFileTypes.includes(fileExtension)) {
+                    fileTypeValid = false;
+                }
+
+                // Validasi ukuran file
+                if (fileInput.files[0].size > maxFileSize) {
+                    fileSizeValid = false;
+                }
+            }
+
+            // Check for each condition independently and show appropriate alert
+            if (judul === '' && file === 0 && deadline === '') {
                 Swal.fire({
                     title: "Lengkapi Semua Kolom",
-                    text: "Judul dan File harus diisi.",
+                    text: "Kolom Judul, File, dan Deadline masih kosong.",
                     icon: "warning",
                     confirmButtonText: "OK",
-                    allowOutsideClick: false // Mencegah klik di luar pop-up
+                    allowOutsideClick: false
+                });
+            } else if (judul === '' && file === 0) {
+                Swal.fire({
+                    title: "Lengkapi Semua Kolom",
+                    text: "Kolom Judul dan File masih kosong.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                });
+            } else if (file === 0 && deadline === '') {
+                Swal.fire({
+                    title: "Lengkapi Semua Kolom",
+                    text: "Kolom File dan Deadline masih kosong.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                });
+            } else if (judul === '' && deadline === '') {
+                Swal.fire({
+                    title: "Lengkapi Semua Kolom",
+                    text: "Kolom Judul dan Deadline masih kosong.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                });
+            } else if (judul === '') {
+                Swal.fire({
+                    title: "Judul Masih Kosong",
+                    text: "Silakan isi judul untuk tugas.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                });
+            } else if (file === 0) {
+                Swal.fire({
+                    title: "File Masih Kosong",
+                    text: "Silakan unggah File.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
                 });
             } else if (deadline === '') {
                 Swal.fire({
@@ -62,10 +121,25 @@
                     text: "Silakan isi deadline untuk tugas.",
                     icon: "warning",
                     confirmButtonText: "OK",
-                    allowOutsideClick: false // Mencegah klik di luar pop-up
+                    allowOutsideClick: false
+                });
+            } else if (!fileTypeValid) {
+                Swal.fire({
+                    title: "Format File Tidak Didukung",
+                    text: "Silakan unggah file dengan format: pdf, doc, docx, ppt, pptx, zip, rar.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                });
+            } else if (!fileSizeValid) {
+                Swal.fire({
+                    title: "Ukuran File Terlalu Besar",
+                    text: "Ukuran file melebihi batas maksimal: 20 MB.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
                 });
             } else {
-                // Tampilkan pop-up "Uploading..."
                 Swal.fire({
                     title: 'Uploading...',
                     text: 'Tunggu sebentar, sedang mengunggah tugas.',
@@ -78,7 +152,7 @@
                 });
 
                 // Kirim form menggunakan AJAX
-                const form = document.getElementById('materi-form');
+                const form = document.getElementById('tugas-form');
                 const formData = new FormData(form);
 
                 fetch(form.action, {
@@ -98,8 +172,7 @@
                             allowOutsideClick: false
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                // Redirect setelah sukses
-                                window.location.href = "{{ route('tugas.index') }}";
+                                window.location.href = "{{ route('tugas.showByProgram', $program->id) }}"; // Redirect setelah sukses
                             }
                         });
                     } else {

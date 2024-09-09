@@ -12,27 +12,22 @@
                     <h6 class="text-lg font-bold mb-3 dark:text-white">Tambah jadwal kelas untuk Program:
                         {{ $program->nama }}
                     </h6>
-                    <form id="materi-form" action="{{ route('kelas.store') }}" method="POST">
+                    <form id="kelas-form" action="{{ route('kelas.store') }}" method="POST" novalidate>
                         @csrf
                         <input type="hidden" name="program_id" value="{{ $program->id }}">
                         <div class="mb-3">
-                            <label for="judul"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Judul</label>
+                            <label for="judul" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Judul</label>
                             <input type="text" name="judul" id="judul"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 required>
                         </div>
                         <div class="mb-3">
-                            <label for="detail"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Detail
-                                (Opsional)</label>
+                            <label for="detail" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Detail (Opsional)</label>
                             <textarea name="detail" id="detail" rows="4"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="link"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Link
-                            </label>
+                            <label for="link" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Link</label>
                             <textarea name="link" id="link" rows="4" required
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
@@ -48,4 +43,98 @@
         </div>
     </div>
 
+    <!-- SweetAlert2 Script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('kelas-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Stop form submission
+
+            const judul = document.getElementById('judul').value.trim();
+            const link = document.getElementById('link').value.trim();
+
+            if (judul === '' && link === '') {
+                Swal.fire({
+                    title: 'Lengkapi Semua Kolom',
+                    text: 'Kolom Judul dan Link masih kosong.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+            } else if (judul === '') {
+                Swal.fire({
+                    title: 'Kolom Judul Masih Kosong',
+                    text: 'Kolom Judul tidak boleh kosong.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+            } else if (link === '') {
+                Swal.fire({
+                    title: 'Kolom Link Kosong',
+                    text: 'Kolom Link tidak boleh kosong.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+            } else {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda ingin menyimpan jadwal kelas ini?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, simpan!',
+                    backdrop: true,
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form with AJAX
+                        const form = document.getElementById('kelas-form');
+                        const formData = new FormData(form);
+
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        }).then(response => {
+                            if (response.ok) {
+                                Swal.fire({
+                                    title: 'Berhasil!',
+                                    text: 'Jadwal kelas berhasil ditambahkan.',
+                                    icon: 'success',
+                                    confirmButtonText: 'Oke',
+                                    backdrop: true,
+                                    allowOutsideClick: false
+                                }).then(() => {
+                                    window.location.href = "{{ route('kelas.showByProgram', $program->id) }}";
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Terjadi kesalahan saat menambahkan jadwal kelas.',
+                                    icon: 'error',
+                                    backdrop: true,
+                                    allowOutsideClick: false
+                                });
+                            }
+                        }).catch(error => {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan yang tidak terduga.',
+                                icon: 'error',
+                                backdrop: true,
+                                allowOutsideClick: false
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 </x-app-layout>

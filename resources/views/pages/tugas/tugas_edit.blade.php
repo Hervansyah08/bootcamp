@@ -68,38 +68,100 @@
         document.getElementById('edit-button').addEventListener('click', function() {
             const judul = document.getElementById('judul').value.trim();
             const deadline = document.getElementById('deadline').value.trim();
+            const fileInput = document.getElementById('file');
+            const allowedFileTypes = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip', 'rar'];
+            const maxFileSize = 20 * 1024 * 1024; // 20 MB
+            let fileTypeValid = true;
+            let fileSizeValid = true;
+
+            // Cek tipe file dan ukuran file jika ada file yang diupload
+            if (fileInput.files.length > 0) {
+                const fileExtension = fileInput.files[0].name.split('.').pop().toLowerCase();
+                if (!allowedFileTypes.includes(fileExtension)) {
+                    fileTypeValid = false;
+                }
+
+                // Validasi ukuran file
+                if (fileInput.files[0].size > maxFileSize) {
+                    fileSizeValid = false;
+                }
+            }
+
+            if (!judul && !deadline && !fileInput.files.length) {
+                Swal.fire({
+                    title: 'Kolom Kosong',
+                    text: 'Kolom Judul, Deadline, dan File masih kosong.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                });
+                return;
+            }
+
+            if (!judul && !deadline) {
+                Swal.fire({
+                    title: 'Kolom Kosong',
+                    text: 'Kolom Judul dan Deadline masih kosong.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                });
+                return;
+            }
 
             if (!judul) {
                 Swal.fire({
-                    title: 'Lengkapi Semua Kolom',
-                    text: 'Kolom Judul tidak boleh kosong.',
-                    icon: 'error',
+                    title: 'Kolom Judul Kosong',
+                    text: 'Kolom Judul masih kosong.',
+                    icon: 'warning',
                     confirmButtonText: 'OK',
-                    allowOutsideClick: false // Mencegah klik di luar pop-up
+                    allowOutsideClick: false
                 });
-                return; // Stop form submission if validation fails
+                return;
             }
 
             if (!deadline) {
                 Swal.fire({
-                    title: 'Deadline Masih Kosong',
-                    text: 'Silakan isi deadline untuk tugas.',
+                    title: 'Kolom Deadline Kosong',
+                    text: 'Kolom Deadline masih kosong.',
                     icon: 'warning',
                     confirmButtonText: 'OK',
-                    allowOutsideClick: false // Mencegah klik di luar pop-up
+                    allowOutsideClick: false
                 });
-                return; // Stop form submission if validation fails
+                return;
+            }
+
+            if (!fileTypeValid && fileInput.files.length > 0) {
+                Swal.fire({
+                    title: 'Format File Tidak Didukung',
+                    text: 'Silakan unggah file dengan format: pdf, doc, docx, ppt, pptx, zip, rar.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                });
+                return;
+            }
+
+            if (!fileSizeValid && fileInput.files.length > 0) {
+                Swal.fire({
+                    title: 'Ukuran File Terlalu Besar',
+                    text: 'Ukuran file melebihi batas maksimal: 20 MB.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                });
+                return;
             }
 
             Swal.fire({
-                title: 'Apakah anda yakin?',
+                title: 'Apakah Anda Yakin?',
                 text: "Anda ingin menyimpan perubahan ini?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ya, simpan!',
-                allowOutsideClick: false // Mencegah klik di luar pop-up
+                allowOutsideClick: false
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Menampilkan pop-up "Uploading..."
@@ -107,8 +169,8 @@
                         title: 'Uploading...',
                         text: 'Tunggu sebentar, sedang mengunggah perubahan tugas.',
                         icon: 'info',
-                        allowOutsideClick: false, // Mencegah klik di luar pop-up
-                        showConfirmButton: false, // Menghilangkan tombol konfirmasi
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
                         didOpen: () => {
                             Swal.showLoading();
                         }
@@ -133,7 +195,7 @@
                                 title: 'Data berhasil diubah!',
                                 icon: 'success',
                                 confirmButtonText: 'Oke',
-                                allowOutsideClick: false // Mencegah klik di luar pop-up
+                                allowOutsideClick: false
                             }).then(() => {
                                 window.location.href = "{{ route('tugas.showByProgram', $tugas->program_id) }}"; // Redirect setelah berhasil
                             });
@@ -142,7 +204,7 @@
                                 title: 'Error!',
                                 text: 'Terjadi masalah saat mengubah data.',
                                 icon: 'error',
-                                allowOutsideClick: false // Mencegah klik di luar pop-up
+                                allowOutsideClick: false
                             });
                         }
                     }).catch(error => {
@@ -152,7 +214,7 @@
                             title: 'Error!',
                             text: 'Terjadi kesalahan yang tidak terduga.',
                             icon: 'error',
-                            allowOutsideClick: false // Mencegah klik di luar pop-up
+                            allowOutsideClick: false
                         });
                     });
                 }
