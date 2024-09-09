@@ -129,6 +129,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin', [RoleAdminController::class, 'index'])->name('admin.index');
     Route::get('/admin/create', [RoleAdminController::class, 'create'])->name('admin.create');
     Route::post('/admin', [RoleAdminController::class, 'store'])->name('admin.store');
+    Route::get('/admin/edit/{user}', [RoleAdminController::class, 'edit'])->name('admin.edit');
+    Route::put('admin/{user}', [RoleAdminController::class, 'update'])->name('admin.update');
+    Route::delete('admin/{user}', [RoleAdminController::class, 'destroy'])->name('admin.destroy');
+    Route::get('/admin/search', [RoleAdminController::class, 'search'])->name('admin.search');
 });
 
 require __DIR__ . '/auth.php';
