@@ -138,6 +138,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Super Admin
     Route::get('/super-admin', [RoleSuperAdminController::class, 'index'])->name('super-admin.index');
+    Route::get('/super-admin/create', [RoleSuperAdminController::class, 'create'])->name('super-admin.create');
+    Route::post('/super-admin', [RoleSuperAdminController::class, 'store'])->name('super-admin.store');
 
     // Dasboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
