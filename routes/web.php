@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
@@ -12,8 +11,10 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\RoleUserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleAdminController;
 use App\Http\Controllers\PengumpulanController;
+use App\Http\Controllers\RoleSuperAdminController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -134,6 +135,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('admin/{user}', [RoleAdminController::class, 'update'])->name('admin.update');
     Route::delete('admin/{user}', [RoleAdminController::class, 'destroy'])->name('admin.destroy');
     Route::get('/admin/search', [RoleAdminController::class, 'search'])->name('admin.search');
+
+    // Super Admin
+    Route::get('/super-admin', [RoleSuperAdminController::class, 'index'])->name('super-admin.index');
 
     // Dasboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
