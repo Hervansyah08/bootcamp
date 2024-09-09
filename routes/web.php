@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
@@ -18,9 +19,9 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Route::get('/welcome', function () {
 //     return view('welcome');
@@ -133,6 +134,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('admin/{user}', [RoleAdminController::class, 'update'])->name('admin.update');
     Route::delete('admin/{user}', [RoleAdminController::class, 'destroy'])->name('admin.destroy');
     Route::get('/admin/search', [RoleAdminController::class, 'search'])->name('admin.search');
+
+    // Dasboard
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 require __DIR__ . '/auth.php';

@@ -24,11 +24,6 @@
                             {{ __('Master') }}
                         </x-nav-link>
                     @endif
-                    @if (Auth::check() && Auth::user()->role == 'user')
-                        <x-nav-link :href="route('master.create')" :active="request()->routeIs('master.create')">
-                            {{ __('Pendaftaran') }}
-                        </x-nav-link>
-                    @endif
                     <x-nav-link :href="route('materi.index')" :active="request()->routeIs('materi.index')">
                         {{ __('Materi') }}
                     </x-nav-link>
@@ -135,13 +130,6 @@
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-link :href="route('master.index')" :active="request()->routeIs('master.index')">
                     {{ __('Master') }}
-                </x-responsive-nav-link>
-            </div>
-        @endif
-        @if (Auth::check() && Auth::user()->role == 'user')
-            <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('master.create')" :active="request()->routeIs('master.create')">
-                    {{ __('Pendaftaran') }}
                 </x-responsive-nav-link>
             </div>
         @endif

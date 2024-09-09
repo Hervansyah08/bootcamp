@@ -156,6 +156,10 @@
                         <a href="{{ route('master.index') }}"
                             class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
                     @endif
+                    @if (Auth::user()->role == 'user')
+                        <a href="{{ route('dashboard') }}"
+                            class="mr-3 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Batal</a>
+                    @endif
 
                     <button type="submit"
                         class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900">Simpan</button>
@@ -172,7 +176,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('registrationForm').addEventListener('submit', function(e) {
                 e.preventDefault(); // Mencegah submit form default
-    
+
                 // Mendapatkan nilai dari elemen form
                 const email = document.getElementById('email').value;
                 const nama = document.getElementById('nama').value;
@@ -181,19 +185,20 @@
                 const program_id = document.getElementById('program_id').value;
                 const info = document.getElementById('info').value;
                 const tipe_kelas = document.getElementById('tipe_kelas').value;
-    
+
                 // Buat array untuk menyimpan pesan error
                 let errors = [];
-    
+
                 // Cek apakah field kosong atau pilihannya adalah opsi placeholder
                 if (!email) errors.push('Email harus diisi.');
                 if (!nama) errors.push('Nama harus diisi.');
                 if (gender === 'Pilih Jenis Kelamin') errors.push('Jenis Kelamin harus dipilih.');
-                if (status_pekerjaan === 'Pilih Status Pekerjaan') errors.push('Status Pekerjaan harus dipilih.');
+                if (status_pekerjaan === 'Pilih Status Pekerjaan') errors.push(
+                    'Status Pekerjaan harus dipilih.');
                 if (program_id === 'Pilih Program') errors.push('Program harus dipilih.');
                 if (info === 'Pilih') errors.push('Informasi sumber harus dipilih.');
                 if (tipe_kelas === 'Pilih Kelas') errors.push('Tipe Kelas harus dipilih.');
-    
+
                 // Jika ada error, tampilkan pesan dan hentikan submit form
                 if (errors.length > 0) {
                     Swal.fire({
@@ -206,14 +211,14 @@
                     });
                     return; // Hentikan submit form
                 }
-    
+
                 // Submit form menggunakan Axios
                 axios.post('{{ route('master.store') }}', new FormData(this))
                     .then(response => {
                         console.log(response.data); // Debugging response
-    
+
                         const userRole = '{{ Auth::user()->role }}';
-    
+
                         if (userRole === 'admin' || userRole === 'super_admin') {
                             Swal.fire({
                                 title: 'Pendaftaran Berhasil!',
@@ -239,9 +244,11 @@
                                 allowEscapeKey: false
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    const message = `Saya ingin melakukan konfirmasi pendaftaran dan pembayaran.%0AEmail : ${encodeURIComponent(email)}%0ANama : ${encodeURIComponent(nama)}%0ATerimakasih.`;
+                                    const message =
+                                        `Saya ingin melakukan konfirmasi pendaftaran dan pembayaran.%0AEmail : ${encodeURIComponent(email)}%0ANama : ${encodeURIComponent(nama)}%0ATerimakasih.`;
                                     console.log(message); // Debugging WhatsApp message
-                                    window.location.href = `https://wa.me/6281803354180?text=${message}`;
+                                    window.location.href =
+                                        `https://wa.me/6281803354180?text=${message}`;
                                 }
                             });
                         }
