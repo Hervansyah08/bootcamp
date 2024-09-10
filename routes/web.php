@@ -11,16 +11,18 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\RoleUserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleAdminController;
 use App\Http\Controllers\PengumpulanController;
+use App\Http\Controllers\RoleSuperAdminController;
 
 Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Route::get('/welcome', function () {
 //     return view('welcome');
@@ -133,6 +135,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('admin/{user}', [RoleAdminController::class, 'update'])->name('admin.update');
     Route::delete('admin/{user}', [RoleAdminController::class, 'destroy'])->name('admin.destroy');
     Route::get('/admin/search', [RoleAdminController::class, 'search'])->name('admin.search');
+
+    // Super Admin
+    Route::get('/super-admin', [RoleSuperAdminController::class, 'index'])->name('super-admin.index');
+    Route::get('/super-admin/create', [RoleSuperAdminController::class, 'create'])->name('super-admin.create');
+    Route::post('/super-admin', [RoleSuperAdminController::class, 'store'])->name('super-admin.store');
+    Route::get('/super-admin/edit/{user}', [RoleSuperAdminController::class, 'edit'])->name('super-admin.edit');
+    Route::put('super-admin/{user}', [RoleSuperAdminController::class, 'update'])->name('super-admin.update');
+    Route::delete('super-admin/{user}', [RoleSuperAdminController::class, 'destroy'])->name('super-admin.destroy');
+    Route::get('/super-admin/search', [RoleSuperAdminController::class, 'search'])->name('super-admin.search');
+
+    // Dasboard
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 require __DIR__ . '/auth.php';

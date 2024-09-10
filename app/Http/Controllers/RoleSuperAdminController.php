@@ -6,19 +6,19 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class RoleAdminController extends Controller
+class RoleSuperAdminController extends Controller
 {
     public function index()
     {
-        $users = User::where('role', 'admin')
+        $users = User::where('role', 'super_admin')
             ->paginate(5);
 
-        return view('pages.role.admin.admin_index', compact('users'));
+        return view('pages.role.super_admin.index', compact('users'));
     }
 
     public function create()
     {
-        return view('pages.role.admin.admin_create');
+        return view('pages.role.super_admin.create');
     }
 
     public function store(Request $request)
@@ -33,17 +33,17 @@ class RoleAdminController extends Controller
         User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
-            'role' => 'admin',
+            'role' => 'super_admin',
             'password' => Hash::make($validatedData['password']),
             'email_verified_at' => now(),
         ]);
 
-        return redirect()->route('admin.index')->with('success', 'Admin berhasil dibuat dan email telah diverifikasi.');
+        return redirect()->route('super-admin.index')->with('success', 'Super Admin berhasil dibuat dan email telah diverifikasi.');
     }
 
     public function edit(User $user) //menggunakan route model binding
     {
-        return view('pages.role.admin.admin_edit', compact('user'));
+        return view('pages.role.super_admin.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
@@ -64,14 +64,14 @@ class RoleAdminController extends Controller
         ]);
 
         // Redirect ke halaman program dengan pesan sukses
-        return redirect()->route('admin.index')->with('success', 'Admin berhasil diperbarui.');
+        return redirect()->route('super-admin.index')->with('success', 'Super Admin berhasil diperbarui.');
     }
 
     public function destroy(User $user) //menggunakan route model binding
     {
         $user->delete();
 
-        return redirect()->route('admin.index')->with('success', 'Admin berhasil dihapus.');
+        return redirect()->route('super-admin.index')->with('success', 'Super Admin berhasil dihapus.');
     }
 
     public function search(Request $request)
@@ -81,11 +81,11 @@ class RoleAdminController extends Controller
         // Cek apakah keyword kosong
         if (empty($keyword)) {
             // Jika kosong, ambil semua data dengan role super_admin
-            $users = User::where('role', 'admin')
+            $users = User::where('role', 'super_admin')
                 ->paginate(5);
         } else {
             // Jika tidak kosong, lakukan pencarian hanya pada user dengan role super_admin
-            $users = User::where('role', 'admin')
+            $users = User::where('role', 'super_admin')
                 ->where(function ($query) use ($keyword) {
                     $query->where('name', 'like', "%" . $keyword . "%")
                         ->orWhere('email', 'like', "%" . $keyword . "%");
@@ -94,6 +94,6 @@ class RoleAdminController extends Controller
                 ->withQueryString();
         }
 
-        return view('pages.role.admin.admin_index', compact('users'));
+        return view('pages.role.super_admin.index', compact('users'));
     }
 }
