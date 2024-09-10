@@ -66,4 +66,11 @@ class RoleSuperAdminController extends Controller
         // Redirect ke halaman program dengan pesan sukses
         return redirect()->route('super-admin.index')->with('success', 'Super Admin berhasil diperbarui.');
     }
+
+    public function destroy(User $user) //menggunakan route model binding
+    {
+        $user->delete();
+
+        return redirect()->route('super-admin.index')->with('success', 'Super Admin berhasil dihapus.');
+    }
 }

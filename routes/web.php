@@ -142,6 +142,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/super-admin', [RoleSuperAdminController::class, 'store'])->name('super-admin.store');
     Route::get('/super-admin/edit/{user}', [RoleSuperAdminController::class, 'edit'])->name('super-admin.edit');
     Route::put('super-admin/{user}', [RoleSuperAdminController::class, 'update'])->name('super-admin.update');
+    Route::delete('super-admin/{user}', [RoleSuperAdminController::class, 'destroy'])->name('super-admin.destroy');
 
     // Dasboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
