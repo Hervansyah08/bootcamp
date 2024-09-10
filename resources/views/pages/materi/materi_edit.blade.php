@@ -72,7 +72,38 @@
     <script>
         document.getElementById('edit-button').addEventListener('click', function() {
             const judul = document.getElementById('judul').value.trim();
+            const fileInput = document.getElementById('file');
+            const videoInput = document.getElementById('video');
+            
+            // Validasi format file yang diperbolehkan
+            const allowedFileFormats = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip', 'rar'];
+            const allowedVideoFormats = ['mp4', 'mov', 'ogg', 'qt', 'avi', 'mkv'];
 
+            // Ambil file yang diupload
+            const file = fileInput.files[0];
+            const video = videoInput.files[0];
+
+            // Fungsi untuk mendapatkan ekstensi file
+            const getFileExtension = (fileName) => {
+                return fileName.split('.').pop().toLowerCase();
+            };
+
+            // Validasi ukuran file dan video
+            const maxFileSize = 20 * 1024 * 1024; // 20 MB
+            const maxVideoSize = 300 * 1024 * 1024; // 300 MB
+
+            let fileSizeValid = true;
+            let videoSizeValid = true;
+
+            if (file && file.size > maxFileSize) {
+                fileSizeValid = false;
+            }
+
+            if (video && video.size > maxVideoSize) {
+                videoSizeValid = false;
+            }
+
+            // Cek apakah judul kosong
             if (!judul) {
                 Swal.fire({
                     title: 'Lengkapi Semua Kolom',
@@ -83,6 +114,57 @@
                     allowOutsideClick: false
                 });
                 return; // Stop form submission if validation fails
+            }
+
+            // Validasi file
+            if (file && !allowedFileFormats.includes(getFileExtension(file.name))) {
+                Swal.fire({
+                    title: 'Format File Tidak Valid',
+                    text: `Format file yang diperbolehkan: ${allowedFileFormats.join(', ')}`,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+                return;
+            }
+
+            // Validasi video
+            if (video && !allowedVideoFormats.includes(getFileExtension(video.name))) {
+                Swal.fire({
+                    title: 'Format Video Tidak Valid',
+                    text: `Format video yang diperbolehkan: ${allowedVideoFormats.join(', ')}`,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+                return;
+            }
+
+            // Validasi ukuran file dan video
+            if (!fileSizeValid) {
+                Swal.fire({
+                    title: 'Ukuran File Terlalu Besar',
+                    text: `Ukuran file melebihi batas maksimal: 20 MB`,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+                return;
+            }
+
+            if (!videoSizeValid) {
+                Swal.fire({
+                    title: 'Ukuran Video Terlalu Besar',
+                    text: `Ukuran video melebihi batas maksimal: 300 MB`,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+                return;
             }
 
             Swal.fire({
@@ -104,7 +186,7 @@
                         icon: 'info',
                         allowOutsideClick: false,
                         showConfirmButton: false, // Tidak ada tombol konfirmasi
-                        willOpen: () => {
+                        didOpen: () => {
                             Swal.showLoading(); // Menampilkan animasi loading
                         }
                     });

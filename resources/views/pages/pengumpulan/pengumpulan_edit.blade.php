@@ -66,8 +66,14 @@
     <script>
         document.getElementById('edit-button').addEventListener('click', function() {
             const judul = document.getElementById('judul').value.trim();
-            const userRole = "{{ Auth::user()->role }}"; // Mengambil peran pengguna dari Blade
+            const fileInput = document.getElementById('file');
+            const file = fileInput.files.length > 0 ? fileInput.files[0] : null;
+            const maxFileSize = 20 * 1024 * 1024; // 20 MB
+            
+            // Mendapatkan peran pengguna dari Blade
+            const userRole = "{{ Auth::user()->role }}";
 
+            // Validasi kolom Judul
             if (!judul) {
                 Swal.fire({
                     title: 'Lengkapi Semua Kolom',
@@ -80,6 +86,20 @@
                 return; // Stop form submission if validation fails
             }
 
+            // Validasi ukuran file
+            if (file && file.size > maxFileSize) {
+                Swal.fire({
+                    title: 'Ukuran File Terlalu Besar',
+                    text: 'Ukuran file melebihi batas maksimal: 20 MB.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    backdrop: true, // Menambahkan latar belakang gelap
+                    allowOutsideClick: false // Menonaktifkan klik di luar pop-up
+                });
+                return; // Stop form submission if file size is too large
+            }
+
+            // Konfirmasi perubahan
             Swal.fire({
                 title: 'Apakah anda yakin?',
                 text: "Anda ingin menyimpan perubahan ini?",
