@@ -65,117 +65,132 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.getElementById('edit-button').addEventListener('click', function() {
-            const judul = document.getElementById('judul').value.trim();
-            const fileInput = document.getElementById('file');
-            const file = fileInput.files.length > 0 ? fileInput.files[0] : null;
-            const maxFileSize = 20 * 1024 * 1024; // 20 MB
-            
-            // Mendapatkan peran pengguna dari Blade
-            const userRole = "{{ Auth::user()->role }}";
+        const judul = document.getElementById('judul').value.trim();
+        const fileInput = document.getElementById('file');
+        const file = fileInput.files.length > 0 ? fileInput.files[0] : null;
+        const maxFileSize = 20 * 1024 * 1024; // 20 MB
+        const allowedFileFormats = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip', 'rar'];
 
-            // Validasi kolom Judul
-            if (!judul) {
-                Swal.fire({
-                    title: 'Lengkapi Semua Kolom',
-                    text: 'Kolom Judul tidak boleh kosong.',
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    backdrop: true, // Menambahkan latar belakang gelap
-                    allowOutsideClick: false // Menonaktifkan klik di luar pop-up
-                });
-                return; // Stop form submission if validation fails
-            }
+        // Mendapatkan peran pengguna dari Blade
+        const userRole = "{{ Auth::user()->role }}";
 
-            // Validasi ukuran file
-            if (file && file.size > maxFileSize) {
-                Swal.fire({
-                    title: 'Ukuran File Terlalu Besar',
-                    text: 'Ukuran file melebihi batas maksimal: 20 MB.',
-                    icon: 'warning',
-                    confirmButtonText: 'OK',
-                    backdrop: true, // Menambahkan latar belakang gelap
-                    allowOutsideClick: false // Menonaktifkan klik di luar pop-up
-                });
-                return; // Stop form submission if file size is too large
-            }
-
-            // Konfirmasi perubahan
+        // Validasi kolom Judul
+        if (!judul) {
             Swal.fire({
-                title: 'Apakah anda yakin?',
-                text: "Anda ingin menyimpan perubahan ini?",
+                title: 'Lengkapi Semua Kolom',
+                text: 'Kolom Judul tidak boleh kosong.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                backdrop: true,
+                allowOutsideClick: false
+            });
+            return; 
+        }
+
+        // Validasi format file
+        if (file) {
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!allowedFileFormats.includes(fileExtension)) { // Menggunakan allowedFileFormats
+            Swal.fire({
+                title: 'Format File Tidak Didukung',
+                text: `Format file yang diperbolehkan: ${allowedFileFormats.join(', ')}.`,
+                icon: 'error',
+                confirmButtonText: 'OK',
+                backdrop: true,
+                allowOutsideClick: false
+            });
+            return; 
+        }
+
+        // Validasi ukuran file
+        if (file.size > maxFileSize) {
+            Swal.fire({
+                title: 'Ukuran File Terlalu Besar',
+                text: 'Ukuran file melebihi batas maksimal: 20 MB.',
                 icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, simpan!',
-                backdrop: true, // Menambahkan latar belakang gelap
-                allowOutsideClick: false // Menonaktifkan klik di luar pop-up
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Tampilkan pop-up "Uploading..."
-                    Swal.fire({
-                        title: 'Uploading...',
-                        text: 'Tunggu sebentar, sedang mengunggah perubahan pengajuan tugas.',
-                        icon: 'info',
-                        allowOutsideClick: false,
-                        showConfirmButton: false, // Menghilangkan tombol konfirmasi
-                        backdrop: true, // Menambahkan latar belakang gelap
-                        willOpen: () => {
-                            Swal.showLoading(); // Menampilkan animasi loading
-                        }
-                    });
+                confirmButtonText: 'OK',
+                backdrop: true,
+                allowOutsideClick: false
+            });
+            return;
+        }
+    }
 
-                    // Submit form with AJAX
-                    const form = document.getElementById('edit-form');
+        // Konfirmasi perubahan
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Anda ingin menyimpan perubahan ini?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, simpan!',
+            backdrop: true,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Uploading...',
+                    text: 'Tunggu sebentar, sedang mengunggah perubahan pengajuan tugas.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    backdrop: true,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
 
-                    fetch(form.action, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .getAttribute('content'),
-                            'Accept': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
-                        },
-                        body: new FormData(form)
-                    }).then(response => {
-                        Swal.close(); // Tutup pop-up "Uploading..." ketika respons diterima
-                        if (response.ok) {
-                            Swal.fire({
-                                title: 'Data berhasil diubah!',
-                                icon: 'success',
-                                confirmButtonText: 'Oke',
-                                backdrop: true, // Menambahkan latar belakang gelap
-                                allowOutsideClick: false // Menonaktifkan klik di luar pop-up
-                            }).then(() => {
-                                if (userRole === 'admin' || userRole === 'super_admin') {
-                                    window.location.href =
-                                        "{{ route('pengumpulan.index', [$pengumpulan->program_id, $pengumpulan->tugas_id]) }}"; // Redirect untuk admin
-                                } else {
-                                    window.location.href =
-                                        "{{ route('tugas.showDetailTugas', [$pengumpulan->program_id, $pengumpulan->tugas_id]) }}"; // Redirect untuk user
-                                }
-                            });
-                        } else {
-                            Swal.fire({
-                                title: 'Error!',
-                                text: 'Terjadi masalah saat mengubah data.',
-                                icon: 'error',
-                                backdrop: true, // Menambahkan latar belakang gelap
-                                allowOutsideClick: false // Menonaktifkan klik di luar pop-up
-                            });
-                        }
-                    }).catch(error => {
-                        Swal.close(); // Tutup pop-up "Uploading..." jika terjadi kesalahan
+                const form = document.getElementById('edit-form');
+
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content'),
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: new FormData(form)
+                }).then(response => {
+                    Swal.close(); 
+                    if (response.ok) {
+                        Swal.fire({
+                            title: 'Data berhasil diubah!',
+                            icon: 'success',
+                            confirmButtonText: 'Oke',
+                            backdrop: true,
+                            allowOutsideClick: false
+                        }).then(() => {
+                            if (userRole === 'admin' || userRole === 'super_admin') {
+                                window.location.href =
+                                    "{{ route('pengumpulan.index', [$pengumpulan->program_id, $pengumpulan->tugas_id]) }}";
+                            } else {
+                                window.location.href =
+                                    "{{ route('tugas.showDetailTugas', [$pengumpulan->program_id, $pengumpulan->tugas_id]) }}";
+                            }
+                        });
+                    } else {
                         Swal.fire({
                             title: 'Error!',
-                            text: 'Terjadi kesalahan yang tidak terduga.',
+                            text: 'Terjadi masalah saat mengubah data.',
                             icon: 'error',
-                            backdrop: true, // Menambahkan latar belakang gelap
-                            allowOutsideClick: false // Menonaktifkan klik di luar pop-up
+                            backdrop: true,
+                            allowOutsideClick: false
                         });
+                    }
+                }).catch(error => {
+                    Swal.close();
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Terjadi kesalahan yang tidak terduga.',
+                        icon: 'error',
+                        backdrop: true,
+                        allowOutsideClick: false
                     });
-                }
-            });
+                });
+            }
         });
+    });
     </script>
 </x-app-layout>

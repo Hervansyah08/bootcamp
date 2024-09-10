@@ -12,7 +12,7 @@
                     <h6 class="text-lg font-bold mb-3 dark:text-white">Edit Quiz untuk Program:
                         {{ $quiz->program->nama }}
                     </h6>
-                    <form action="{{ route('quiz.update', $quiz->id) }}" method="POST">
+                    <form id="edit-form" action="{{ route('quiz.update', $quiz->id) }}" method="POST" novalidate>
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="program_id" value="{{ $quiz->program_id }}">
@@ -49,4 +49,98 @@
         </div>
     </div>
 
+    <!-- SweetAlert2 Script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('edit-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Stop form submission
+
+            const judul = document.getElementById('judul').value.trim();
+            const link = document.getElementById('link').value.trim();
+
+            if (!judul && !link) {
+                Swal.fire({
+                    title: 'Lengkapi Semua Kolom',
+                    text: 'Kolom Judul dan Link masih kosong.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+            } else if (!judul) {
+                Swal.fire({
+                    title: 'Kolom Judul Masih Kosong',
+                    text: 'Kolom Judul tidak boleh kosong.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+            } else if (!link) {
+                Swal.fire({
+                    title: 'Kolom Link Kosong',
+                    text: 'Kolom Link tidak boleh kosong.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+            } else {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda ingin menyimpan perubahan jadwal kelas ini?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, simpan!',
+                    backdrop: true,
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form with AJAX
+                        const form = document.getElementById('edit-form');
+                        const formData = new FormData(form);
+
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        }).then(response => {
+                            if (response.ok) {
+                                Swal.fire({
+                                    title: 'Berhasil!',
+                                    text: 'Jadwal kelas berhasil diperbarui.',
+                                    icon: 'success',
+                                    confirmButtonText: 'Oke',
+                                    backdrop: true,
+                                    allowOutsideClick: false
+                                }).then(() => {
+                                    window.location.href = "{{ route('quiz.showByProgram', $quiz->program_id) }}";
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Terjadi kesalahan saat memperbarui jadwal kelas.',
+                                    icon: 'error',
+                                    backdrop: true,
+                                    allowOutsideClick: false
+                                });
+                            }
+                        }).catch(error => {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan yang tidak terduga.',
+                                icon: 'error',
+                                backdrop: true,
+                                allowOutsideClick: false
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 </x-app-layout>

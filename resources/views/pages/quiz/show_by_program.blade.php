@@ -83,7 +83,7 @@
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"
-                                                            class="px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 delete-button">
+                                                            class="delete-button px-4 py-2 text-sm font-medium  rounded-e-lg  focus:z-10 focus:ring-2 text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 delete-button">
                                                             Hapus
                                                         </button>
                                                     </form>
@@ -103,4 +103,69 @@
         </div>
     </div>
 
+    <!-- Script SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Mencegah pengiriman form langsung
+
+                const form = this.closest('form');
+
+                Swal.fire({
+                    title: "Apa anda yakin?",
+                    text: "Data yang sudah terhapus tidak dapat dikembalikan!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, hapus!",
+                    backdrop: true,  // Menambahkan latar belakang gelap
+                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Gunakan AJAX untuk mengirim form
+                        fetch(form.action, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: new FormData(form)
+                        }).then(response => {
+                            if (response.ok) {
+                                Swal.fire({
+                                    title: "Data berhasil dihapus!",
+                                    icon: "success",
+                                    text: "Klik tombol Oke untuk melanjutkan.",
+                                    confirmButtonText: "Oke",
+                                    backdrop: true,  // Menambahkan latar belakang gelap
+                                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                }).then(() => {
+                                    location.reload(); // Reload halaman setelah penghapusan berhasil
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Terjadi masalah saat menghapus data.",
+                                    icon: "error",
+                                    backdrop: true,  // Menambahkan latar belakang gelap
+                                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                });
+                            }
+                        }).catch(error => {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "Terjadi kesalahan yang tidak terduga.",
+                                icon: "error",
+                                backdrop: true,  // Menambahkan latar belakang gelap
+                                allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>
