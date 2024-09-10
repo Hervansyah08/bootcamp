@@ -81,12 +81,12 @@
                                             {{ $user->updated_at->format('l, d-m-Y, H:i') }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{-- <div class="inline-flex rounded-md shadow-sm" role="group">
-                                                <a href="{{ route('admin.edit', $user->id) }}" aria-current="page"
+                                            <div class="inline-flex rounded-md shadow-sm" role="group">
+                                                <a href="{{ route('super-admin.edit', $user->id) }}" aria-current="page"
                                                     class="px-4 py-2 text-sm font-medium  rounded-s-lg  focus:z-10 focus:ring-2 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900">
                                                     Edit
                                                 </a>
-                                                <form action="{{ route('admin.destroy', $user->id) }}" method="POST"
+                                                {{-- <form action="{{ route('admin.destroy', $user->id) }}" method="POST"
                                                     class="delete-form">
                                                     @csrf
                                                     @method('DELETE')
@@ -95,17 +95,17 @@
                                                         Hapus
                                                     </button>
                                                 </form> --}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    </td>
-                    </tr>
-                    @endforeach
-                    </tbody>
-                    </table>
+                    <br>
+                    {{ $users->links() }}
                 </div>
-                <br>
-                {{ $users->links() }}
             </div>
         </div>
-    </div>
     </div>
 </x-app-layout>

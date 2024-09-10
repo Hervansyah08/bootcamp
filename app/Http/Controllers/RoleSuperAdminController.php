@@ -40,4 +40,30 @@ class RoleSuperAdminController extends Controller
 
         return redirect()->route('super-admin.index')->with('success', 'Super Admin berhasil dibuat dan email telah diverifikasi.');
     }
+
+    public function edit(User $user) //menggunakan route model binding
+    {
+        return view('pages.role.super_admin.edit', compact('user'));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|string',
+        ]);
+
+
+        // Update data program
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+        ]);
+
+        // Redirect ke halaman program dengan pesan sukses
+        return redirect()->route('super-admin.index')->with('success', 'Super Admin berhasil diperbarui.');
+    }
 }
