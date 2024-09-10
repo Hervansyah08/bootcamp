@@ -143,6 +143,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/super-admin/edit/{user}', [RoleSuperAdminController::class, 'edit'])->name('super-admin.edit');
     Route::put('super-admin/{user}', [RoleSuperAdminController::class, 'update'])->name('super-admin.update');
     Route::delete('super-admin/{user}', [RoleSuperAdminController::class, 'destroy'])->name('super-admin.destroy');
+    Route::get('/super-admin/search', [RoleSuperAdminController::class, 'search'])->name('super-admin.search');
 
     // Dasboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

@@ -80,13 +80,16 @@ class RoleAdminController extends Controller
 
         // Cek apakah keyword kosong
         if (empty($keyword)) {
-            // Jika kosong, ambil semua data
+            // Jika kosong, ambil semua data dengan role super_admin
             $users = User::where('role', 'admin')
                 ->paginate(5);
         } else {
-            // Jika tidak kosong, lakukan pencarian
-            $users = User::where('name', 'like', "%" . $keyword . "%")
-                ->orWhere('email', 'like', "%" . $keyword . "%")
+            // Jika tidak kosong, lakukan pencarian hanya pada user dengan role super_admin
+            $users = User::where('role', 'admin')
+                ->where(function ($query) use ($keyword) {
+                    $query->where('name', 'like', "%" . $keyword . "%")
+                        ->orWhere('email', 'like', "%" . $keyword . "%");
+                })
                 ->paginate(5)
                 ->withQueryString();
         }
