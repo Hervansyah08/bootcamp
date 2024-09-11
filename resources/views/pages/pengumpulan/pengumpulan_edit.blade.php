@@ -118,13 +118,13 @@
 
         // Konfirmasi perubahan
         Swal.fire({
-            title: 'Apakah anda yakin?',
-            text: "Anda ingin menyimpan perubahan ini?",
+            title: 'Apakah Anda Yakin?',
+            text: 'Anda ingin menyimpan perubahan ini?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, simpan!',
+            confirmButtonText: 'Ya, Simpan',
             backdrop: true,
             allowOutsideClick: false
         }).then((result) => {
@@ -156,7 +156,7 @@
                     Swal.close(); 
                     if (response.ok) {
                         Swal.fire({
-                            title: 'Data berhasil diubah!',
+                            title: 'Pengumpulan Berhasil Diperbarui',
                             icon: 'success',
                             confirmButtonText: 'Oke',
                             backdrop: true,

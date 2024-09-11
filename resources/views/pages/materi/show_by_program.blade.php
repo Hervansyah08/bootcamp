@@ -128,15 +128,26 @@
                 Swal.fire({
                     title: "Apa anda yakin?",
                     text: "Data yang sudah terhapus tidak dapat dikembalikan!",
-                    icon: "warning",
+                    icon: "question",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, hapus!",
+                    confirmButtonText: "Ya, Hapus",
                     backdrop: true, // Menampilkan latar belakang gelap
                     allowOutsideClick: false // Mencegah klik di luar pop-up
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Deleting...',
+                            text: 'Tunggu sebentar, sedang menghapus materi.',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
                         // Gunakan AJAX untuk mengirim form
                         fetch(form.action, {
                             method: 'POST',
@@ -149,9 +160,8 @@
                         }).then(response => {
                             if (response.ok) {
                                 Swal.fire({
-                                    title: "Data berhasil dihapus!",
+                                    title: "Materi Berhasil Dihapus",
                                     icon: "success",
-                                    text: "Klik tombol Oke untuk melanjutkan.",
                                     confirmButtonText: "Oke",
                                     backdrop: true, // Menampilkan latar belakang gelap
                                     allowOutsideClick: false // Mencegah klik di luar pop-up

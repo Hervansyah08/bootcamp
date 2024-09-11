@@ -167,7 +167,7 @@
             } else if (!fileTypeValid) {
                 Swal.fire({
                     title: "Format File Tidak Valid",
-                    text: `Format file yang diperbolehkan: ${allowedFileTypes.join(', ')}`,
+                    text: `Format file : ${allowedFileTypes.join(', ')}`,
                     icon: "error",
                     confirmButtonText: "OK",
                     allowOutsideClick: false
@@ -175,7 +175,7 @@
             } else if (!videoTypeValid) {
                 Swal.fire({
                     title: "Format Video Tidak Valid",
-                    text: `Format video yang diperbolehkan: ${allowedVideoTypes.join(', ')}`,
+                    text: `Format video : ${allowedVideoTypes.join(', ')}`,
                     icon: "error",
                     confirmButtonText: "OK",
                     allowOutsideClick: false

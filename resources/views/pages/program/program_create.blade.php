@@ -76,8 +76,8 @@
                     text: "Anda harus memilih admin sebelum melanjutkan.",
                     icon: "warning",
                     confirmButtonText: "OK",
-                    backdrop: true,  // Menambahkan latar belakang gelap
-                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                    backdrop: true,
+                    allowOutsideClick: false
                 });
             } else if (nama === '') {
                 Swal.fire({
@@ -85,20 +85,61 @@
                     text: "Kolom Nama Program tidak boleh kosong.",
                     icon: "warning",
                     confirmButtonText: "OK",
-                    backdrop: true,  // Menambahkan latar belakang gelap
-                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                    backdrop: true,
+                    allowOutsideClick: false
                 });
             } else {
+                // Tampilkan pop-up 'Uploading...'
                 Swal.fire({
-                    title: "Program Berhasil Ditambah",
-                    icon: "success",
-                    backdrop: true,  // Menambahkan latar belakang gelap
-                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Submit form setelah SweetAlert dikonfirmasi
-                        document.getElementById('program-form').submit();
+                    title: 'Uploading...',
+                    text: 'Tunggu sebentar, sedang mengunggah program.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading(); // Menampilkan indikator loading
                     }
+                });
+
+                // Submit form dengan AJAX
+                const form = document.getElementById('program-form');
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        Swal.fire({
+                            title: 'Program Berhasil Ditambah.',
+                            icon: 'success',
+                            confirmButtonText: 'Oke',
+                            backdrop: true,
+                            allowOutsideClick: false
+                        }).then(() => {
+                            // Redirect atau lakukan aksi lain setelah sukses
+                            window.location.href = "{{ route('program.index') }}"; // Sesuaikan dengan URL yang diinginkan
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan saat menyimpan data.',
+                            icon: 'error',
+                            backdrop: true,
+                            allowOutsideClick: false
+                        });
+                    }
+                }).catch(error => {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Terjadi kesalahan yang tidak terduga.',
+                        icon: 'error',
+                        backdrop: true,
+                        allowOutsideClick: false
+                    });
                 });
             }
         });

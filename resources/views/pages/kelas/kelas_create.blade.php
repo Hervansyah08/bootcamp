@@ -80,59 +80,56 @@
                     allowOutsideClick: false
                 });
             } else {
+                // Tampilkan pop-up 'Uploading...'
                 Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: "Anda ingin menyimpan jadwal kelas ini?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, simpan!',
-                    backdrop: true,
-                    allowOutsideClick: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Submit form with AJAX
-                        const form = document.getElementById('kelas-form');
-                        const formData = new FormData(form);
+                    title: 'Uploading...',
+                    text: 'Tunggu sebentar, sedang mengunggah jadwal kelas.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading(); // Menampilkan indikator loading
+                    }
+                });
 
-                        fetch(form.action, {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                            }
-                        }).then(response => {
-                            if (response.ok) {
-                                Swal.fire({
-                                    title: 'Berhasil!',
-                                    text: 'Jadwal kelas berhasil ditambahkan.',
-                                    icon: 'success',
-                                    confirmButtonText: 'Oke',
-                                    backdrop: true,
-                                    allowOutsideClick: false
-                                }).then(() => {
-                                    window.location.href = "{{ route('kelas.showByProgram', $program->id) }}";
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'Error!',
-                                    text: 'Terjadi kesalahan saat menambahkan jadwal kelas.',
-                                    icon: 'error',
-                                    backdrop: true,
-                                    allowOutsideClick: false
-                                });
-                            }
-                        }).catch(error => {
-                            Swal.fire({
-                                title: 'Error!',
-                                text: 'Terjadi kesalahan yang tidak terduga.',
-                                icon: 'error',
-                                backdrop: true,
-                                allowOutsideClick: false
-                            });
+                // Submit form dengan AJAX
+                const form = document.getElementById('kelas-form');
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        Swal.fire({
+                            title: 'Jadwal Kelas Berhasil Ditambah',
+                            icon: 'success',
+                            confirmButtonText: 'Oke',
+                            backdrop: true,
+                            allowOutsideClick: false
+                        }).then(() => {
+                            window.location.href = "{{ route('kelas.showByProgram', $program->id) }}";
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan saat menambahkan jadwal kelas.',
+                            icon: 'error',
+                            backdrop: true,
+                            allowOutsideClick: false
                         });
                     }
+                }).catch(error => {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Terjadi kesalahan yang tidak terduga.',
+                        icon: 'error',
+                        backdrop: true,
+                        allowOutsideClick: false
+                    });
                 });
             }
         });

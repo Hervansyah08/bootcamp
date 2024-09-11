@@ -112,9 +112,9 @@
                     const form = document.getElementById('delete-form-' + masterId);
 
                     Swal.fire({
-                        title: 'Apakah Anda yakin?',
+                        title: 'Apakah Anda Yakin?',
                         text: "Data yang sudah dihapus tidak bisa dikembalikan!",
-                        icon: 'warning',
+                        icon: 'question',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
@@ -124,8 +124,17 @@
                         allowOutsideClick: false // Menonaktifkan klik di luar pop-up
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            console.log(
-                                'Confirmation received'); // Tambahkan ini untuk debug
+                            Swal.fire({
+                                title: 'Deleting...',
+                                text: 'Tunggu sebentar, sedang menghapus pengajuan.',
+                                icon: 'info',
+                                allowOutsideClick: false,
+                                showConfirmButton: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+
                             fetch(form.action, {
                                 method: 'POST',
                                 headers: {
@@ -139,8 +148,7 @@
                             }).then(response => {
                                 if (response.ok) {
                                     Swal.fire({
-                                        title: 'Berhasil!',
-                                        text: 'Data berhasil dihapus.',
+                                        title: "Pengajuan Berhasil Dihapus",
                                         icon: 'success',
                                         confirmButtonText: 'OK',
                                         backdrop: true, // Menambahkan latar belakang gelap

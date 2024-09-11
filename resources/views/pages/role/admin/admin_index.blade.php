@@ -108,4 +108,83 @@
             </div>
         </div>
     </div>
+
+    <!-- SweetAlert2 Script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Mencegah pengiriman form langsung
+
+                const form = this.closest('form');
+
+                Swal.fire({
+                    title: "Apa Anda Yakin?",
+                    text: "Data yang sudah terhapus tidak dapat dikembalikan!",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, Hapus",
+                    backdrop: true,  // Menambahkan latar belakang gelap
+                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Deleting...',
+                            text: 'Tunggu sebentar, sedang menghapus admin.',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        // Gunakan AJAX untuk mengirim form
+                        fetch(form.action, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').getAttribute('content'),
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: new FormData(form)
+                        }).then(response => {
+                            Swal.close(); // Menutup pop-up "Deleting..."
+                            if (response.ok) {
+                                Swal.fire({
+                                    title: "Admin Berhasil Dihapus",
+                                    icon: "success",
+                                    confirmButtonText: "Oke",
+                                    backdrop: true,  // Menambahkan latar belakang gelap
+                                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                }).then(() => {
+                                    location.reload(); // Reload halaman setelah penghapusan berhasil
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Terjadi masalah saat menghapus data.",
+                                    icon: "error",
+                                    backdrop: true,  // Menambahkan latar belakang gelap
+                                    allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                                });
+                            }
+                        }).catch(error => {
+                            Swal.close(); // Menutup pop-up "Deleting..."
+                            Swal.fire({
+                                title: "Error!",
+                                text: "Terjadi kesalahan yang tidak terduga.",
+                                icon: "error",
+                                backdrop: true,  // Menambahkan latar belakang gelap
+                                allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>
