@@ -94,7 +94,7 @@
                 Swal.fire({
                     title: 'Apakah Anda Yakin?',
                     text: "Anda ingin menyimpan perubahan ini?",
-                    icon: 'warning',
+                    icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
