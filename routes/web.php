@@ -34,12 +34,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Rute untuk User
-// Route::middleware(['auth', 'user'])->group(function () {
-//     Route::get('/user', function () {
-//         return view('user.index');
-//     })->middleware(['verified'])->name('user.index');
-// });
 
 // rute untuk admin dan super admin
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -71,8 +65,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('materi/edit/{materi}', [MateriController::class, 'edit'])->name('materi.edit');
     Route::put('materi/{materi}', [MateriController::class, 'update'])->name('materi.update');
     Route::delete('/materi/{materi}', [MateriController::class, 'destroy'])->name('materi.destroy');
-
-
 
     // Tugas
     // definisikan route spesifik terlebih dahulu agar tidak error 404
