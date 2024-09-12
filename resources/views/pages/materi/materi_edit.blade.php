@@ -120,7 +120,7 @@
             if (file && !allowedFileFormats.includes(getFileExtension(file.name))) {
                 Swal.fire({
                     title: 'Format File Tidak Valid',
-                    text: `Format file yang diperbolehkan: ${allowedFileFormats.join(', ')}`,
+                    text: `Format file : ${allowedFileFormats.join(', ')}`,
                     icon: 'error',
                     confirmButtonText: 'OK',
                     backdrop: true,
@@ -133,7 +133,7 @@
             if (video && !allowedVideoFormats.includes(getFileExtension(video.name))) {
                 Swal.fire({
                     title: 'Format Video Tidak Valid',
-                    text: `Format video yang diperbolehkan: ${allowedVideoFormats.join(', ')}`,
+                    text: `Format video : ${allowedVideoFormats.join(', ')}`,
                     icon: 'error',
                     confirmButtonText: 'OK',
                     backdrop: true,
@@ -169,12 +169,12 @@
 
             Swal.fire({
                 title: 'Apakah anda yakin?',
-                text: "Anda ingin menyimpan perubahan ini?",
-                icon: 'warning',
+                text: 'Anda ingin menyimpan perubahan ini?',
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, simpan!',
+                confirmButtonText: 'Ya, Simpan',
                 backdrop: true,
                 allowOutsideClick: false
             }).then((result) => {
@@ -205,7 +205,7 @@
                     }).then(response => {
                         if (response.ok) {
                             Swal.fire({
-                                title: 'Data berhasil diubah!',
+                                title: 'Materi Berhasil Diperbarui',
                                 icon: 'success',
                                 confirmButtonText: 'Oke',
                                 backdrop: true,

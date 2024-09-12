@@ -115,18 +115,28 @@
                 const form = this.closest('form');
 
                 Swal.fire({
-                    title: "Apa anda yakin?",
-                    text: "Data yang sudah terhapus tidak dapat dikembalikan!",
-                    icon: "warning",
+                    title: 'Apakah Anda yakin?',
+                    text: "Data yang sudah dihapus tidak bisa dikembalikan!",
+                    icon: "question",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, hapus!",
+                    confirmButtonText: "Ya, Hapus",
                     backdrop: true, // Mengaktifkan backdrop
                     allowOutsideClick: false // Mencegah klik di luar pop-up
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Gunakan AJAX untuk mengirim form
+                        Swal.fire({
+                            title: 'Deleting...',
+                            text: 'Tunggu sebentar, sedang menghapus tugas.',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
                         fetch(form.action, {
                             method: 'POST',
                             headers: {
@@ -138,9 +148,8 @@
                         }).then(response => {
                             if (response.ok) {
                                 Swal.fire({
-                                    title: "Data berhasil dihapus!",
+                                    title: "Tugas Berhasil Dihapus",
                                     icon: "success",
-                                    text: "Klik tombol Oke untuk melanjutkan.",
                                     confirmButtonText: "Oke",
                                     backdrop: true, // Menampilkan latar belakang gelap
                                     allowOutsideClick: false // Mencegah klik di luar pop-up

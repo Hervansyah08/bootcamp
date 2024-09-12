@@ -155,12 +155,12 @@
 
             Swal.fire({
                 title: 'Apakah Anda Yakin?',
-                text: "Anda ingin menyimpan perubahan ini?",
-                icon: 'warning',
+                text: 'Anda ingin menyimpan perubahan ini?',
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, simpan!',
+                confirmButtonText: 'Ya, Simpan',
                 allowOutsideClick: false
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -192,7 +192,7 @@
 
                         if (response.ok) {
                             Swal.fire({
-                                title: 'Data berhasil diubah!',
+                                title: 'Tugas Berhasil Diubah',
                                 icon: 'success',
                                 confirmButtonText: 'Oke',
                                 allowOutsideClick: false

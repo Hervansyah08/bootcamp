@@ -84,15 +84,26 @@
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
                     text: "Anda ingin menyimpan perubahan jadwal kelas ini?",
-                    icon: 'warning',
+                    icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, simpan!',
+                    confirmButtonText: 'Ya, Simpan',
                     backdrop: true,
                     allowOutsideClick: false
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Uploading...',
+                            text: 'Tunggu sebentar, sedang mengunggah perubahan jadwal kelas.',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            backdrop: true,
+                            willOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
                         // Submit form with AJAX
                         const form = document.getElementById('edit-form');
                         const formData = new FormData(form);
@@ -106,8 +117,7 @@
                         }).then(response => {
                             if (response.ok) {
                                 Swal.fire({
-                                    title: 'Berhasil!',
-                                    text: 'Jadwal kelas berhasil diperbarui.',
+                                    title: 'Jadwal Kelas Berhasil Diperbarui',
                                     icon: 'success',
                                     confirmButtonText: 'Oke',
                                     backdrop: true,

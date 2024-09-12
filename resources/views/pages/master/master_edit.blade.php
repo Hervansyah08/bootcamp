@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form id="edit-form" action="{{ route('master.update', $master->id) }}" method="POST">
+                    <form id="edit-form" action="{{ route('master.update', $master->id) }}" method="POST" novalidate>
                         @csrf
                         @method('PUT')
                         <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -188,81 +188,115 @@
         </div>
     </div>
 
-     <!-- Script SweetAlert -->
+    <!-- Script SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('edit-form').addEventListener('submit', function(e) {
                 e.preventDefault(); // Mencegah submit form default
-        
+
                 // Mendapatkan nilai dari elemen form
                 const email = document.getElementById('email').value;
                 const nama = document.getElementById('nama').value;
+                const tanggal_lahir = document.getElementById('tanggal_lahir').value;
+                const alamat = document.getElementById('alamat').value;
+                const no_hp = document.getElementById('no_hp').value;
                 const status_pekerjaan = document.getElementById('status_pekerjaan').value;
+                const instansi = document.getElementById('instansi').value;
                 const gender = document.getElementById('gender').value;
                 const program_id = document.getElementById('program_id').value;
                 const info = document.getElementById('info').value;
                 const tipe_kelas = document.getElementById('tipe_kelas').value;
-                const status = document.getElementById('status').value;
-        
+
                 // Buat array untuk menyimpan pesan error
                 let errors = [];
-        
+
                 // Cek apakah field kosong atau pilihannya adalah opsi placeholder
-                if (!email) errors.push('Email harus diisi.');
-                if (!nama) errors.push('Nama harus diisi.');
-                if (gender === 'Pilih Jenis Kelamin') errors.push('Jenis Kelamin harus dipilih.');
-                if (status_pekerjaan === 'Pilih Status Pekerjaan') errors.push('Status Pekerjaan harus dipilih.');
-                if (program_id === 'Pilih Program') errors.push('Program harus dipilih.');
-                if (info === 'Pilih') errors.push('Informasi sumber harus dipilih.');
-                if (tipe_kelas === 'Pilih Kelas') errors.push('Tipe Kelas harus dipilih.');
-                if (status === 'Pilih') errors.push('Status harus dipilih.');
-        
+                if (!email) errors.push('Kolom Email masih kosong.');
+                if (!nama) errors.push('Kolom Nama masih kosong.');
+                if (!tanggal_lahir) errors.push('Kolom Tanggal Lahir masih kosong.');
+                if (!alamat) errors.push('Kolom Alamat masih kosong.');
+                if (!no_hp) errors.push('Kolom No HP masih kosong.');
+                if (gender === 'Pilih Jenis Kelamin') errors.push('Kolom Jenis Kelamin harus dipilih.');
+                if (status_pekerjaan === 'Pilih Status Pekerjaan') errors.push('Kolom Status Pekerjaan harus dipilih.');
+                if (!instansi) errors.push('Kolom Instansi masih kosong.');
+                if (program_id === 'Pilih Program') errors.push('Kolom Program harus dipilih.');
+                if (info === 'Pilih') errors.push('Kolom Informasi sumber harus dipilih.');
+                if (tipe_kelas === 'Pilih Kelas') errors.push('Kolom Tipe Kelas harus dipilih.');
+
                 // Jika ada error, tampilkan pesan dan hentikan submit form
                 if (errors.length > 0) {
                     Swal.fire({
-                        title: 'Error!',
+                        title: 'Lengkapi Semua Kolom',
                         html: errors.join('<br>'), // Gabungkan pesan error dengan HTML line break
-                        icon: 'error',
+                        icon: 'warning',
                         confirmButtonText: 'OK',
                         allowOutsideClick: false,
                         allowEscapeKey: false
                     });
                     return; // Hentikan submit form
                 }
-        
-                // Submit form menggunakan Axios
-                const masterId = '{{ $master->id }}'; // Ganti dengan cara Anda mendapatkan ID master yang akan diedit
-                axios.post(`{{ route('master.update', '') }}/${masterId}`, new FormData(this))
-                    .then(response => {
-                        console.log(response.data); // Debugging response
-        
+
+                // Tampilkan konfirmasi sebelum melanjutkan
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: 'Anda ingin menyimpan perubahan ini?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Simpan',
+                    cancelButtonText: 'Batal',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Tampilkan pop-up "Uploading..." sebelum pengiriman data
                         Swal.fire({
-                            title: 'Perubahan Berhasil!',
-                            text: 'Data telah berhasil diperbarui.',
-                            icon: 'success',
-                            confirmButtonText: 'OKE',
-                            confirmButtonColor: '#3085d6',
+                            title: 'Uploading...',
+                            text: 'Tunggu sebentar, sedang mengunggah perubahan data.',
+                            icon: 'info',
                             allowOutsideClick: false,
-                            allowEscapeKey: false
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '{{ route('master.index') }}';
+                            allowEscapeKey: false,
+                            didOpen: () => {
+                                Swal.showLoading();
                             }
                         });
-                    })
-                    .catch(error => {
-                        console.error('Error during form submission:', error);
-                        console.log(error.response); // Debugging error response
-                        Swal.fire({
-                            title: 'Gagal!',
-                            text: 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi.',
-                            icon: 'error',
-                            confirmButtonText: 'OK',
-                            allowOutsideClick: false,
-                            allowEscapeKey: false
-                        });
-                    });
+
+                        // Submit form menggunakan Axios
+                        const masterId = '{{ $master->id }}'; // Ganti dengan cara Anda mendapatkan ID master yang akan diedit
+                        axios.post(`{{ route('master.update', '') }}/${masterId}`, new FormData(this))
+                            .then(response => {
+                                console.log(response.data); // Debugging response
+
+                                // Tampilkan pop-up setelah berhasil
+                                Swal.fire({
+                                    title: 'Data Berhasil Diperbarui',
+                                    icon: 'success',
+                                    confirmButtonText: 'OKE',
+                                    confirmButtonColor: '#3085d6',
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '{{ route('master.index') }}'; // Redirect setelah sukses
+                                    }
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error during form submission:', error);
+                                console.log(error.response); // Debugging error response
+
+                                // Tampilkan pop-up jika gagal
+                                Swal.fire({
+                                    title: 'Gagal!',
+                                    text: 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK',
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false
+                                });
+                            });
+                    }
+                });
             });
         });
     </script> 

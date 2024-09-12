@@ -67,15 +67,27 @@
             Swal.fire({
                 title: 'Apakah anda yakin?',
                 text: "Anda ingin menyimpan perubahan ini?",
-                icon: 'warning',
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, simpan!',
+                confirmButtonText: 'Ya, Simpan',
                 backdrop: true,  // Menambahkan latar belakang gelap
                 allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
             }).then((result) => {
                 if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Uploading...',
+                        text: 'Tunggu sebentar, sedang mengunggah perubahan program.',
+                        icon: 'info',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        backdrop: true,
+                        willOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
                     // Submit form dengan AJAX
                     const form = document.getElementById('edit-form');
 
@@ -90,7 +102,7 @@
                     }).then(response => {
                         if (response.ok) {
                             Swal.fire({
-                                title: 'Data berhasil diubah!',
+                                title: 'Program Berhasil Diperbarui',
                                 icon: 'success',
                                 confirmButtonText: 'Oke',
                                 backdrop: true,  // Menambahkan latar belakang gelap

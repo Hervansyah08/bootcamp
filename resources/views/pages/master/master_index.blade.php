@@ -190,7 +190,7 @@
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
                     text: "Data yang sudah dihapus tidak bisa dikembalikan!",
-                    icon: 'warning',
+                    icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -200,6 +200,18 @@
                     allowOutsideClick: false  // Menonaktifkan klik di luar pop-up
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        // Tampilkan pop-up 'Deleting...'
+                        Swal.fire({
+                            title: 'Deleting...',
+                            text: 'Tunggu sebentar, sedang menghapus data.',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
                         // Gunakan AJAX untuk mengirim form
                         fetch(form.action, {
                             method: 'POST',
@@ -212,8 +224,7 @@
                         }).then(response => {
                             if (response.ok) {
                                 Swal.fire({
-                                    title: 'Berhasil!',
-                                    text: 'Data berhasil dihapus.',
+                                    title: 'Data Berhasil Dihapus',
                                     icon: 'success',
                                     confirmButtonText: 'OK',
                                     backdrop: true,  // Menambahkan latar belakang gelap

@@ -9,7 +9,7 @@
         <div class="max-w-7xl lg:max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form id="edit-form" action="{{ route('user.update', $user->id) }}" method="POST">
+                    <form id="edit-form" action="{{ route('user.update', $user->id) }}" method="POST" novalidate>
                         @csrf
                         @method('PUT')
                         <div class="mb-6">
@@ -54,4 +54,109 @@
         </div>
     </div>
 
+    <!-- SweetAlert2 Script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('edit-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Stop form submission
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            if (name === '' && email === '') {
+                Swal.fire({
+                    title: 'Lengkapi Semua Kolom',
+                    text: 'Semua kolom masih kosong.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+            } else if (name === '') {
+                Swal.fire({
+                    title: 'Kolom Nama Kosong',
+                    text: 'Kolom Nama tidak boleh kosong.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+            } else if (email === '') {
+                Swal.fire({
+                    title: 'Kolom Email Kosong',
+                    text: 'Kolom Email tidak boleh kosong.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    backdrop: true,
+                    allowOutsideClick: false
+                });
+            } else {
+                Swal.fire({
+                    title: 'Apakah Anda Yakin?',
+                    text: "Anda ingin menyimpan perubahan ini?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, simpan',
+                    backdrop: true,
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Uploading...',
+                            text: 'Tunggu sebentar, sedang mengunggah perubahan user.',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            backdrop: true,
+                            willOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        // Submit form with AJAX
+                        const form = document.getElementById('edit-form');
+                        const formData = new FormData(form);
+
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        }).then(response => {
+                            if (response.ok) {
+                                Swal.fire({
+                                    title: 'User Berhasil Diperbarui',
+                                    icon: 'success',
+                                    confirmButtonText: 'Oke',
+                                    backdrop: true,
+                                    allowOutsideClick: false
+                                }).then(() => {
+                                    window.location.href = "{{ route('user.index') }}";
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Terjadi kesalahan saat menambahkan data user.',
+                                    icon: 'error',
+                                    backdrop: true,
+                                    allowOutsideClick: false
+                                });
+                            }
+                        }).catch(error => {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan yang tidak terduga.',
+                                icon: 'error',
+                                backdrop: true,
+                                allowOutsideClick: false
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 </x-app-layout>
