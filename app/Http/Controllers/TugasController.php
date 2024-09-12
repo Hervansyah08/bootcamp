@@ -25,7 +25,12 @@ class TugasController extends Controller
                 ->pluck('program_id')
                 ->unique();
 
-            $query = Program::withCount('tugas') // menghitung jumlah tugas
+            $query = Program::withCount(['tugas' => function ($query) use ($user) {
+                // Menghitung tugas yang belum dikumpulkan
+                $query->whereDoesntHave('pengumpulan', function ($subQuery) use ($user) {
+                    $subQuery->where('user_id', $user->id);
+                });
+            }])
                 ->whereIn('id', $activeMasterPrograms)
                 ->where('status', 'Active');
 
@@ -61,6 +66,7 @@ class TugasController extends Controller
 
         return view('pages.tugas.tugas_index', compact('programs', 'search'));
     }
+
 
     public function showByProgram(Program $program)
     {
@@ -121,8 +127,10 @@ class TugasController extends Controller
             'deadline' => 'nullable|date',
         ]);
 
-        $file = $request->file('file');
-        $filePath = $file->store('materis/Tugas');
+        // $file = $request->file('file');
+        // $filePath = $file->store('materis/Tugas');
+        // kodingan lebih singkat
+        $filePath = $request->file->store('materis/Tugas');
 
         Tugas::create([
             'user_id' => Auth::id(),
